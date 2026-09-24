@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-09-24T10:52:57.575346+00:00",
+ "diperbarui": "2026-09-24T11:18:24.383687+00:00",
  "pasar": {
   "ihsg": 6298.6,
   "ihsg_ma50": 6386.7,
@@ -34,6 +34,20 @@
    "nilai_tx_mlr": 19.0,
    "setup": "tunggu",
    "alasan": "Terkoreksi ke bawah MA20 (8350). Tunggu harga kembali ke atas 8225 sebelum masuk."
+  },
+  "ACES": {
+   "nama": "Aspirasi Hidup Indonesia",
+   "v": 344.0,
+   "prev": 348.0,
+   "t": "2026-09-24T09:12:21+00:00",
+   "tren": "turun",
+   "ma20": 352,
+   "ma50": 354,
+   "atr": 8.1,
+   "rsi": 31.6,
+   "nilai_tx_mlr": 6.8,
+   "setup": "tunggu",
+   "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
   },
   "ADMR": {
    "nama": "Alamtri Minerals Indonesia",
@@ -70,6 +84,30 @@
    "tp2": 1660,
    "rr2": 2.5,
    "risiko_pct": 5.5,
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
+  },
+  "AMMN": {
+   "nama": "Amman Mineral Internasional",
+   "v": 4730.0,
+   "prev": 4870.0,
+   "t": "2026-09-24T09:14:58+00:00",
+   "tren": "naik",
+   "ma20": 4680,
+   "ma50": 4390,
+   "atr": 222.9,
+   "rsi": 58.9,
+   "nilai_tx_mlr": 412.6,
+   "setup": "tunggu",
+   "entry": [
+    4570,
+    4730
+   ],
+   "cl": 4300,
+   "tp1": 5175,
+   "tp2": 5525,
+   "rr2": 2.5,
+   "risiko_pct": 7.5,
    "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
    "siap_jika_pasar_pulih": true
   },
@@ -135,6 +173,20 @@
    "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
    "siap_jika_pasar_pulih": true
   },
+  "ARTO": {
+   "nama": "Bank Jago",
+   "v": 860.0,
+   "prev": 890.0,
+   "t": "2026-09-24T09:14:52+00:00",
+   "tren": "turun",
+   "ma20": 965,
+   "ma50": 1115,
+   "atr": 40.4,
+   "rsi": 18.3,
+   "nilai_tx_mlr": 27.2,
+   "setup": "tunggu",
+   "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
+  },
   "ASII": {
    "nama": "Astra International",
    "v": 4770.0,
@@ -148,6 +200,30 @@
    "nilai_tx_mlr": 221.1,
    "setup": "tunggu",
    "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
+  },
+  "AUTO": {
+   "nama": "Astra Otoparts",
+   "v": 3340.0,
+   "prev": 3390.0,
+   "t": "2026-09-24T09:00:06+00:00",
+   "tren": "naik",
+   "ma20": 3350,
+   "ma50": 3030,
+   "atr": 61.4,
+   "rsi": 51.5,
+   "nilai_tx_mlr": 13.2,
+   "setup": "tunggu",
+   "entry": [
+    3320,
+    3340
+   ],
+   "cl": 3250,
+   "tp1": 3450,
+   "tp2": 3530,
+   "rr2": 2.5,
+   "risiko_pct": 2.4,
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "BBCA": {
    "nama": "Bank Central Asia",
@@ -261,6 +337,34 @@
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
   },
+  "BTPS": {
+   "nama": "Bank BTPN Syariah",
+   "v": 950.0,
+   "prev": 970.0,
+   "t": "2026-09-24T09:14:51+00:00",
+   "tren": "datar",
+   "ma20": 1010,
+   "ma50": 1000,
+   "atr": 33.2,
+   "rsi": 39.0,
+   "nilai_tx_mlr": 7.9,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
+  "BUKA": {
+   "nama": "Bukalapak.com.",
+   "v": 105.0,
+   "prev": 107.0,
+   "t": "2026-09-24T09:07:20+00:00",
+   "tren": "turun",
+   "ma20": 108,
+   "ma50": 112,
+   "atr": 4.4,
+   "rsi": 29.2,
+   "nilai_tx_mlr": 22.2,
+   "setup": "tunggu",
+   "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
+  },
   "BUMI": {
    "nama": "Bumi Resources",
    "v": 185.0,
@@ -272,6 +376,20 @@
    "atr": 11.0,
    "rsi": 33.3,
    "nilai_tx_mlr": 694.2,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
+  "CPIN": {
+   "nama": "Charoen Pokphand Indonesia",
+   "v": 3020.0,
+   "prev": 3080.0,
+   "t": "2026-09-24T09:14:38+00:00",
+   "tren": "datar",
+   "ma20": 3140,
+   "ma50": 3120,
+   "atr": 97.1,
+   "rsi": 35.8,
+   "nilai_tx_mlr": 193.1,
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
   },
@@ -288,6 +406,30 @@
    "nilai_tx_mlr": 7.2,
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
+  },
+  "DMAS": {
+   "nama": "Puradelta Lestari",
+   "v": 192.0,
+   "prev": 190.0,
+   "t": "2026-09-24T09:12:11+00:00",
+   "tren": "naik",
+   "ma20": 195,
+   "ma50": 167,
+   "atr": 8.9,
+   "rsi": 46.3,
+   "nilai_tx_mlr": 80.5,
+   "setup": "tunggu",
+   "entry": [
+    190,
+    192
+   ],
+   "cl": 180,
+   "tp1": 206,
+   "tp2": 218,
+   "rr2": 2.5,
+   "risiko_pct": 5.8,
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "DSNG": {
    "nama": "Dharma Satya Nusantara",
@@ -341,6 +483,20 @@
    "setup": "tunggu",
    "alasan": "Terkoreksi ke bawah MA20 (8225). Tunggu harga kembali ke atas 8050 sebelum masuk."
   },
+  "EMTK": {
+   "nama": "Elang Mahkota Teknologi",
+   "v": 430.0,
+   "prev": 446.0,
+   "t": "2026-09-24T09:13:46+00:00",
+   "tren": "turun",
+   "ma20": 494,
+   "ma50": 510,
+   "atr": 16.0,
+   "rsi": 16.0,
+   "nilai_tx_mlr": 20.5,
+   "setup": "tunggu",
+   "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
+  },
   "ENRG": {
    "nama": "Energi Mega Persada",
    "v": 1310.0,
@@ -355,6 +511,30 @@
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
   },
+  "ERAA": {
+   "nama": "Erajaya Swasembada",
+   "v": 610.0,
+   "prev": 615.0,
+   "t": "2026-09-24T09:11:35+00:00",
+   "tren": "naik",
+   "ma20": 580,
+   "ma50": 490,
+   "atr": 29.6,
+   "rsi": 55.6,
+   "nilai_tx_mlr": 93.3,
+   "setup": "tunggu",
+   "entry": [
+    565,
+    595
+   ],
+   "cl": 530,
+   "tp1": 655,
+   "tp2": 705,
+   "rr2": 2.5,
+   "risiko_pct": 8.6,
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
+  },
   "EXCL": {
    "nama": "XLSMART Telecom Sejahtera",
    "v": 2400.0,
@@ -368,6 +548,38 @@
    "nilai_tx_mlr": 18.9,
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
+  },
+  "HEAL": {
+   "nama": "Medikaloka Hermina",
+   "v": 630.0,
+   "prev": 640.0,
+   "t": "2026-09-24T09:11:24+00:00",
+   "tren": "turun",
+   "ma20": 670,
+   "ma50": 730,
+   "atr": 20.7,
+   "rsi": 21.1,
+   "nilai_tx_mlr": 16.9,
+   "setup": "tunggu",
+   "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
+  },
+  "HRTA": {
+   "nama": "Hartadinata Abadi",
+   "v": 2310.0,
+   "prev": 2300.0,
+   "t": "2026-09-24T09:08:53+00:00",
+   "tren": "naik",
+   "ma20": 2210,
+   "ma50": 2120,
+   "atr": 77.1,
+   "rsi": 52.4,
+   "nilai_tx_mlr": 18.1,
+   "setup": "tunggu",
+   "area_tunggu": [
+    2180,
+    2250
+   ],
+   "alasan": "Sudah naik jauh dari MA20. Tunggu koreksi ke sekitar 2210."
   },
   "HRUM": {
    "nama": "Harum Energy",
@@ -449,6 +661,20 @@
    "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
    "siap_jika_pasar_pulih": true
   },
+  "INTP": {
+   "nama": "Indocement Tunggal Prakarsa",
+   "v": 5150.0,
+   "prev": 5250.0,
+   "t": "2026-09-24T09:00:05+00:00",
+   "tren": "datar",
+   "ma20": 5325,
+   "ma50": 5175,
+   "atr": 171.4,
+   "rsi": 37.0,
+   "nilai_tx_mlr": 6.7,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
   "ISAT": {
    "nama": "Indosat",
    "v": 2400.0,
@@ -484,6 +710,20 @@
    "atr": 537.5,
    "rsi": 35.2,
    "nilai_tx_mlr": 40.5,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
+  "JPFA": {
+   "nama": "Japfa Comfeed Indonesia",
+   "v": 2180.0,
+   "prev": 2260.0,
+   "t": "2026-09-24T09:14:55+00:00",
+   "tren": "datar",
+   "ma20": 2270,
+   "ma50": 2210,
+   "atr": 80.0,
+   "rsi": 36.2,
+   "nilai_tx_mlr": 31.4,
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
   },
@@ -528,6 +768,34 @@
    "nilai_tx_mlr": 28.1,
    "setup": "tunggu",
    "alasan": "Terkoreksi ke bawah MA20 (1635). Tunggu harga kembali ke atas 1600 sebelum masuk."
+  },
+  "MAPA": {
+   "nama": "Map Aktif Adiperkasa",
+   "v": 645.0,
+   "prev": 680.0,
+   "t": "2026-09-24T09:13:40+00:00",
+   "tren": "datar",
+   "ma20": 685,
+   "ma50": 660,
+   "atr": 27.1,
+   "rsi": 35.1,
+   "nilai_tx_mlr": 9.7,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
+  "MAPI": {
+   "nama": "PT. Mitra Adiperkasa",
+   "v": 1510.0,
+   "prev": 1510.0,
+   "t": "2026-09-24T09:14:22+00:00",
+   "tren": "datar",
+   "ma20": 1425,
+   "ma50": 1495,
+   "atr": 56.1,
+   "rsi": 62.7,
+   "nilai_tx_mlr": 10.8,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
   },
   "MBMA": {
    "nama": "Merdeka Battery Materials.",
@@ -591,6 +859,34 @@
    "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
    "siap_jika_pasar_pulih": true
   },
+  "MIKA": {
+   "nama": "Mitra Keluarga Karyasehat",
+   "v": 1730.0,
+   "prev": 1740.0,
+   "t": "2026-09-24T09:08:13+00:00",
+   "tren": "datar",
+   "ma20": 1830,
+   "ma50": 1805,
+   "atr": 59.6,
+   "rsi": 26.7,
+   "nilai_tx_mlr": 7.2,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
+  "MTEL": {
+   "nama": "Dayamitra Telekomunikasi.",
+   "v": 482.0,
+   "prev": 488.0,
+   "t": "2026-09-24T09:14:39+00:00",
+   "tren": "naik",
+   "ma20": 484,
+   "ma50": 462,
+   "atr": 13.2,
+   "rsi": 46.0,
+   "nilai_tx_mlr": 16.5,
+   "setup": "tunggu",
+   "alasan": "Dekat MA20, tapi kalah kuat dari IHSG dalam 60 hari (-10.7% vs +8.2%)."
+  },
   "MYOR": {
    "nama": "Mayora Indah",
    "v": 1450.0,
@@ -616,6 +912,20 @@
    "atr": 35.0,
    "rsi": 43.5,
    "nilai_tx_mlr": 47.6,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
+  "PGAS": {
+   "nama": "Perusahaan Gas Negara (Persero)",
+   "v": 1440.0,
+   "prev": 1440.0,
+   "t": "2026-09-24T09:14:57+00:00",
+   "tren": "datar",
+   "ma20": 1510,
+   "ma50": 1510,
+   "atr": 32.1,
+   "rsi": 34.0,
+   "nilai_tx_mlr": 55.4,
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
   },
@@ -654,6 +964,30 @@
    "tp2": 3400,
    "rr2": 2.5,
    "risiko_pct": 6.1,
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
+  },
+  "PTRO": {
+   "nama": "Petrosea",
+   "v": 5375.0,
+   "prev": 5400.0,
+   "t": "2026-09-24T09:14:48+00:00",
+   "tren": "naik",
+   "ma20": 5300,
+   "ma50": 5025,
+   "atr": 280.4,
+   "rsi": 50.0,
+   "nilai_tx_mlr": 240.3,
+   "setup": "tunggu",
+   "entry": [
+    5175,
+    5375
+   ],
+   "cl": 4840,
+   "tp1": 5925,
+   "tp2": 6350,
+   "rr2": 2.5,
+   "risiko_pct": 8.2,
    "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
    "siap_jika_pasar_pulih": true
   },
@@ -698,6 +1032,20 @@
    "nilai_tx_mlr": 8.3,
    "setup": "tunggu",
    "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
+  },
+  "SMGR": {
+   "nama": "Semen Indonesia (Persero)",
+   "v": 1570.0,
+   "prev": 1615.0,
+   "t": "2026-09-24T09:13:54+00:00",
+   "tren": "datar",
+   "ma20": 1645,
+   "ma50": 1570,
+   "atr": 60.0,
+   "rsi": 24.1,
+   "nilai_tx_mlr": 52.9,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
   },
   "SMRA": {
    "nama": "Summarecon Agung",
@@ -772,6 +1120,34 @@
    "nilai_tx_mlr": 290.1,
    "setup": "tunggu",
    "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
+  },
+  "TOWR": {
+   "nama": "Sarana Menara Nusantara.",
+   "v": 396.0,
+   "prev": 404.0,
+   "t": "2026-09-24T09:14:56+00:00",
+   "tren": "datar",
+   "ma20": 440,
+   "ma50": 422,
+   "atr": 17.0,
+   "rsi": 32.9,
+   "nilai_tx_mlr": 28.0,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
+  },
+  "UNTR": {
+   "nama": "United Tractors",
+   "v": 24150.0,
+   "prev": 24400.0,
+   "t": "2026-09-24T09:13:46+00:00",
+   "tren": "datar",
+   "ma20": 25275,
+   "ma50": 24750,
+   "atr": 667.9,
+   "rsi": 40.0,
+   "nilai_tx_mlr": 109.4,
+   "setup": "tunggu",
+   "alasan": "Belum ada tren yang jelas."
   },
   "UNVR": {
    "nama": "Unilever Indonesia",

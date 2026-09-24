@@ -533,6 +533,7 @@ def main():
     data_saham = {}
     for tk in daftar_saham():
         data = ambil(f"{tk}.JK", "6mo")
+        time.sleep(0.3)  # jeda kecil supaya tidak dibatasi Yahoo
         if data:
             data_saham[tk] = data["baris"]
             q = ringkas(data)

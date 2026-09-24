@@ -714,7 +714,7 @@ function renderSaham(){
     const chg=num(s.prev)?(s.v/s.prev-1)*100:null;
     return `<tr>
       <td><div class="tk">${esc(t)}</div><div class="nm">${esc(s.nama||"")}</div></td>
-      <td><div class="why">${why[t].slice(0,3).map(w=>`<span>${esc(w)}</span>`).join("")}${why[t].length>3?`<span>+${why[t].length-3} alasan lain</span>`:""}</div></td>
+      <td><div class="why">${why[t].slice(0,3).map(w=>`<span>${esc(w)}</span>`).join("")}${why[t].length>3?`<span>+${why[t].length-3} alasan lain</span>`:""}${temaLemah(t).length?`<span class="stale">Hati-hati: rapor historis tema ${esc(temaLemah(t).join(", "))} negatif</span>`:""}</div></td>
       <td class="r"><span class="num">${fmt(s.v)}</span>${chg!=null?`<br>${chgHtml(chg)}`:""}${s.lama?'<br><span class="stale small">data lama</span>':""}</td>
       <td><span class="pill acc">Pullback</span><div class="nm" style="max-width:24ch;margin-top:4px">${esc(TAHAN(s)?"Tren naik, MA50 menanjak, lebih kuat dari IHSG, dekat MA20.":s.alasan)}</div></td>
       <td class="r num">${fmt(s.entry[0])}–${fmt(s.entry[1])}</td>
@@ -728,6 +728,13 @@ function renderSaham(){
   $("waitBox").hidden=!tunggu.length;
   $("waitList").innerHTML=tunggu.map(t=>`<div><span class="tk">${esc(t)}</span><span>${fmt(ss[t].v)} · ${esc(ss[t].alasan)}</span></div>`).join("");
   renderRapor(); renderJurnal();
+}
+function temaLemah(tk){
+  // tema yang rapor backtest-nya negatif (PF < 1), untuk memberi peringatan pada kandidat
+  if(!backtest) return [];
+  const t=Object.entries(peta.tema||{}).filter(([k,v])=>v.saham.includes(tk)).map(([k])=>k);
+  const r=t.map(k=>backtest.per_tema?.[k]).filter(x=>x&&x.B?.n>=10);
+  return r.length&&r.every(x=>(x.B.profit_factor??0)<1)?r.map(x=>x.label):[];
 }
 function statBox(v,label){return `<div><b>${v}</b><span>${esc(label)}</span></div>`;}
 function renderRapor(){

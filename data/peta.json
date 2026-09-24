@@ -3,7 +3,7 @@
   "tema": {
     "suku_bunga_turun": {
       "label": "Sensitif suku bunga",
-      "penjelasan": "Bank, properti, otomotif, dan jalan tol naik saat bunga dan yield turun.",
+      "penjelasan": "Bank, properti, otomotif, semen, menara telko, teknologi, dan jalan tol naik saat bunga dan yield turun.",
       "saham": [
         "BBRI",
         "BMRI",
@@ -16,17 +16,26 @@
         "PWON",
         "BRIS",
         "BBTN",
-        "SMRA"
+        "SMRA",
+        "ARTO",
+        "BTPS",
+        "SMGR",
+        "INTP",
+        "TOWR",
+        "MTEL",
+        "BUKA",
+        "EMTK",
+        "AUTO",
+        "DMAS"
       ]
     },
     "eksportir_dolar": {
       "label": "Eksportir berpendapatan dolar",
-      "penjelasan": "Untung saat rupiah melemah karena pendapatan dalam dolar.",
+      "penjelasan": "Batu bara dan timah: untung saat rupiah melemah karena pendapatan dalam dolar.",
       "saham": [
         "PTBA",
         "AADI",
         "ITMG",
-        "ANTM",
         "TINS"
       ]
     },
@@ -39,7 +48,9 @@
         "BRMS",
         "ARCI",
         "PSAB",
-        "EMAS"
+        "EMAS",
+        "AMMN",
+        "HRTA"
       ]
     },
     "minyak": {
@@ -63,7 +74,9 @@
         "INDY",
         "BUMI",
         "HRUM",
-        "ADMR"
+        "ADMR",
+        "UNTR",
+        "PTRO"
       ]
     },
     "timah": {
@@ -79,7 +92,8 @@
       "saham": [
         "INCO",
         "NCKL",
-        "MBMA"
+        "MBMA",
+        "ANTM"
       ]
     },
     "sawit": {
@@ -93,9 +107,21 @@
         "SSMS"
       ]
     },
+    "importir": {
+      "label": "Importir",
+      "penjelasan": "Bahan baku atau barang dagangan dibeli dalam dolar (ritel gadget, pakan ternak, merek impor): untung saat rupiah menguat, tertekan saat rupiah melemah.",
+      "saham": [
+        "ERAA",
+        "ACES",
+        "MAPI",
+        "MAPA",
+        "CPIN",
+        "JPFA"
+      ]
+    },
     "defensif": {
       "label": "Defensif",
-      "penjelasan": "Kebutuhan pokok, ritel, farmasi, dan telekomunikasi; cenderung tahan saat pasar tertekan.",
+      "penjelasan": "Kebutuhan pokok, ritel, farmasi, rumah sakit, gas, dan telekomunikasi; cenderung tahan saat pasar tertekan.",
       "saham": [
         "TLKM",
         "ICBP",
@@ -106,7 +132,10 @@
         "EXCL",
         "UNVR",
         "AMRT",
-        "SIDO"
+        "SIDO",
+        "PGAS",
+        "MIKA",
+        "HEAL"
       ]
     }
   },
@@ -176,6 +205,14 @@
       "alasan": "Rupiah di atas Rp17.500"
     },
     {
+      "tema": "importir",
+      "ind": "usdidr",
+      "zona": [
+        "good"
+      ],
+      "alasan": "Rupiah di bawah Rp17.000"
+    },
+    {
       "tema": "suku_bunga_turun",
       "ind": "us10y",
       "zona": [
@@ -218,7 +255,8 @@
           ],
           "tertekan": [
             "suku_bunga_turun",
-            "emas"
+            "emas",
+            "importir"
           ]
         },
         {
@@ -226,7 +264,8 @@
           "efek": "Yield turun, dolar melemah, harapan bunga turun",
           "diuntungkan": [
             "suku_bunga_turun",
-            "emas"
+            "emas",
+            "importir"
           ],
           "tertekan": [
             "eksportir_dolar"
@@ -253,7 +292,8 @@
           ],
           "tertekan": [
             "suku_bunga_turun",
-            "emas"
+            "emas",
+            "importir"
           ]
         },
         {
@@ -261,7 +301,8 @@
           "efek": "Ruang bunga turun terbuka, yield turun",
           "diuntungkan": [
             "suku_bunga_turun",
-            "emas"
+            "emas",
+            "importir"
           ],
           "tertekan": []
         }
@@ -281,7 +322,8 @@
             "sawit"
           ],
           "tertekan": [
-            "suku_bunga_turun"
+            "suku_bunga_turun",
+            "importir"
           ]
         },
         {
@@ -289,7 +331,8 @@
           "efek": "Yield turun, harapan bunga turun",
           "diuntungkan": [
             "suku_bunga_turun",
-            "emas"
+            "emas",
+            "importir"
           ],
           "tertekan": [
             "batubara",
@@ -316,7 +359,8 @@
           ],
           "tertekan": [
             "suku_bunga_turun",
-            "emas"
+            "emas",
+            "importir"
           ]
         },
         {
@@ -324,7 +368,8 @@
           "efek": "Tekanan global mereda, yield turun",
           "diuntungkan": [
             "suku_bunga_turun",
-            "emas"
+            "emas",
+            "importir"
           ],
           "tertekan": []
         }

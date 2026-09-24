@@ -21,6 +21,7 @@ Asumsi simulasi (sengaja konservatif):
 
 import json
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -116,6 +117,7 @@ def main():
     semua, per_saham = [], {}
     for i, tk in enumerate(kode, 1):
         data = ambil(f"{tk}.JK", "2y")
+        time.sleep(0.3)
         if not data:
             print(f"  lewati {tk}: data tidak tersedia")
             continue
