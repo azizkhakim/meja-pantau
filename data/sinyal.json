@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-09-24T09:27:36.047273+00:00",
+ "diperbarui": "2026-09-24T09:33:47.212831+00:00",
  "saham": {
   "AADI": {
    "nama": "Adaro Andalan Indonesia",
@@ -605,20 +605,6 @@
    "setup": "tunggu",
    "alasan": "Belum ada tren yang jelas."
   },
-  "PGAS": {
-   "nama": "Perusahaan Gas Negara (Persero)",
-   "v": 1440.0,
-   "prev": 1440.0,
-   "t": "2026-09-24T09:14:57+00:00",
-   "tren": "datar",
-   "ma20": 1510,
-   "ma50": 1510,
-   "atr": 32.1,
-   "rsi": 34.0,
-   "nilai_tx_mlr": 55.4,
-   "setup": "tunggu",
-   "alasan": "Belum ada tren yang jelas."
-  },
   "PSAB": {
    "nama": "J Resources Asia Pasifik",
    "v": 535.0,
@@ -697,20 +683,6 @@
    "nilai_tx_mlr": 8.3,
    "setup": "tunggu",
    "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
-  },
-  "SMDR": {
-   "nama": "Samudera Indonesia",
-   "v": 402.0,
-   "prev": 400.0,
-   "t": "2026-09-24T09:14:29+00:00",
-   "tren": "naik",
-   "ma20": 370,
-   "ma50": 328,
-   "atr": 17.7,
-   "rsi": 83.3,
-   "nilai_tx_mlr": 13.8,
-   "setup": "tunggu",
-   "alasan": "RSI 83, jenuh beli. Tunggu koreksi."
   },
   "SMRA": {
    "nama": "Summarecon Agung",
