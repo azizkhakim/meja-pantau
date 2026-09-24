@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light only">
 <title>IHSG &amp; Makro Monitor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +13,7 @@
 [hidden]{display:none!important}
 img{max-width:100%}
 :root{
+  color-scheme:light;
   --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#EAEEF4; --line:#D5DCE6;
   --ink:#16202A; --ink-2:#4A5868; --ink-3:#7B8898;
   --accent:#2F4DA8; --accent-soft:#E3E9FA;
@@ -21,26 +23,6 @@ img{max-width:100%}
   --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0E141B; --surface:#151D27; --surface-2:#1C2632; --line:#2A3645;
-    --ink:#E4EAF1; --ink-2:#A9B5C3; --ink-3:#7A8797;
-    --accent:#93A9F5; --accent-soft:#1F2B4A;
-    --good:#5CC896; --good-soft:#15352A;
-    --mid:#E3B157; --mid-soft:#3A2E17;
-    --bad:#F08A74; --bad-soft:#3F211B;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#0E141B; --surface:#151D27; --surface-2:#1C2632; --line:#2A3645;
-  --ink:#E4EAF1; --ink-2:#A9B5C3; --ink-3:#7A8797;
-  --accent:#93A9F5; --accent-soft:#1F2B4A;
-  --good:#5CC896; --good-soft:#15352A;
-  --mid:#E3B157; --mid-soft:#3A2E17;
-  --bad:#F08A74; --bad-soft:#3F211B;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:clamp(16px,4vw,40px);padding-block:28px 64px}
