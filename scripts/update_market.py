@@ -43,7 +43,7 @@ INDIKATOR = {
 }
 
 URL = "https://query1.finance.yahoo.com/v8/finance/chart/{}?range={}&interval=1d"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Meja Pantau; pemakaian pribadi)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (IHSG Makro Monitor; pemakaian pribadi)"}
 
 # ---- aturan teknikal (ubah di sini kalau mau lebih longgar/ketat) ----
 # Aturan ini lolos backtest 2 tahun (lihat scripts/backtest.py); versi tanpa filter pasar & kekuatan relatif rugi.
@@ -368,7 +368,7 @@ def kirim_telegram(pesan):
     if not token or not chat:
         print("Telegram belum diatur; pesan tidak dikirim:\n  " + "\n  ".join(p.replace("\n", " | ") for p in pesan))
         return False
-    teks = "Meja Pantau\n\n" + "\n\n".join(pesan)
+    teks = "IHSG & Makro Monitor\n\n" + "\n\n".join(pesan)
     ok = True
     for bagian in [teks[i:i + 3900] for i in range(0, len(teks), 3900)]:
         data = urllib.parse.urlencode({"chat_id": chat, "text": bagian, "disable_web_page_preview": "true"}).encode()

@@ -1,4 +1,4 @@
-# Meja Pantau
+# IHSG & Makro Monitor
 
 Halaman pemantauan pribadi untuk IHSG, makro, dan kalender acara penting. Berjalan gratis di GitHub, tanpa server dan tanpa langganan apa pun.
 
@@ -101,7 +101,7 @@ Menguji perubahan aturan sendiri: ubah angka di bagian atas `scripts/update_mark
 
 Robot mengirim pesan saat: ada kandidat baru, order terisi, TP1/TP2 atau cut loss tersentuh, IHSG naik/turun melewati MA50, dan pagi hari sebelum acara berdampak tinggi (H-1 dan hari-H).
 
-1. Di Telegram, buka **@BotFather** → kirim `/newbot` → beri nama, misalnya `Meja Pantau Aziz`, dan username yang berakhiran `bot`. Salin **token** yang diberikan (bentuknya `123456789:AA...`).
+1. Di Telegram, buka **@BotFather** → kirim `/newbot` → beri nama, misalnya `IHSG Makro Monitor Aziz`, dan username yang berakhiran `bot`. Salin **token** yang diberikan (bentuknya `123456789:AA...`).
 2. Buka bot barumu dan kirim pesan apa saja, misalnya `halo`.
 3. Buka di browser: `https://api.telegram.org/botTOKEN/getUpdates` (ganti `TOKEN`). Cari `"chat":{"id":` lalu salin angkanya. Itu **chat ID**.
 4. Di repo GitHub: **Settings → Secrets and variables → Actions → New repository secret**, buat dua secret:
