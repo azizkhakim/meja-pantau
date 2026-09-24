@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Meja Pantau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}
+img{max-width:100%}
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#EAEEF4; --line:#D5DCE6;
+  --ink:#16202A; --ink-2:#4A5868; --ink-3:#7B8898;
+  --accent:#2F4DA8; --accent-soft:#E3E9FA;
+  --good:#1D7F55; --good-soft:#DDF1E7;
+  --mid:#9A6512; --mid-soft:#F7ECD6;
+  --bad:#B63B26; --bad-soft:#F8E1DC;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E141B; --surface:#151D27; --surface-2:#1C2632; --line:#2A3645;
+    --ink:#E4EAF1; --ink-2:#A9B5C3; --ink-3:#7A8797;
+    --accent:#93A9F5; --accent-soft:#1F2B4A;
+    --good:#5CC896; --good-soft:#15352A;
+    --mid:#E3B157; --mid-soft:#3A2E17;
+    --bad:#F08A74; --bad-soft:#3F211B;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E141B; --surface:#151D27; --surface-2:#1C2632; --line:#2A3645;
+  --ink:#E4EAF1; --ink-2:#A9B5C3; --ink-3:#7A8797;
+  --accent:#93A9F5; --accent-soft:#1F2B4A;
+  --good:#5CC896; --good-soft:#15352A;
+  --mid:#E3B157; --mid-soft:#3A2E17;
+  --bad:#F08A74; --bad-soft:#3F211B;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:clamp(16px,4vw,40px);padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(28px,4vw,40px);font-weight:700}
+h2{font-size:22px;font-weight:700}
+h3{font-size:15px;font-weight:600;font-family:var(--body)}
+p{margin:0}
+a{color:var(--accent)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.muted{color:var(--ink-2)}
+.small{font-size:13px}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px 24px}
+.top .meta{display:flex;flex-direction:column;gap:6px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:8px;font-weight:500;font-size:14px}
+.btn:hover{border-color:var(--ink-3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.sync{font-size:12.5px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.dot.on{background:var(--good)}
+
+/* verdict */
+.verdict{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.verdict .stance{font-family:var(--display);font-size:clamp(26px,3.4vw,34px);font-weight:700;line-height:1.15}
+.verdict .stance.bad{color:var(--bad)} .verdict .stance.mid{color:var(--mid)} .verdict .stance.good{color:var(--good)}
+.verdict .say{max-width:62ch;color:var(--ink-2);margin-top:10px}
+.tally{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:start}
+.tally div{background:var(--surface-2);border-radius:10px;padding:12px}
+.tally b{display:block;font-family:var(--mono);font-size:26px;font-weight:500}
+.tally .g b{color:var(--good)} .tally .m b{color:var(--mid)} .tally .r b{color:var(--bad)}
+@media (max-width:760px){.verdict{grid-template-columns:1fr}}
+
+/* sections */
+section{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px}
+.sec-head p{max-width:70ch}
+
+/* indicators */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card .row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:28px;font-weight:500;line-height:1.1}
+.val small{font-size:13px;color:var(--ink-3);margin-left:4px}
+.val.empty{color:var(--ink-3);font-size:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.mid{background:var(--mid-soft);color:var(--mid)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.none{background:var(--surface-2);color:var(--ink-3)}
+.pill.acc{background:var(--accent-soft);color:var(--accent)}
+.meaning{font-size:14px;color:var(--ink)}
+.impact{font-size:12.5px;color:var(--ink-3)}
+.ket{font-size:12px;color:var(--ink-3)}
+.scale{position:relative;height:6px;border-radius:3px;display:flex;overflow:visible;margin-top:2px}
+.scale span{height:100%}
+.scale span:first-child{border-radius:3px 0 0 3px}
+.scale span:last-child{border-radius:0 3px 3px 0}
+.scale .mk{position:absolute;top:-4px;width:3px;height:14px;background:var(--ink);border-radius:2px;transform:translateX(-50%)}
+.scale-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.edit{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.edit input,.edit select{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:13px;min-width:0}
+.edit input.n{width:110px;font-family:var(--mono)}
+.edit input.k{flex:1 1 140px}
+
+/* checklist */
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.step .ck{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--surface)}
+.step.done .ck{background:var(--good);border-color:var(--good)}
+.step.unk .ck{border-style:dashed}
+.step .src{font-size:12px;color:var(--ink-3)}
+.step button.ck{background:transparent;padding:0}
+.step.done button.ck{background:var(--good)}
+.meter{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;max-width:360px}
+.meter i{display:block;height:100%;background:var(--good);border-radius:4px}
+
+/* table */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:920px;font-size:14px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;background:var(--surface-2);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.r,th.r{text-align:right}
+.tk{font-family:var(--mono);font-weight:500;font-size:15px}
+.grp{font-size:11.5px;color:var(--ink-3)}
+.pl.up{color:var(--good)} .pl.dn{color:var(--bad)}
+td .note{font-size:12.5px;color:var(--ink-2);max-width:26ch}
+td input{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:4px 6px;width:84px;font-family:var(--mono);font-size:13px}
+td input.w{width:170px;font-family:var(--body)}
+.x{border:none;background:none;color:var(--ink-3);font-size:18px;line-height:1;padding:2px 6px}
+.x:hover{color:var(--bad)}
+.addrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.addrow input,.addrow select{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:14px}
+.settings{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:14px}
+.settings label{display:flex;gap:8px;align-items:center}
+.settings input{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-family:var(--mono);width:150px}
+
+/* calendar */
+.next{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 18px;align-items:center;background:var(--accent-soft);border-radius:12px;padding:16px 18px}
+.next .when{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.next .big{font-family:var(--display);font-size:20px;font-weight:700}
+.next .cd{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--accent);text-align:right;white-space:nowrap}
+@media (max-width:560px){.next{grid-template-columns:1fr}.next .cd{text-align:left}}
+.cal{display:flex;flex-direction:column;gap:18px}
+.month{display:flex;flex-direction:column;gap:8px}
+.month h3{font-family:var(--display);font-size:16px;font-weight:700;color:var(--ink-2)}
+.ev{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.ev.soon{border-color:var(--accent)}
+.ev.past{opacity:.55}
+.ev .d{display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.ev .d b{font-family:var(--mono);font-size:22px;font-weight:500}
+.ev .d span{font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.ev .t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ev .t h4{margin:0;font-size:15px;font-weight:600}
+.ev .t p{font-size:13.5px;color:var(--ink-2)}
+.ev .tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--ink-3)}
+.tag{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.tag.hi{background:var(--bad-soft);color:var(--bad)}
+.tag.gl{background:var(--accent-soft);color:var(--accent)}
+.tag.lo{background:var(--good-soft);color:var(--good)}
+.ev .right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.ev .cd2{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);white-space:nowrap}
+@media (max-width:560px){.ev{grid-template-columns:52px minmax(0,1fr)}.ev .right{grid-column:2;align-items:flex-start;flex-direction:row}}
+.evform{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:12px}
+.evform input,.evform select{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:14px;min-width:0}
+
+/* info */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 16px}
+.list div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.list div:last-child{border-bottom:none}
+.list span:last-child{color:var(--ink-2);text-align:right}
+.foot{font-size:12.5px;color:var(--ink-3);max-width:80ch}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:13.5px;z-index:9}
+@media (prefers-reduced-motion:no-preference){.card,.step{transition:border-color .15s}}
+
+/* tambahan versi mandiri */
+body{margin:0}
+.chg{font-size:12px;font-family:var(--mono)}
+.chg.up{color:var(--good)} .chg.dn{color:var(--bad)} .chg.fl{color:var(--ink-3)}
+.auto{font-size:11.5px;color:var(--ink-3)}
+.stale{color:var(--mid);font-weight:600}
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--ink);color:var(--bg);padding:12px clamp(16px,4vw,40px) calc(12px + env(safe-area-inset-bottom, 0px));display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.savebar .btn{background:transparent;color:var(--bg);border-color:var(--ink-3)}
+.savebar .btn.primary{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;max-width:760px}
+.panel label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-2)}
+.panel input{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:14px;font-family:var(--mono)}
+.panel .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+details.gh summary{cursor:pointer;font-weight:600;font-family:var(--display);font-size:18px}
+.errbox{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:14px 16px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="meta">
+      <span class="eyebrow">Pemantauan pribadi · IHSG &amp; makro</span>
+      <h1>Meja Pantau</h1>
+      <span class="sync"><i class="dot" id="syncDot"></i><span id="syncTxt">Memuat data…</span></span>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="refreshBtn" hidden>Perbarui harga sekarang</button>
+      <button class="btn" id="editBtn" aria-pressed="false">Ubah data</button>
+    </div>
+  </header>
+
+  <div class="errbox" id="errBox" hidden></div>
+
+  <div class="verdict" id="verdict"></div>
+
+  <section>
+    <div class="sec-head">
+      <h2>Kalender penting</h2>
+      <button class="btn" id="calToggle" aria-expanded="false" aria-controls="calBody">Lihat semua acara</button>
+    </div>
+    <div class="next" id="nextEv"></div>
+    <div id="calBody" hidden style="display:flex;flex-direction:column;gap:14px">
+      <div class="tabs" id="calTabs">
+        <button data-f="all" aria-pressed="true">Semua</button>
+        <button data-f="global" aria-pressed="false">Global</button>
+        <button data-f="lokal" aria-pressed="false">Lokal</button>
+        <button data-f="past" aria-pressed="false">Sudah lewat</button>
+      </div>
+      <div class="cal" id="cal"></div>
+      <div class="evform" id="evForm" hidden>
+        <input id="evTgl" type="date" aria-label="Tanggal">
+        <input id="evJam" placeholder="Jam, mis. 19.30 WIB" style="width:150px" aria-label="Jam">
+        <select id="evWil" aria-label="Wilayah"><option value="global">Global</option><option value="lokal">Lokal</option></select>
+        <select id="evDam" aria-label="Dampak"><option value="tinggi">Dampak tinggi</option><option value="sedang">Dampak sedang</option></select>
+        <input id="evJudul" placeholder="Nama acara" style="flex:1 1 200px" aria-label="Nama acara">
+        <input id="evCat" placeholder="Kenapa penting (opsional)" style="flex:1 1 220px" aria-label="Catatan">
+        <label class="small muted" style="display:flex;gap:6px;align-items:center"><input id="evPerk" type="checkbox"> tanggal perkiraan</label>
+        <button class="btn" id="evAdd">Tambah acara</button>
+      </div>
+      <p class="foot">Jam dalam WIB. Rilis data AS pukul 19.30 WIB saat AS memakai jam musim panas (Maret–awal November), selain itu 20.30 WIB. Tanggal bertanda "perkiraan" mengikuti pola rilis biasa dan belum dikonfirmasi.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Indikator &amp; pemaknaannya</h2>
+      <p class="muted small">Kartu bertanda "otomatis" diperbarui 4× sehari pada hari kerja. Kartu lain diisi lewat tombol Ubah data.</p>
+    </div>
+    <div class="grid" id="ind"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Tanda suku bunga akan turun</h2>
+      <p class="muted small">Biasanya muncul berurutan. Makin banyak yang terpenuhi, makin dekat saatnya menambah saham sensitif bunga.</p>
+    </div>
+    <div class="meter"><i id="meterBar" style="width:0"></i></div>
+    <p class="small muted" id="meterTxt"></p>
+    <div class="steps" id="steps"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Daftar pantau saham</h2>
+      <div class="tabs" id="tabs">
+        <button data-f="all" aria-pressed="true">Semua</button>
+        <button data-f="trading" aria-pressed="false">Trading</button>
+        <button data-f="jangka" aria-pressed="false">Jangka panjang</button>
+      </div>
+    </div>
+    <div class="settings" id="settings"></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th>Saham</th><th class="r">Harga</th><th class="r">Posisi</th><th>Area beli</th>
+        <th class="r">Batas rugi</th><th class="r">Target</th><th>Status</th><th class="r">Lot ideal</th><th>Catatan</th><th></th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="addrow" id="addRow" hidden>
+      <input id="newTk" placeholder="Kode, mis. MEDC" maxlength="6" style="width:150px;text-transform:uppercase">
+      <select id="newGrp"><option value="trading">Trading</option><option value="jangka">Jangka panjang</option></select>
+      <button class="btn" id="addBtn">Tambah saham</button>
+      <span class="small muted">Harganya muncul setelah pembaruan otomatis berikutnya.</span>
+    </div>
+    <p class="foot">Harga dari Yahoo Finance (bisa tertunda ±10 menit). Lot ideal trading dihitung dari risiko per posisi terhadap modal (maks. 20% modal); jangka panjang memakai porsi 12,5% modal. Modal dan risiko hanya disimpan di browser ini. Batas rugi dihitung dari harga penutupan.</p>
+  </section>
+
+  <section>
+    <details class="gh" id="ghBox">
+      <summary>Pengaturan penyimpanan GitHub</summary>
+      <div class="panel" style="margin-top:12px">
+        <p class="small muted">Perubahan yang kamu buat di halaman ini disimpan langsung ke repository GitHub-mu. Isi token sekali di setiap perangkat. Lihat PANDUAN.md untuk cara membuat token. Jangan isi token di komputer umum.</p>
+        <div class="row2">
+          <label for="ghOwner">Pemilik (username GitHub)<input id="ghOwner" autocomplete="off"></label>
+          <label for="ghRepo">Nama repository<input id="ghRepo" autocomplete="off"></label>
+        </div>
+        <label for="ghToken">Token (fine-grained personal access token)<input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+        <div class="toolbar"><button class="btn primary" id="ghSave">Simpan pengaturan</button><button class="btn" id="ghTest">Tes koneksi</button><button class="btn" id="ghClear">Hapus token dari perangkat ini</button><span class="small muted" id="ghNote"></span></div>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <h2>Sumber data</h2>
+    <div class="cols">
+      <div class="list">
+        <div><span>Jadwal The Fed</span><span><a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm" target="_blank" rel="noopener">federalreserve.gov</a></span></div>
+        <div><span>Jadwal CPI &amp; NFP</span><span><a href="https://www.bls.gov/schedule/news_release/current_year.asp" target="_blank" rel="noopener">bls.gov</a></span></div>
+        <div><span>Jadwal PCE &amp; PDB AS</span><span><a href="https://www.bea.gov/news/schedule" target="_blank" rel="noopener">bea.gov</a></span></div>
+        <div><span>Jadwal RDG &amp; BI Rate</span><span><a href="https://www.bi.go.id/" target="_blank" rel="noopener">bi.go.id</a></span></div>
+        <div><span>Rilis inflasi &amp; PDB Indonesia</span><span><a href="https://www.bps.go.id/" target="_blank" rel="noopener">bps.go.id</a></span></div>
+      </div>
+      <div class="list">
+        <div><span>Kalender ekonomi</span><span><a href="https://id.investing.com/economic-calendar/" target="_blank" rel="noopener">id.investing.com</a></span></div>
+        <div><span>Peluang arah bunga Fed</span><span><a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" rel="noopener">CME FedWatch</a></span></div>
+        <div><span>Timah &amp; batu bara</span><span><a href="https://id.tradingeconomics.com/commodity/tin" target="_blank" rel="noopener">tradingeconomics</a></span></div>
+        <div><span>Aliran dana asing</span><span><a href="https://www.idx.co.id/" target="_blank" rel="noopener">idx.co.id</a> · Stockbit</span></div>
+        <div><span>Harga otomatis</span><span>Yahoo Finance</span></div>
+      </div>
+    </div>
+    <p class="foot">Halaman ini alat bantu pribadi, bukan rekomendasi jual atau beli. Ambang pemaknaan adalah aturan praktis yang bisa kamu ubah di bagian atas kode (daftar IND). Keputusan dan risikonya tetap di tanganmu.</p>
+  </section>
+</div>
+
+<div class="savebar" id="saveBar" hidden>
+  <span id="saveTxt">Ada perubahan yang belum disimpan.</span>
+  <div class="toolbar">
+    <button class="btn" id="dlBtn">Unduh file</button>
+    <button class="btn" id="discardBtn">Batalkan</button>
+    <button class="btn primary" id="pushBtn">Simpan ke GitHub</button>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+"use strict";
+
+// ================= Aturan pemaknaan (ubah ambang di sini) =================
+// t: [batas bawah, batas atas]. hi:"bad" = makin tinggi makin buruk untuk saham.
+// auto:true = diisi otomatis oleh GitHub Actions (data/market.json).
+const IND = [
+  {key:"us10y",auto:true,label:"Yield obligasi AS 10 tahun",unit:"%",dec:2,t:[4.5,5.0],hi:"bad",scale:[3.5,6],macro:true,
+   text:{bad:"Di atas 5%: obligasi AS lebih menarik dari saham negara berkembang. Dana asing cenderung keluar, emas tertekan, BI sulit menurunkan bunga.",mid:"Masih tinggi tapi mulai longgar. Pantau apakah terus turun ke bawah 4,5%.",good:"Yield turun: tekanan ke rupiah dan saham berkurang. Waktunya melirik saham sensitif bunga."},
+   impact:"Paling terasa ke: JSMR, BBRI, ASII, ANTM"},
+  {key:"dxy",auto:true,label:"Indeks dolar (DXY)",unit:"",dec:2,t:[100,105],hi:"bad",scale:[92,112],macro:true,
+   text:{bad:"Dolar sangat kuat: mata uang negara berkembang dan harga logam tertekan.",mid:"Dolar di kisaran normal.",good:"Dolar melemah: ruang bagi rupiah menguat dan asing masuk kembali."},
+   impact:"Paling terasa ke: rupiah, emas, timah"},
+  {key:"usdidr",auto:true,label:"Kurs rupiah per USD",unit:"Rp",pre:true,dec:0,t:[17000,17500],hi:"bad",scale:[15500,18500],macro:true,
+   text:{bad:"Rupiah lemah: asing enggan masuk dan BI menahan bunga. Eksportir (TINS, PTBA, ANTM) justru untung dari kurs.",mid:"Rupiah di zona waspada. BI masih berjaga.",good:"Rupiah stabil atau menguat: ruang BI menurunkan bunga terbuka."},
+   impact:"Buruk untuk importir & utang dolar; baik untuk eksportir"},
+  {key:"birate",label:"BI Rate",unit:"%",dec:2,arah:true,macro:true,
+   text:{bad:"BI menaikkan bunga: kredit makin mahal, saham bank, properti, dan tol tertekan.",mid:"BI menahan bunga demi menjaga rupiah. Belum ada pelonggaran.",good:"BI menurunkan bunga: pendorong utama JSMR, BBRI, ASII."},
+   impact:"Paling terasa ke: JSMR, BBRI, ASII"},
+  {key:"fedfunds",label:"Suku bunga The Fed (batas atas)",unit:"%",dec:2,arah:true,macro:true,
+   text:{bad:"The Fed menaikkan bunga: dolar menguat, tekanan ke rupiah dan IHSG.",mid:"The Fed menahan bunga. Pasar menunggu data inflasi berikutnya.",good:"The Fed menurunkan bunga: tekanan global mereda, BI punya ruang ikut turun."},
+   impact:"Menentukan ruang gerak BI"},
+  {key:"ihsg",auto:true,label:"IHSG",unit:"",dec:0,t:[6277,6700],hi:"good",scale:[5800,7200],macro:true,
+   text:{bad:"Di bawah titik terendah 22 Sep (6.277): tren turun berlanjut. Perbesar kas, perketat batas rugi.",mid:"Di antara support 6.277 dan resistance 6.700. Pasar belum memilih arah.",good:"Tembus 6.700: tren turun patah. Porsi saham boleh diperbesar bertahap."},
+   impact:"Kondisi pasar secara umum"},
+  {key:"asing",label:"Net asing sepekan",unit:"Rp mlr",dec:0,t:[-500,500],hi:"good",scale:[-4000,2000],macro:true,sign:true,
+   text:{bad:"Asing menjual besar. Hindari saham yang paling banyak dijual asing (bank big cap).",mid:"Aliran asing relatif seimbang.",good:"Asing kembali membeli: tanda awal pemulihan IHSG."},
+   impact:"Cek juga saham mana yang tetap dibeli asing"},
+  {key:"brent",auto:true,label:"Minyak Brent",unit:"US$/bbl",dec:2,t:[75,95],hi:"bad",scale:[55,120],macro:true,
+   text:{bad:"Minyak mahal: risiko inflasi naik, BI makin sulit menurunkan bunga. Positif untuk MEDC.",mid:"Harga minyak wajar.",good:"Minyak murah: inflasi mereda, beban impor BBM turun."},
+   impact:"Baik untuk MEDC; buruk untuk inflasi & rupiah"},
+  {key:"emas",auto:true,label:"Emas (kontrak berjangka)",unit:"US$/oz",dec:0,t:[4260,4440],hi:"good",scale:[4000,4700],
+   text:{bad:"Di bawah 4.260: koreksi terkonfirmasi. Tunda beli ANTM, siap keluar lebih cepat.",mid:"Kisaran mendatar 4.260–4.440. Cicil ANTM kecil di dekat batas bawah.",good:"Tembus 4.440: tren naik berlanjut. ANTM boleh ditambah."},
+   impact:"Untuk: ANTM, BRMS, EMAS, ARCI"},
+  {key:"timah",label:"Timah LME",unit:"US$/t",dec:0,t:[40000,50000],hi:"good",scale:[30000,60000],
+   text:{bad:"Harga timah turun jauh: TINS kehilangan penopang utama.",mid:"Harga timah sedang.",good:"Timah tinggi karena pasokan defisit: penopang utama TINS."},
+   impact:"Untuk: TINS"},
+  {key:"batubara",label:"Batu bara Newcastle",unit:"US$/t",dec:1,t:[100,130],hi:"good",scale:[70,180],
+   text:{bad:"Batu bara murah: laba dan dividen PTBA, AADI tertekan.",mid:"Harga batu bara sedang.",good:"Batu bara tinggi: laba dan dividen PTBA, AADI terjaga."},
+   impact:"Untuk: PTBA, AADI, ITMG"}
+];
+const STALE_DAYS = 4;          // data otomatis lebih tua dari ini ditandai "data lama"
+const PORSI_JANGKA = 0.125;    // porsi modal per saham jangka panjang
+const MAKS_PORSI = 0.2;        // batas porsi modal per saham trading
+const FILES = {manual:"data/manual.json", saham:"data/saham.json", agenda:"data/agenda.json"};
+
+// ================= Utilitas =================
+const Z = {good:"Mendukung",mid:"Netral",bad:"Menekan",none:"Belum diisi"};
+const $ = id => document.getElementById(id);
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num = v => v==null||v===""||isNaN(v) ? null : Number(v);
+const fmt = (v,d=0) => num(v)==null ? "–" : Number(v).toLocaleString("id-ID",{minimumFractionDigits:d,maximumFractionDigits:d});
+const store = {
+  get(k,def){try{const v=localStorage.getItem("mp_"+k);return v==null?def:JSON.parse(v);}catch(e){return def;}},
+  set(k,v){try{localStorage.setItem("mp_"+k,JSON.stringify(v));}catch(e){}},
+  del(k){try{localStorage.removeItem("mp_"+k);}catch(e){}}
+};
+function todayWIB(){return new Date(Date.now()+7*3600e3).toISOString().slice(0,10);}
+function dayDiff(iso){return Math.round((Date.parse(iso+"T00:00:00Z")-Date.parse(todayWIB()+"T00:00:00Z"))/864e5);}
+function wibTime(iso){
+  if(!iso) return "";
+  const d=new Date(iso); if(isNaN(d)) return "";
+  return d.toLocaleString("id-ID",{timeZone:"Asia/Jakarta",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).replace(",","")+" WIB";
+}
+function ageDays(iso){const d=Date.parse(iso);return isNaN(d)?Infinity:(Date.now()-d)/864e5;}
+let toastT;
+function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,3200);}
+
+// ================= State =================
+let market={indikator:{},harga:{}}, manual={indikator:{},ceklis:{}}, saham=[], agenda=[];
+let pengaturan=store.get("pengaturan",{modal:100000000,risiko:1});
+let editing=false, filter="all", calFilter="all", calOpen=store.get("calOpen",false);
+const dirty=new Set();
+
+function indItem(d){
+  if(d.auto){
+    const q=market.indikator?.[d.key]; if(!q) return {};
+    const chg = num(q.prev) ? (q.v/q.prev-1)*100 : null;
+    return {v:q.v, t:q.t, chg, lama:q.lama||ageDays(q.t)>STALE_DAYS, auto:true};
+  }
+  return manual.indikator?.[d.key]||{};
+}
+function zoneOf(def,item){
+  if(!item||num(item.v)==null) return "none";
+  if(def.arah){const a=item.arah;return a==="naik"?"bad":a==="turun"?"good":"mid";}
+  const v=Number(item.v),[a,b]=def.t;
+  if(def.hi==="bad") return v>=b?"bad":v>=a?"mid":"good";
+  return v>=b?"good":v>=a?"mid":"bad";
+}
+function chgHtml(c){if(c==null)return "";const cls=c>0.005?"up":c<-0.005?"dn":"fl";return `<span class="chg ${cls}">${c>0?"+":""}${fmt(c,2)}%</span>`;}
+
+// ================= Kesimpulan =================
+function renderVerdict(){
+  let g=0,m=0,r=0;
+  IND.filter(d=>d.macro).forEach(d=>{const z=zoneOf(d,indItem(d)); if(z==="good")g++; else if(z==="mid")m++; else if(z==="bad")r++;});
+  let cls="mid",stance="Seimbang: selektif",say="Tekanan dan dukungan kurang lebih sama. Tetap selektif, beli bertahap di support, jaga porsi kas sekitar 30%.";
+  if(r>=g+2){cls="bad";stance="Bertahan: jaga modal";say="Kondisi makro lebih banyak menekan. Utamakan kas 30–50%, patuhi batas rugi, jangan menambah posisi rugi. Pilih saham yang tetap dibeli asing dan berpendapatan dolar.";}
+  else if(g>=r+2){cls="good";stance="Menyerang: perbesar bertahap";say="Kondisi makro mulai mendukung. Tambah posisi bertahap, prioritaskan saham sensitif bunga (JSMR, BBRI, ASII) yang biasanya naik paling cepat di awal pemulihan.";}
+  $("verdict").innerHTML=`<div><span class="eyebrow">Sikap yang disarankan · harga ${esc(wibTime(market.diperbarui))||"belum ada"}</span>
+    <div class="stance ${cls}">${stance}</div><p class="say">${say}</p></div>
+    <div class="tally"><div class="g"><b>${g}</b><span class="small">mendukung</span></div><div class="m"><b>${m}</b><span class="small">netral</span></div><div class="r"><b>${r}</b><span class="small">menekan</span></div>
+    <p class="small muted" style="grid-column:1/-1">Dihitung dari 8 indikator makro. Kartu komoditas tidak ikut dihitung.</p></div>`;
+}
+
+// ================= Kalender =================
+function cdText(n){return n===0?"Hari ini":n===1?"Besok":n>0?`${n} hari lagi`:`${-n} hari lalu`;}
+function evTags(e){
+  return `<span class="tag ${e.wilayah==="lokal"?"lo":"gl"}">${e.wilayah==="lokal"?"Lokal":"Global"}</span>${e.dampak==="tinggi"?'<span class="tag hi">Dampak tinggi</span>':'<span class="tag">Dampak sedang</span>'}${e.perkiraan?'<span class="tag">perkiraan</span>':""}<span>${esc(e.jam||"")}</span>`;
+}
+function renderCal(){
+  const all=[...agenda].sort((a,b)=>(a.tanggal+(a.jam||"")).localeCompare(b.tanggal+(b.jam||"")));
+  const up=all.filter(e=>dayDiff(e.tanggal)>=0);
+  const nx=up.find(e=>e.dampak==="tinggi")||up[0];
+  $("nextEv").innerHTML=nx?`<div class="when">${esc(new Date(nx.tanggal+"T00:00:00").toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"}))} · ${esc(nx.jam||"")}</div>
+    <div><span class="eyebrow">Acara penting berikutnya</span><div class="big">${esc(nx.judul)}</div><p class="small muted">${esc(nx.catatan||"")}</p></div>
+    <div class="cd">${cdText(dayDiff(nx.tanggal))}</div>`:`<div class="big" style="grid-column:1/-1">Belum ada acara mendatang. Tambahkan lewat Ubah data.</div>`;
+  $("nextEv").hidden=calOpen&&calFilter==="past";
+  $("calToggle").textContent=calOpen?"Sembunyikan":`Lihat semua acara (${up.length})`;
+  $("calToggle").setAttribute("aria-expanded",calOpen);
+  $("calBody").hidden=!calOpen;
+  $("evForm").hidden=!editing;
+  const list = calFilter==="past" ? all.filter(e=>dayDiff(e.tanggal)<0).reverse() : up.filter(e=>calFilter==="all"||e.wilayah===calFilter);
+  if(!list.length){$("cal").innerHTML=`<p class="muted small">${calFilter==="past"?"Belum ada acara yang lewat.":"Tidak ada acara di filter ini."}</p>`;return;}
+  const groups={};
+  list.forEach(e=>{const k=e.tanggal.slice(0,7);(groups[k]=groups[k]||[]).push(e);});
+  $("cal").innerHTML=Object.keys(groups).map(k=>{
+    const mName=new Date(k+"-01T00:00:00").toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+    return `<div class="month"><h3>${esc(mName)}</h3>${groups[k].map(e=>{
+      const n=dayDiff(e.tanggal), d=new Date(e.tanggal+"T00:00:00");
+      return `<article class="ev ${n<0?"past":n<=7?"soon":""}">
+        <div class="d"><b>${d.getDate()}</b><span>${esc(d.toLocaleDateString("id-ID",{weekday:"short"}))}</span></div>
+        <div class="t"><h4>${esc(e.judul)}</h4>${e.catatan?`<p>${esc(e.catatan)}</p>`:""}<div class="tags">${evTags(e)}</div></div>
+        <div class="right"><span class="cd2">${cdText(n)}</span>${editing?`<button class="x" data-evdel="${esc(e.id)}" aria-label="Hapus ${esc(e.judul)}">×</button>`:""}</div>
+      </article>`;}).join("")}</div>`;
+  }).join("");
+}
+function addEv(){
+  const tgl=$("evTgl").value, judul=$("evJudul").value.trim();
+  if(!tgl||!judul){toast("Isi tanggal dan nama acara dulu.");return;}
+  const id=(tgl+"-"+judul.toLowerCase().replace(/[^a-z0-9]+/g,"-")).slice(0,60).replace(/-+$/,"");
+  const e={id,tanggal:tgl,jam:$("evJam").value.trim(),wilayah:$("evWil").value,dampak:$("evDam").value,judul,catatan:$("evCat").value.trim()};
+  if($("evPerk").checked) e.perkiraan=true;
+  agenda=[...agenda.filter(x=>x.id!==id),e];
+  ["evTgl","evJam","evJudul","evCat"].forEach(i=>$(i).value=""); $("evPerk").checked=false;
+  markDirty("agenda"); renderCal(); toast("Acara ditambahkan. Jangan lupa simpan.");
+}
+
+// ================= Indikator =================
+function scaleBar(def,v){
+  const [lo,hi]=def.scale,[a,b]=def.t,span=hi-lo,dd=def.dec>1?1:0;
+  const p=x=>Math.max(0,Math.min(100,(x-lo)/span*100));
+  const cl=def.hi==="bad"?["good","mid","bad"]:["bad","mid","good"];
+  const mk=v==null?"":`<i class="mk" style="left:${p(v)}%"></i>`;
+  return `<div class="scale"><span style="width:${p(a)}%;background:var(--${cl[0]}-soft)"></span><span style="width:${p(b)-p(a)}%;background:var(--${cl[1]}-soft)"></span><span style="width:${100-p(b)}%;background:var(--${cl[2]}-soft)"></span>${mk}</div>
+  <div class="scale-lbl"><span>${fmt(lo,dd)}</span><span>${fmt(a,dd)}</span><span>${fmt(b,dd)}</span><span>${fmt(hi,dd)}</span></div>`;
+}
+function renderInd(){
+  $("ind").innerHTML=IND.map(d=>{
+    const it=indItem(d), z=zoneOf(d,it), v=num(it.v), has=v!=null;
+    const vtxt=has?`${d.pre?`<small style="margin:0 4px 0 0">${d.unit}</small>`:""}${d.sign&&v>0?"+":""}${fmt(v,d.dec)}${d.pre?"":`<small>${d.unit}</small>`}`:"Belum diisi";
+    const meta = d.auto
+      ? `<p class="ket">${has?`${chgHtml(it.chg)} vs kemarin · `:""}<span class="auto">otomatis${it.t?" · "+esc(wibTime(it.t)):""}</span>${it.lama?' · <span class="stale">data lama</span>':""}</p>`
+      : (it.ket?`<p class="ket">Keterangan: ${esc(it.ket)}</p>`:"");
+    const edit=(editing&&!d.auto)?`<div class="edit">
+      <input class="n" id="in-${d.key}-v" type="number" step="any" value="${has?v:""}" aria-label="Nilai ${esc(d.label)}">
+      ${d.arah?`<select id="in-${d.key}-arah" aria-label="Arah terakhir">${["naik","tahan","turun"].map(a=>`<option value="${a}"${(it.arah||"tahan")===a?" selected":""}>${a}</option>`).join("")}</select>`:""}
+      <input class="k" id="in-${d.key}-ket" value="${esc(it.ket||"")}" placeholder="keterangan, mis. 24 Sep" aria-label="Keterangan">
+    </div>`:"";
+    return `<article class="card">
+      <div class="row"><span class="eyebrow">${esc(d.label)}</span><span class="pill ${z}">${Z[z]}</span></div>
+      <div class="val ${has?"":"empty"}">${vtxt}${d.arah&&has?`<small>· ${esc(it.arah||"tahan")}</small>`:""}</div>
+      ${d.arah?"":scaleBar(d,v)}
+      <p class="meaning">${z==="none"?(d.auto?"Menunggu pembaruan otomatis berikutnya.":"Isi angkanya lewat tombol Ubah data."):esc(d.text[z])}</p>
+      <p class="impact">${esc(d.impact)}</p>
+      ${meta}${edit}
+    </article>`;
+  }).join("");
+}
+function saveInd(key){
+  const vEl=$(`in-${key}-v`), kEl=$(`in-${key}-ket`), aEl=$(`in-${key}-arah`);
+  const item={v:vEl.value===""?null:Number(vEl.value), ket:kEl.value.trim()};
+  if(aEl) item.arah=aEl.value;
+  manual.indikator={...manual.indikator,[key]:item}; manual.diperbarui=todayWIB();
+  markDirty("manual"); renderVerdict(); renderSteps();
+}
+
+// ================= Tanda suku bunga turun =================
+function stepsData(){
+  const c=manual.ceklis||{};
+  const auto=(k,test)=>{const d=IND.find(x=>x.key===k);const v=num(indItem(d).v);return v==null?null:test(v);};
+  return [
+    {id:"cpi",label:"Inflasi AS (CPI/PCE) melambat",src:"Centang sendiri setelah rilis data",manual:true,done:!!c.cpi},
+    {id:"y",label:"Yield AS 10 tahun di bawah 5%",src:"Otomatis dari kartu yield",done:auto("us10y",v=>v<5)},
+    {id:"dxy",label:"Indeks dolar di bawah 100",src:"Otomatis dari kartu DXY",done:auto("dxy",v=>v<100)},
+    {id:"idr",label:"Rupiah kembali di bawah Rp17.000",src:"Otomatis dari kartu kurs",done:auto("usdidr",v=>v<17000)},
+    {id:"oil",label:"Brent turun di bawah US$90",src:"Otomatis dari kartu minyak",done:auto("brent",v=>v<90)},
+    {id:"bi",label:"BI memberi sinyal pelonggaran",src:"Centang sendiri dari pernyataan RDG",manual:true,done:!!c.bi}
+  ];
+}
+function renderSteps(){
+  const s=stepsData(), n=s.filter(x=>x.done===true).length;
+  $("meterBar").style.width=(n/s.length*100)+"%";
+  $("meterTxt").textContent=`${n} dari ${s.length} tanda terpenuhi.`;
+  $("steps").innerHTML=s.map(x=>{
+    const cls=x.done===true?"done":x.done===null?"unk":"";
+    const box=x.manual?`<button class="ck" data-ck="${x.id}" aria-pressed="${x.done}" aria-label="Tandai: ${esc(x.label)}">${x.done?"✓":""}</button>`:`<span class="ck" aria-hidden="true">${x.done?"✓":""}</span>`;
+    return `<div class="step ${cls}">${box}<div><h3>${esc(x.label)}</h3><p class="src">${x.done===null?"Data belum ada":esc(x.src)}</p></div></div>`;
+  }).join("");
+}
+
+// ================= Daftar pantau =================
+function hargaOf(r){return market.harga?.[r.ticker]||{};}
+function statusOf(r){
+  const h=num(hargaOf(r).v);
+  if(h==null) return {c:"none",t:"Menunggu harga"};
+  const st=num(r.stop),t1=num(r.t1),t2=num(r.t2),a=num(r.areaBawah),b=num(r.areaAtas);
+  if(st!=null&&h<=st) return {c:"bad",t:"Tembus batas rugi"};
+  if(t2!=null&&h>=t2) return {c:"good",t:"Target 2 tercapai"};
+  if(t1!=null&&h>=t1) return {c:"good",t:"Target 1: jual separuh"};
+  if(st!=null&&(h-st)/h<0.03) return {c:"mid",t:"Dekat batas rugi"};
+  if(a!=null&&b!=null&&h>=a&&h<=b) return {c:"acc",t:"Di area beli"};
+  if(a!=null&&h<a) return {c:"mid",t:"Di bawah area beli"};
+  return {c:"none",t:"Pantau"};
+}
+function lotOf(r){
+  const modal=num(pengaturan.modal)||0, risk=(num(pengaturan.risiko)||1)/100, h=num(hargaOf(r).v), st=num(r.stop);
+  if(!modal||h==null) return null;
+  const entry=num(r.beli)??num(r.areaAtas)??h;
+  if(r.grup==="jangka") return Math.floor(modal*PORSI_JANGKA/entry/100);
+  if(st==null||entry<=st) return null;
+  return Math.floor(Math.min(modal*risk/(entry-st), modal*MAKS_PORSI/entry)/100);
+}
+function renderSettings(){
+  $("settings").innerHTML=`<label for="set-modal">Total modal (Rp) <input id="set-modal" type="number" value="${num(pengaturan.modal)??""}"></label>
+    <label for="set-risk">Risiko per posisi (%) <input id="set-risk" type="number" step="0.1" style="width:80px" value="${num(pengaturan.risiko)??1}"></label>
+    <span class="small muted">Tersimpan di browser ini saja.</span>`;
+}
+function renderRows(){
+  const rows=[...saham].sort((a,b)=>(a.urut??99)-(b.urut??99)||a.ticker.localeCompare(b.ticker)).filter(r=>filter==="all"||r.grup===filter);
+  $("addRow").hidden=!editing;
+  if(!rows.length){$("rows").innerHTML=`<tr><td colspan="10" class="muted">Belum ada saham di daftar ini.</td></tr>`;return;}
+  const inp=(r,f,cls="")=>`<input data-row="${esc(r.ticker)}" data-f="${f}" class="${cls}" ${cls?"":'type="number" step="any"'} value="${esc(r[f]??"")}" aria-label="${f} ${esc(r.ticker)}">`;
+  $("rows").innerHTML=rows.map(r=>{
+    const s=statusOf(r), q=hargaOf(r), h=num(q.v), bl=num(r.beli);
+    const pl=bl!=null&&h!=null?(h-bl)/bl*100:null, lot=lotOf(r);
+    const chg=num(q.prev)&&h!=null?(h/q.prev-1)*100:null;
+    const hargaCell=`<span class="num">${fmt(h)}</span>${chg!=null?`<br>${chgHtml(chg)}`:""}${q.lama?'<br><span class="stale small">data lama</span>':""}`;
+    const grp=`<div class="grp">${r.grup==="jangka"?"Jangka panjang":"Trading"}</div>`;
+    if(editing) return `<tr>
+      <td><div class="tk">${esc(r.ticker)}</div>${grp}</td>
+      <td class="r">${hargaCell}</td><td class="r">${inp(r,"beli")}</td>
+      <td>${inp(r,"areaBawah")} – ${inp(r,"areaAtas")}</td><td class="r">${inp(r,"stop")}</td>
+      <td class="r">${inp(r,"t1")}<br>${inp(r,"t2")}</td><td><span class="pill ${s.c}">${s.t}</span></td>
+      <td class="r num">${lot??"–"}</td><td>${inp(r,"catatan","w")}</td>
+      <td><button class="x" data-del="${esc(r.ticker)}" aria-label="Hapus ${esc(r.ticker)}">×</button></td></tr>`;
+    return `<tr>
+      <td><div class="tk">${esc(r.ticker)}</div>${grp}</td>
+      <td class="r">${hargaCell}</td>
+      <td class="r num">${bl!=null?`${fmt(bl)}<br><span class="pl ${pl>=0?"up":"dn"}">${pl>=0?"+":""}${fmt(pl,1)}%</span>`:'<span class="muted">–</span>'}</td>
+      <td class="num">${num(r.areaBawah)!=null?`${fmt(r.areaBawah)}–${fmt(r.areaAtas)}`:"–"}</td>
+      <td class="r num">${fmt(r.stop)}</td>
+      <td class="r num">${fmt(r.t1)}${num(r.t2)!=null?` / ${fmt(r.t2)}`:""}</td>
+      <td><span class="pill ${s.c}">${s.t}</span></td>
+      <td class="r num">${lot??"–"}</td>
+      <td><div class="note">${esc(r.catatan||"")}</div></td><td></td></tr>`;
+  }).join("");
+}
+function addRow(){
+  const tk=$("newTk").value.trim().toUpperCase().replace(/[^A-Z0-9]/g,"");
+  if(!tk){toast("Isi kode saham dulu.");return;}
+  if(saham.some(x=>x.ticker===tk)){toast(`${tk} sudah ada di daftar.`);return;}
+  saham.push({ticker:tk,grup:$("newGrp").value,beli:null,areaBawah:null,areaAtas:null,stop:null,t1:null,t2:null,catatan:"",urut:50});
+  $("newTk").value=""; markDirty("saham"); renderRows(); toast(`${tk} ditambahkan. Jangan lupa simpan.`);
+}
+
+function renderAll(){renderVerdict();renderCal();renderInd();renderSteps();renderSettings();renderRows();}
+
+// ================= Simpan: draf lokal + GitHub =================
+function snapshot(name){return name==="manual"?manual:name==="saham"?saham:agenda;}
+function fileText(name){
+  const d=snapshot(name);
+  if(Array.isArray(d)) return "[\n"+d.map(x=>"  "+JSON.stringify(x)).join(",\n")+"\n]\n";
+  return JSON.stringify(d,null,2)+"\n";
+}
+function markDirty(name){dirty.add(name); store.set("draft_"+name,{at:Date.now(),data:snapshot(name)}); updateSaveBar();}
+function updateSaveBar(){
+  $("saveBar").hidden=!dirty.size;
+  const names={manual:"indikator manual",saham:"daftar saham",agenda:"kalender"};
+  $("saveTxt").textContent=`Belum disimpan: ${[...dirty].map(n=>names[n]).join(", ")}.`;
+  document.body.style.paddingBottom=dirty.size?"90px":"";
+}
+function clearDrafts(){for(const n of Object.keys(FILES)) store.del("draft_"+n); dirty.clear(); updateSaveBar();}
+
+function ghConf(){
+  const c=store.get("gh",{});
+  if(!c.owner){const m=location.hostname.match(/^([^.]+)\.github\.io$/i); if(m) c.owner=m[1];}
+  if(!c.repo){const p=location.pathname.split("/").filter(Boolean)[0]; if(p&&!/\.html?$/.test(p)) c.repo=p;}
+  return c;
+}
+async function gh(path,opts={}){
+  const c=ghConf();
+  if(!c.token||!c.owner||!c.repo) throw new Error("Token GitHub belum diisi. Buka Pengaturan penyimpanan GitHub di bagian bawah.");
+  const res=await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}${path}`,{...opts,headers:{"Accept":"application/vnd.github+json","Authorization":`Bearer ${c.token}`,"X-GitHub-Api-Version":"2022-11-28",...(opts.headers||{})}});
+  if(!res.ok){
+    const t=await res.text().catch(()=> "");
+    if(res.status===401) throw new Error("Token ditolak (401). Mungkin kedaluwarsa atau salah ketik.");
+    if(res.status===403||res.status===404) throw new Error(`Akses ditolak (${res.status}). Pastikan token punya izin Contents dan Actions: Read and write untuk repo ini.`);
+    throw new Error(`GitHub menjawab ${res.status}. ${t.slice(0,120)}`);
+  }
+  return res.status===204?null:res.json();
+}
+function b64(str){const bytes=new TextEncoder().encode(str);let bin="";bytes.forEach(b=>bin+=String.fromCharCode(b));return btoa(bin);}
+async function pushAll(){
+  const btn=$("pushBtn"); btn.disabled=true; btn.textContent="Menyimpan…";
+  try{
+    for(const name of [...dirty]){
+      const path=FILES[name];
+      const cur=await gh(`/contents/${path}`).catch(e=>{if(/404/.test(e.message))return null;throw e;});
+      await gh(`/contents/${path}`,{method:"PUT",body:JSON.stringify({message:`Perbarui ${path} dari Meja Pantau`,content:b64(fileText(name)),sha:cur?.sha})});
+    }
+    clearDrafts(); toast("Tersimpan ke GitHub. Halaman publik terbarui dalam ±1 menit.");
+  }catch(e){toast(e.message);}
+  finally{btn.disabled=false; btn.textContent="Simpan ke GitHub";}
+}
+function downloadAll(){
+  for(const name of dirty){
+    const blob=new Blob([fileText(name)],{type:"application/json"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=FILES[name].split("/").pop();
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  }
+  toast("File diunduh. Unggah ke folder data/ di GitHub untuk menyimpannya.");
+}
+async function triggerRefresh(){
+  const btn=$("refreshBtn"); btn.disabled=true;
+  try{
+    await gh("/actions/workflows/update-market.yml/dispatches",{method:"POST",body:JSON.stringify({ref:"main"})});
+    toast("Diminta. Harga baru masuk ±2–3 menit lagi, lalu muat ulang halaman.");
+  }catch(e){toast(e.message);}
+  finally{setTimeout(()=>btn.disabled=false,30000);}
+}
+
+// ================= Muat data =================
+async function loadJSON(path){
+  const res=await fetch(path+"?v="+Date.now(),{cache:"no-store"});
+  if(!res.ok) throw new Error(`${path}: ${res.status}`);
+  return res.json();
+}
+async function load(){
+  try{
+    const [m,man,s,ag]=await Promise.all([loadJSON("data/market.json"),loadJSON(FILES.manual),loadJSON(FILES.saham),loadJSON(FILES.agenda)]);
+    market=m; manual=man; saham=s; agenda=ag;
+  }catch(e){
+    $("errBox").hidden=false;
+    $("errBox").innerHTML=location.protocol==="file:"
+      ? "Halaman dibuka langsung dari file, jadi data tidak bisa dimuat. Buka lewat alamat GitHub Pages, atau jalankan <code>python3 -m http.server</code> di folder ini lalu buka http://localhost:8000."
+      : `Data gagal dimuat (${esc(e.message)}). Coba muat ulang halaman.`;
+    $("syncTxt").textContent="Data gagal dimuat";
+    return;
+  }
+  // pulihkan draf yang belum sempat disimpan
+  for(const name of Object.keys(FILES)){
+    const d=store.get("draft_"+name,null);
+    if(d&&d.data){ if(name==="manual")manual=d.data; else if(name==="saham")saham=d.data; else agenda=d.data; dirty.add(name); }
+  }
+  updateSaveBar();
+  if(dirty.size) toast("Ada perubahan dari kunjungan sebelumnya yang belum disimpan.");
+  const age=ageDays(market.diperbarui);
+  $("syncDot").classList.toggle("on",age<STALE_DAYS);
+  $("syncTxt").textContent=market.diperbarui?`Harga diperbarui ${wibTime(market.diperbarui)}${market.gagal?.length?` · ${market.gagal.length} simbol gagal`:""}`:"Belum ada data harga";
+  $("refreshBtn").hidden=!ghConf().token;
+  renderAll();
+}
+
+// ================= Event =================
+$("editBtn").addEventListener("click",()=>{editing=!editing;$("editBtn").setAttribute("aria-pressed",editing);$("editBtn").textContent=editing?"Selesai mengubah":"Ubah data";renderCal();renderInd();renderRows();});
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;filter=b.dataset.f;[...$("tabs").children].forEach(x=>x.setAttribute("aria-pressed",x===b));renderRows();});
+$("calTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;calFilter=b.dataset.f;[...$("calTabs").children].forEach(x=>x.setAttribute("aria-pressed",x===b));renderCal();});
+$("calToggle").addEventListener("click",()=>{calOpen=!calOpen;store.set("calOpen",calOpen);renderCal();});
+$("evAdd").addEventListener("click",addEv);
+$("cal").addEventListener("click",e=>{
+  const b=e.target.closest("[data-evdel]"); if(!b) return;
+  if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Hapus?";b.style.fontSize="13px";setTimeout(()=>{if(b.isConnected){b.dataset.armed="";b.textContent="×";b.style.fontSize="";}},3000);return;}
+  agenda=agenda.filter(x=>x.id!==b.dataset.evdel); markDirty("agenda"); renderCal();
+});
+$("ind").addEventListener("change",e=>{const m=e.target.id.match(/^in-(\w+)-/); if(m) saveInd(m[1]);});
+$("steps").addEventListener("click",e=>{
+  const b=e.target.closest("[data-ck]"); if(!b) return;
+  manual.ceklis={...manual.ceklis,[b.dataset.ck]:!manual.ceklis?.[b.dataset.ck]}; markDirty("manual"); renderSteps();
+});
+$("settings").addEventListener("change",()=>{pengaturan={modal:num($("set-modal").value),risiko:num($("set-risk").value)??1};store.set("pengaturan",pengaturan);renderRows();});
+$("rows").addEventListener("change",e=>{
+  const el=e.target; if(!el.dataset.row) return;
+  const r=saham.find(x=>x.ticker===el.dataset.row); if(!r) return;
+  r[el.dataset.f]= el.dataset.f==="catatan" ? el.value.trim() : (el.value===""?null:Number(el.value));
+  markDirty("saham"); renderRows();
+});
+$("rows").addEventListener("click",e=>{
+  const b=e.target.closest("[data-del]"); if(!b) return;
+  if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Hapus?";b.style.fontSize="13px";setTimeout(()=>{if(b.isConnected){b.dataset.armed="";b.textContent="×";b.style.fontSize="";}},3000);return;}
+  saham=saham.filter(x=>x.ticker!==b.dataset.del); markDirty("saham"); renderRows();
+});
+$("addBtn").addEventListener("click",addRow);
+$("newTk").addEventListener("keydown",e=>{if(e.key==="Enter")addRow();});
+$("pushBtn").addEventListener("click",pushAll);
+$("dlBtn").addEventListener("click",downloadAll);
+$("discardBtn").addEventListener("click",()=>{
+  const b=$("discardBtn");
+  if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Yakin batalkan?";setTimeout(()=>{b.dataset.armed="";b.textContent="Batalkan";},3000);return;}
+  clearDrafts(); load();
+});
+$("refreshBtn").addEventListener("click",triggerRefresh);
+
+// pengaturan GitHub
+(function(){
+  const c=ghConf(); $("ghOwner").value=c.owner||""; $("ghRepo").value=c.repo||""; $("ghToken").value=c.token?"••••••••":"";
+  $("ghSave").addEventListener("click",()=>{
+    const cur=store.get("gh",{}), tok=$("ghToken").value.trim();
+    store.set("gh",{owner:$("ghOwner").value.trim(),repo:$("ghRepo").value.trim(),token:tok&&!/^•+$/.test(tok)?tok:cur.token});
+    $("ghNote").textContent="Tersimpan di perangkat ini."; $("refreshBtn").hidden=!ghConf().token;
+  });
+  $("ghTest").addEventListener("click",async()=>{
+    $("ghNote").textContent="Menguji…";
+    try{const r=await gh("");$("ghNote").textContent=`Terhubung ke ${r.full_name}${r.permissions?.push?" (bisa menyimpan)":" (tanpa izin tulis!)"}.`;}
+    catch(e){$("ghNote").textContent=e.message;}
+  });
+  $("ghClear").addEventListener("click",()=>{const cur=store.get("gh",{});delete cur.token;store.set("gh",cur);$("ghToken").value="";$("ghNote").textContent="Token dihapus dari perangkat ini.";$("refreshBtn").hidden=true;});
+})();
+
+window.addEventListener("beforeunload",e=>{if(dirty.size){e.preventDefault();e.returnValue="";}});
+load();
+})();
+</script>
+</body>
+</html>

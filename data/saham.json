@@ -1,0 +1,11 @@
+[
+  {"ticker": "TINS", "grup": "trading", "beli": 4750, "areaBawah": null, "areaAtas": null, "stop": 4700, "t1": 5050, "t2": 5500, "catatan": "ATH 5.000. Pantau harga timah LME.", "urut": 1},
+  {"ticker": "SMDR", "grup": "trading", "beli": 408, "areaBawah": null, "areaAtas": null, "stop": 390, "t1": 440, "t2": 460, "catatan": "Support 392–400.", "urut": 2},
+  {"ticker": "ANTM", "grup": "trading", "beli": null, "areaBawah": 3150, "areaAtas": 3230, "stop": 3040, "t1": 3500, "t2": 3600, "catatan": "Tunda beli kalau emas di bawah 4.260.", "urut": 3},
+  {"ticker": "PTBA", "grup": "trading", "beli": null, "areaBawah": 2850, "areaAtas": 2950, "stop": 2780, "t1": 3300, "t2": 3500, "catatan": "Cek jadwal dividen interim.", "urut": 4},
+  {"ticker": "PGAS", "grup": "trading", "beli": null, "areaBawah": 1400, "areaAtas": 1475, "stop": 1360, "t1": 1555, "t2": 1650, "catatan": "Tunggu kembali di atas 1.475.", "urut": 5},
+  {"ticker": "BBRI", "grup": "jangka", "beli": null, "areaBawah": 3000, "areaAtas": 3340, "stop": null, "t1": 4270, "t2": null, "catatan": "Dividen ~10%. Jual kalau kredit macet melonjak.", "urut": 10},
+  {"ticker": "ASII", "grup": "jangka", "beli": null, "areaBawah": 4350, "areaAtas": 4900, "stop": null, "t1": null, "t2": null, "catatan": "Dividen ~8%. Jual kalau laba anjlok beberapa kuartal.", "urut": 11},
+  {"ticker": "TLKM", "grup": "jangka", "beli": null, "areaBawah": 2440, "areaAtas": 2710, "stop": null, "t1": 3443, "t2": null, "catatan": "Target konsensus 3.443.", "urut": 12},
+  {"ticker": "JSMR", "grup": "jangka", "beli": null, "areaBawah": 2800, "areaAtas": 2970, "stop": null, "t1": 3850, "t2": 4485, "catatan": "Pemicu: BI menurunkan bunga. Jual kalau ICR < 2,5x.", "urut": 13}
+]
