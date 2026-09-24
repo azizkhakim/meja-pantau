@@ -359,19 +359,23 @@ def pesan_agenda(notif):
 
 
 def kirim_telegram(pesan):
-    token, chat = os.environ.get("TELEGRAM_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+    """Kirim pesan; kembalikan True kalau semua terkirim."""
+    token, chat = os.environ.get("TELEGRAM_TOKEN", "").strip(), os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     if not pesan:
-        return
+        return True
     if not token or not chat:
         print("Telegram belum diatur; pesan tidak dikirim:\n  " + "\n  ".join(p.replace("\n", " | ") for p in pesan))
-        return
+        return False
     teks = "Meja Pantau\n\n" + "\n\n".join(pesan)
+    ok = True
     for bagian in [teks[i:i + 3900] for i in range(0, len(teks), 3900)]:
         data = urllib.parse.urlencode({"chat_id": chat, "text": bagian, "disable_web_page_preview": "true"}).encode()
         try:
             urllib.request.urlopen(f"https://api.telegram.org/bot{token}/sendMessage", data=data, timeout=20).read()
         except Exception as e:
-            print(f"  gagal kirim Telegram: {e}")
+            ok = False
+            print(f"  gagal kirim Telegram: {e} (cek TELEGRAM_TOKEN dan TELEGRAM_CHAT_ID, dan pastikan sudah mengirim pesan ke bot)")
+    return ok
 
 
 def daftar_saham():
@@ -442,13 +446,17 @@ def main():
     if pasar:
         notif["ihsg_kuat"] = pasar["ihsg_kuat"]
     pesan += pesan_agenda(notif)
+    if os.environ.get("TELEGRAM_TOKEN") and os.environ.get("TELEGRAM_CHAT_ID") and not notif.get("telegram_ok"):
+        pesan.insert(0, "✅ Telegram terhubung. Mulai sekarang kamu akan menerima: kandidat baru, order terisi, TP/cut loss, "
+                        "perubahan IHSG terhadap MA50, dan pengingat pagi sebelum acara berdampak tinggi.")
     notif["terkirim"] = notif["terkirim"][-300:]
 
     OUT_MARKET.write_text(json.dumps(market, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     OUT_SINYAL.write_text(json.dumps(sinyal, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     OUT_JURNAL.write_text(json.dumps(jurnal, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    if kirim_telegram(pesan) and os.environ.get("TELEGRAM_TOKEN") and os.environ.get("TELEGRAM_CHAT_ID"):
+        notif["telegram_ok"] = True
     OUT_NOTIF.write_text(json.dumps(notif, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    kirim_telegram(pesan)
 
     siap = [k for k, v in sinyal["saham"].items() if v.get("setup") == "pullback"]
     tahan = [k for k, v in sinyal["saham"].items() if v.get("siap_jika_pasar_pulih")]
