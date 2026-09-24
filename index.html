@@ -157,26 +157,46 @@ td input.w{width:170px;font-family:var(--body)}
 .next .big{font-family:var(--display);font-size:20px;font-weight:700}
 .next .cd{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--accent);text-align:right;white-space:nowrap}
 @media (max-width:560px){.next{grid-template-columns:1fr}.next .cd{text-align:left}}
-.cal{display:flex;flex-direction:column;gap:18px}
-.month{display:flex;flex-direction:column;gap:8px}
-.month h3{font-family:var(--display);font-size:16px;font-weight:700;color:var(--ink-2)}
-.ev{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.ev.soon{border-color:var(--accent)}
-.ev.past{opacity:.55}
-.ev .d{display:flex;flex-direction:column;align-items:center;line-height:1.1}
-.ev .d b{font-family:var(--mono);font-size:22px;font-weight:500}
-.ev .d span{font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
-.ev .t{display:flex;flex-direction:column;gap:4px;min-width:0}
-.ev .t h4{margin:0;font-size:15px;font-weight:600}
-.ev .t p{font-size:13.5px;color:var(--ink-2)}
+.calwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:760px){.calwrap{grid-template-columns:1fr}}
+.calbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.calnav{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.calnav h3{font-family:var(--display);font-size:18px;font-weight:700;text-transform:capitalize}
+.calnav .navbtns{display:flex;gap:6px}
+.calnav button{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:34px;height:34px;font-size:16px;line-height:1;color:var(--ink-2)}
+.calnav button.today-btn{width:auto;padding:0 10px;font-size:13px}
+.calnav button:hover{border-color:var(--ink-3);color:var(--ink)}
+.dow,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.dow span{text-align:center;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding-bottom:2px}
+.day{position:relative;border:1px solid transparent;background:transparent;border-radius:8px;height:46px;padding:4px 0 0;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--mono);font-size:14px;color:var(--ink)}
+.day:hover{background:var(--surface-2)}
+.day.other{color:var(--ink-3);opacity:.45}
+.day.past{color:var(--ink-3)}
+.day.today{border-color:var(--accent)}
+.day.hi{font-weight:600}
+.day.sel{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.day .dots{display:flex;gap:3px;height:6px}
+.day .dots i{width:6px;height:6px;border-radius:50%;display:block}
+.day .dots i.g{background:var(--accent)} .day .dots i.l{background:var(--good)}
+.day .dots i.h{box-shadow:0 0 0 1.5px var(--bad)}
+.day.sel .dots i{box-shadow:0 0 0 1.5px var(--bg)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--ink-3);align-items:center}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.detail-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+.detail-head h3{font-family:var(--display);font-size:18px;font-weight:700}
+.detail-head .cd2{font-family:var(--mono);font-size:13px;color:var(--accent);white-space:nowrap}
+.ev{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ev:last-child{border-bottom:none;padding-bottom:0}
+.ev .row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ev h4{margin:0;font-size:15px;font-weight:600}
+.ev p{font-size:13.5px;color:var(--ink-2)}
 .ev .tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--ink-3)}
+.empty-day{display:flex;flex-direction:column;gap:10px;color:var(--ink-2);font-size:14px;padding:6px 0}
+.linkbtn{border:none;background:none;padding:0;color:var(--accent);font-size:14px;text-align:left;text-decoration:underline;text-underline-offset:3px}
 .tag{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
 .tag.hi{background:var(--bad-soft);color:var(--bad)}
 .tag.gl{background:var(--accent-soft);color:var(--accent)}
 .tag.lo{background:var(--good-soft);color:var(--good)}
-.ev .right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.ev .cd2{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);white-space:nowrap}
-@media (max-width:560px){.ev{grid-template-columns:52px minmax(0,1fr)}.ev .right{grid-column:2;align-items:flex-start;flex-direction:row}}
 .evform{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:12px}
 .evform input,.evform select{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:14px;min-width:0}
 
@@ -228,7 +248,7 @@ details.gh summary{cursor:pointer;font-weight:600;font-family:var(--display);fon
   <section>
     <div class="sec-head">
       <h2>Kalender penting</h2>
-      <button class="btn" id="calToggle" aria-expanded="false" aria-controls="calBody">Lihat semua acara</button>
+      <button class="btn" id="calToggle" aria-expanded="false" aria-controls="calBody">Buka kalender</button>
     </div>
     <div class="next" id="nextEv"></div>
     <div id="calBody" hidden style="display:flex;flex-direction:column;gap:14px">
@@ -236,9 +256,23 @@ details.gh summary{cursor:pointer;font-weight:600;font-family:var(--display);fon
         <button data-f="all" aria-pressed="true">Semua</button>
         <button data-f="global" aria-pressed="false">Global</button>
         <button data-f="lokal" aria-pressed="false">Lokal</button>
-        <button data-f="past" aria-pressed="false">Sudah lewat</button>
       </div>
-      <div class="cal" id="cal"></div>
+      <div class="calwrap">
+        <div class="calbox">
+          <div class="calnav">
+            <h3 id="calTitle"></h3>
+            <div class="navbtns">
+              <button id="calPrev" aria-label="Bulan sebelumnya">‹</button>
+              <button id="calToday" class="today-btn">Hari ini</button>
+              <button id="calNext" aria-label="Bulan berikutnya">›</button>
+            </div>
+          </div>
+          <div class="dow"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+          <div class="days" id="calDays" role="grid"></div>
+          <div class="legend"><span><i style="background:var(--accent)"></i>Global</span><span><i style="background:var(--good)"></i>Lokal</span><span><i style="background:var(--surface);box-shadow:0 0 0 1.5px var(--bad)"></i>Dampak tinggi</span></div>
+        </div>
+        <div class="calbox" id="calDetail" aria-live="polite"></div>
+      </div>
       <div class="evform" id="evForm" hidden>
         <input id="evTgl" type="date" aria-label="Tanggal">
         <input id="evJam" placeholder="Jam, mis. 19.30 WIB" style="width:150px" aria-label="Jam">
@@ -416,7 +450,7 @@ function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTim
 // ================= State =================
 let market={indikator:{},harga:{}}, manual={indikator:{},ceklis:{}}, saham=[], agenda=[];
 let pengaturan=store.get("pengaturan",{modal:100000000,risiko:1});
-let editing=false, filter="all", calFilter="all", calOpen=store.get("calOpen",false);
+let editing=false, filter="all", calFilter="all", calOpen=store.get("calOpen",false), selDate=null, calMonth=null;
 const dirty=new Set();
 
 function indItem(d){
@@ -461,25 +495,61 @@ function renderCal(){
   $("nextEv").innerHTML=nx?`<div class="when">${esc(new Date(nx.tanggal+"T00:00:00").toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"}))} · ${esc(nx.jam||"")}</div>
     <div><span class="eyebrow">Acara penting berikutnya</span><div class="big">${esc(nx.judul)}</div><p class="small muted">${esc(nx.catatan||"")}</p></div>
     <div class="cd">${cdText(dayDiff(nx.tanggal))}</div>`:`<div class="big" style="grid-column:1/-1">Belum ada acara mendatang. Tambahkan lewat Ubah data.</div>`;
-  $("nextEv").hidden=calOpen&&calFilter==="past";
-  $("calToggle").textContent=calOpen?"Sembunyikan":`Lihat semua acara (${up.length})`;
+  $("calToggle").textContent=calOpen?"Tutup kalender":`Buka kalender (${up.length} acara)`;
   $("calToggle").setAttribute("aria-expanded",calOpen);
   $("calBody").hidden=!calOpen;
   $("evForm").hidden=!editing;
-  const list = calFilter==="past" ? all.filter(e=>dayDiff(e.tanggal)<0).reverse() : up.filter(e=>calFilter==="all"||e.wilayah===calFilter);
-  if(!list.length){$("cal").innerHTML=`<p class="muted small">${calFilter==="past"?"Belum ada acara yang lewat.":"Tidak ada acara di filter ini."}</p>`;return;}
-  const groups={};
-  list.forEach(e=>{const k=e.tanggal.slice(0,7);(groups[k]=groups[k]||[]).push(e);});
-  $("cal").innerHTML=Object.keys(groups).map(k=>{
-    const mName=new Date(k+"-01T00:00:00").toLocaleDateString("id-ID",{month:"long",year:"numeric"});
-    return `<div class="month"><h3>${esc(mName)}</h3>${groups[k].map(e=>{
-      const n=dayDiff(e.tanggal), d=new Date(e.tanggal+"T00:00:00");
-      return `<article class="ev ${n<0?"past":n<=7?"soon":""}">
-        <div class="d"><b>${d.getDate()}</b><span>${esc(d.toLocaleDateString("id-ID",{weekday:"short"}))}</span></div>
-        <div class="t"><h4>${esc(e.judul)}</h4>${e.catatan?`<p>${esc(e.catatan)}</p>`:""}<div class="tags">${evTags(e)}</div></div>
-        <div class="right"><span class="cd2">${cdText(n)}</span>${editing?`<button class="x" data-evdel="${esc(e.id)}" aria-label="Hapus ${esc(e.judul)}">×</button>`:""}</div>
-      </article>`;}).join("")}</div>`;
-  }).join("");
+  if(!calOpen) return;
+  if(!selDate){ selDate=nx?nx.tanggal:todayWIB(); calMonth=selDate.slice(0,7); }
+  renderMonth(); renderDetail();
+}
+const pad=n=>String(n).padStart(2,"0");
+const isoOf=(y,m,d)=>`${y}-${pad(m)}-${pad(d)}`;
+function visibleEvents(){return agenda.filter(e=>calFilter==="all"||e.wilayah===calFilter);}
+function renderMonth(){
+  const [y,m]=calMonth.split("-").map(Number);
+  $("calTitle").textContent=new Date(y,m-1,1).toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+  const byDate={};
+  visibleEvents().forEach(e=>{(byDate[e.tanggal]=byDate[e.tanggal]||[]).push(e);});
+  const first=new Date(Date.UTC(y,m-1,1)), lead=(first.getUTCDay()+6)%7; // Senin = kolom pertama
+  const start=new Date(Date.UTC(y,m-1,1-lead));
+  const today=todayWIB(); let html="";
+  for(let i=0;i<42;i++){
+    const d=new Date(start.getTime()+i*864e5), iso=d.toISOString().slice(0,10);
+    if(i>=35&&d.getUTCMonth()!==m-1) break; // tidak perlu baris ke-6 kalau kosong
+    const evs=byDate[iso]||[], hi=evs.some(e=>e.dampak==="tinggi");
+    const cls=["day", d.getUTCMonth()!==m-1?"other":"", iso<today?"past":"", iso===today?"today":"", iso===selDate?"sel":"", hi?"hi":""].filter(Boolean).join(" ");
+    const dots=[...new Set(evs.map(e=>e.wilayah))].map(w=>`<i class="${w==="lokal"?"l":"g"}${evs.some(e=>e.wilayah===w&&e.dampak==="tinggi")?" h":""}"></i>`).join("");
+    const label=d.toLocaleDateString("id-ID",{timeZone:"UTC",weekday:"long",day:"numeric",month:"long"})+(evs.length?`, ${evs.length} acara`:"");
+    html+=`<button class="${cls}" data-date="${iso}" aria-label="${esc(label)}" aria-pressed="${iso===selDate}"><span>${d.getUTCDate()}</span><span class="dots">${dots}</span></button>`;
+  }
+  $("calDays").innerHTML=html;
+}
+function renderDetail(){
+  const evs=visibleEvents().filter(e=>e.tanggal===selDate).sort((a,b)=>(a.jam||"").localeCompare(b.jam||""));
+  const n=dayDiff(selDate);
+  const title=new Date(selDate+"T00:00:00").toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  let body;
+  if(evs.length){
+    body=evs.map(e=>`<article class="ev">
+      <div class="row"><h4>${esc(e.judul)}</h4>${editing?`<button class="x" data-evdel="${esc(e.id)}" aria-label="Hapus ${esc(e.judul)}">×</button>`:""}</div>
+      <div class="tags">${evTags(e)}</div>
+      ${e.catatan?`<p>${esc(e.catatan)}</p>`:""}
+    </article>`).join("");
+  }else{
+    const nextAfter=visibleEvents().filter(e=>e.tanggal>selDate).sort((a,b)=>a.tanggal.localeCompare(b.tanggal))[0];
+    body=`<div class="empty-day"><span>Tidak ada acara penting di tanggal ini.</span>${nextAfter?`<button class="linkbtn" data-date="${nextAfter.tanggal}">Acara berikutnya: ${esc(nextAfter.judul)} (${esc(new Date(nextAfter.tanggal+"T00:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"short"}))})</button>`:""}</div>`;
+  }
+  $("calDetail").innerHTML=`<div class="detail-head"><h3>${esc(title)}</h3><span class="cd2">${cdText(n)}</span></div>${body}`;
+}
+function pickDate(iso){
+  selDate=iso; calMonth=iso.slice(0,7);
+  if(editing&&!$("evTgl").value) $("evTgl").value=iso;
+  renderMonth(); renderDetail();
+}
+function shiftMonth(k){
+  const [y,m]=calMonth.split("-").map(Number); const d=new Date(y,m-1+k,1);
+  calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`; renderMonth();
 }
 function addEv(){
   const tgl=$("evTgl").value, judul=$("evJudul").value.trim();
@@ -489,6 +559,7 @@ function addEv(){
   if($("evPerk").checked) e.perkiraan=true;
   agenda=[...agenda.filter(x=>x.id!==id),e];
   ["evTgl","evJam","evJudul","evCat"].forEach(i=>$(i).value=""); $("evPerk").checked=false;
+  selDate=tgl; calMonth=tgl.slice(0,7);
   markDirty("agenda"); renderCal(); toast("Acara ditambahkan. Jangan lupa simpan.");
 }
 
@@ -724,7 +795,12 @@ $("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
 $("calTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;calFilter=b.dataset.f;[...$("calTabs").children].forEach(x=>x.setAttribute("aria-pressed",x===b));renderCal();});
 $("calToggle").addEventListener("click",()=>{calOpen=!calOpen;store.set("calOpen",calOpen);renderCal();});
 $("evAdd").addEventListener("click",addEv);
-$("cal").addEventListener("click",e=>{
+$("calDays").addEventListener("click",e=>{const b=e.target.closest("[data-date]"); if(b) pickDate(b.dataset.date);});
+$("calPrev").addEventListener("click",()=>shiftMonth(-1));
+$("calNext").addEventListener("click",()=>shiftMonth(1));
+$("calToday").addEventListener("click",()=>pickDate(todayWIB()));
+$("calDetail").addEventListener("click",e=>{
+  const j=e.target.closest("[data-date]"); if(j){pickDate(j.dataset.date);return;}
   const b=e.target.closest("[data-evdel]"); if(!b) return;
   if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Hapus?";b.style.fontSize="13px";setTimeout(()=>{if(b.isConnected){b.dataset.armed="";b.textContent="×";b.style.fontSize="";}},3000);return;}
   agenda=agenda.filter(x=>x.id!==b.dataset.evdel); markDirty("agenda"); renderCal();
