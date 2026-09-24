@@ -161,6 +161,14 @@
     },
     {
       "tema": "sawit",
+      "ind": "cpo",
+      "zona": [
+        "good"
+      ],
+      "alasan": "CPO di atas RM4.800"
+    },
+    {
+      "tema": "sawit",
       "ind": "usdidr",
       "zona": [
         "bad"

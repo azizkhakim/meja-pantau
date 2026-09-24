@@ -4,7 +4,7 @@ Halaman pemantauan pribadi untuk IHSG, makro, dan kalender acara penting. Berjal
 
 - **Halaman:** `index.html`, ditampilkan oleh GitHub Pages.
 - **Harga otomatis:** GitHub Actions menjalankan `scripts/update_market.py` Senin–Jumat pukul 07.30, 12.30, 16.30, dan 20.30 WIB. Harga diambil dari Yahoo Finance lalu disimpan ke `data/market.json`.
-- **Data yang kamu isi sendiri:** `data/manual.json` (BI Rate, suku bunga The Fed, net asing, timah, batu bara, dan dua centang) dan `data/agenda.json` (kalender).
+- **Data yang kamu isi sendiri:** `data/manual.json` (BI Rate, suku bunga The Fed, net asing, timah, batu bara, CPO, dan dua centang) dan `data/agenda.json` (kalender).
 
 Bukan rekomendasi jual atau beli. Keputusan dan risikonya tetap di tanganmu.
 
@@ -69,7 +69,7 @@ Kalau langkah ini gagal dengan pesan izin, buka **Settings → Actions → Gener
 |---|---|
 | Lihat kondisi pasar | Buka halaman. Harga otomatis diperbarui 4× sehari pada hari kerja. |
 | Harga terbaru sekarang juga | Tombol **Perbarui harga sekarang**, tunggu 2–3 menit, lalu muat ulang halaman |
-| Ubah BI Rate, suku bunga The Fed, net asing, timah, batu bara | **Ubah data** → isi di kartunya → **Simpan ke GitHub** |
+| Ubah BI Rate, suku bunga The Fed, net asing, timah, batu bara, CPO | **Ubah data** → isi di kartunya → **Simpan ke GitHub** |
 | Lihat acara di tanggal tertentu | Klik tanggalnya di kalender. Detailnya muncul di kotak kanan. |
 | Tambah acara ke kalender | **Ubah data** → klik tanggalnya → isi form di bawah kalender → **Simpan ke GitHub** |
 
@@ -81,7 +81,7 @@ Kalau belum sempat klik simpan, perubahan disimpan sementara di browser dan munc
 - **BI Rate:** setelah setiap RDG BI (tanggalnya ada di kalender)
 - **Suku bunga The Fed:** setelah setiap rapat FOMC
 - **Net asing:** setiap akhir pekan (sumber: berita pasar atau aplikasi sekuritas)
-- **Timah & batu bara:** kapan saja, misalnya seminggu sekali (tradingeconomics.com)
+- **Timah, batu bara & CPO:** kapan saja, misalnya seminggu sekali (tradingeconomics.com). CPO dalam ringgit per ton (RM/t), kontrak acuan Bursa Malaysia.
 - **Kalender:** jadwal The Fed dan BI untuk tahun berikutnya biasanya terbit sekitar Desember. Tambahkan sekali setahun.
 
 ---

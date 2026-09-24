@@ -1,11 +1,35 @@
 {
   "diperbarui": "2026-09-24",
   "indikator": {
-    "birate": {"v": 5.75, "arah": "tahan", "ket": "RDG 23 Sep"},
-    "fedfunds": {"v": 4, "arah": "naik", "ket": "Naik 25 bps ke 3,75–4,00% (16 Sep)"},
-    "asing": {"v": -1840, "ket": "14–18 Sep"},
-    "timah": {"v": 54250, "ket": "22 Sep"},
-    "batubara": {"v": 144.7, "ket": "23 Sep"}
+    "birate": {
+      "v": 5.75,
+      "arah": "tahan",
+      "ket": "RDG 23 Sep"
+    },
+    "fedfunds": {
+      "v": 4,
+      "arah": "naik",
+      "ket": "Naik 25 bps ke 3,75–4,00% (16 Sep)"
+    },
+    "asing": {
+      "v": -1840,
+      "ket": "14–18 Sep"
+    },
+    "timah": {
+      "v": 54250,
+      "ket": "22 Sep"
+    },
+    "batubara": {
+      "v": 144.7,
+      "ket": "23 Sep"
+    },
+    "cpo": {
+      "v": 4750,
+      "ket": "23 Sep; terendah 7 minggu, stok Malaysia naik"
+    }
   },
-  "ceklis": {"cpi": false, "bi": false}
+  "ceklis": {
+    "cpi": false,
+    "bi": false
+  }
 }

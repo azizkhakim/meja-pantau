@@ -363,7 +363,7 @@ details.gh summary{cursor:pointer;font-weight:600;font-family:var(--display);fon
       <div class="list">
         <div><span>Kalender ekonomi</span><span><a href="https://id.investing.com/economic-calendar/" target="_blank" rel="noopener">id.investing.com</a></span></div>
         <div><span>Peluang arah bunga Fed</span><span><a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" rel="noopener">CME FedWatch</a></span></div>
-        <div><span>Timah &amp; batu bara</span><span><a href="https://id.tradingeconomics.com/commodity/tin" target="_blank" rel="noopener">tradingeconomics</a></span></div>
+        <div><span>Timah, batu bara, CPO</span><span><a href="https://id.tradingeconomics.com/commodity/tin" target="_blank" rel="noopener">timah</a> · <a href="https://id.tradingeconomics.com/commodity/coal" target="_blank" rel="noopener">batu bara</a> · <a href="https://id.tradingeconomics.com/commodity/palm-oil" target="_blank" rel="noopener">CPO</a></span></div>
         <div><span>Aliran dana asing</span><span><a href="https://www.idx.co.id/" target="_blank" rel="noopener">idx.co.id</a> · Stockbit</span></div>
         <div><span>Harga otomatis</span><span>Yahoo Finance</span></div>
       </div>
@@ -422,7 +422,10 @@ const IND = [
    impact:"Untuk: TINS"},
   {key:"batubara",label:"Batu bara Newcastle",unit:"US$/t",dec:1,t:[100,130],hi:"good",scale:[70,180],
    text:{bad:"Batu bara murah: laba dan dividen PTBA, AADI tertekan.",mid:"Harga batu bara sedang.",good:"Batu bara tinggi: laba dan dividen PTBA, AADI terjaga."},
-   impact:"Untuk: PTBA, AADI, ITMG"}
+   impact:"Untuk: PTBA, AADI, ITMG"},
+  {key:"cpo",label:"CPO Bursa Malaysia",unit:"RM/t",dec:0,t:[4200,4800],hi:"good",scale:[3500,5500],
+   text:{bad:"CPO di bawah RM4.200: margin emiten sawit menipis.",mid:"Harga CPO sedang. Pantau stok dan ekspor Malaysia.",good:"CPO di atas RM4.800: laba emiten sawit terdorong naik."},
+   impact:"Untuk: AALI, LSIP, TAPG, DSNG, SSMS"}
 ];
 const STALE_DAYS = 4;          // data otomatis lebih tua dari ini ditandai "data lama"
 const FILES = {manual:"data/manual.json", agenda:"data/agenda.json"};
