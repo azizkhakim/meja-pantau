@@ -19,8 +19,10 @@ import os
 import time
 import urllib.parse
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+
+import sumber
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -378,6 +380,65 @@ def kirim_telegram(pesan):
     return ok
 
 
+TIPE_OTOMATIS = {"fomc", "pce", "pdb-as", "nfp", "cpi", "ppi", "rdg", "inflasi-id", "neraca", "pdb-id"}
+TIPE_DARI_ID = {"fomc": "fomc", "gdp": "pdb-as", "pce": "pce", "nfp": "nfp", "cpi": "cpi", "ppi": "ppi", "rdg": "rdg",
+                "inflasi": "inflasi-id", "neraca": "neraca", "pdb": "pdb-id"}
+
+
+def perbarui_agenda(fomc):
+    """Susun ulang acara berulang: jadwal resmi (Fed, BEA, tradingeconomics) diutamakan, sisanya perkiraan pola.
+
+    Acara yang kamu tambahkan sendiri (tipe lain) tidak disentuh.
+    """
+    f = DATA / "agenda.json"
+    lama = json.loads(f.read_text(encoding="utf-8")) if f.exists() else []
+    hari_ini = datetime.now(WIB).date()
+    awal, akhir = hari_ini - timedelta(days=30), hari_ini + timedelta(days=120)
+
+    resmi = fomc + sumber.jadwal_bea() + sumber.jadwal_te()
+    pola = sumber.perkiraan_pola(hari_ini, akhir)
+
+    def tipe_dari(e):
+        return e.get("tipe") or TIPE_DARI_ID.get(e["id"].split("-")[-1])
+
+    # acara lama yang sudah lewat atau sudah pasti (bukan perkiraan) tetap disimpan
+    dipakai = {}
+    for e in lama:
+        t = tipe_dari(e)
+        if t in TIPE_OTOMATIS and (date.fromisoformat(e["tanggal"]) < hari_ini or not e.get("perkiraan")):
+            dipakai[(t, e["tanggal"][:7])] = {**e, "tipe": t}
+    for e in pola:
+        kunci = (e["tipe"], e["tanggal"][:7])
+        if kunci not in dipakai or dipakai[kunci].get("perkiraan"):
+            dipakai[kunci] = e
+    for e in resmi:
+        kunci = (e["tipe"], e["tanggal"][:7])
+        sekarang_ada = dipakai.get(kunci)
+        if sekarang_ada and not sekarang_ada.get("perkiraan") and sekarang_ada["tanggal"] != e["tanggal"] and e["tipe"] in ("pdb-as", "pce"):
+            kunci = (e["tipe"], e["tanggal"])  # BEA bisa merilis dua kali sebulan
+        e = {**e}
+        e.pop("perkiraan", None)
+        if sekarang_ada and len(sekarang_ada.get("judul", "")) > len(e["judul"]) and "+" not in sekarang_ada["judul"]:
+            e["judul"] = sekarang_ada["judul"]  # pertahankan judul yang lebih lengkap (mis. ada nama bulannya)
+        dipakai[kunci] = e
+
+    otomatis = []
+    for e in dipakai.values():
+        if not (awal <= date.fromisoformat(e["tanggal"]) <= akhir):
+            continue
+        e = {k: v for k, v in e.items() if k != "id"}
+        e["id"] = f"{e['tanggal']}-{e['tipe']}"
+        e["otomatis"] = True
+        otomatis.append(e)
+    sendiri = [e for e in lama if tipe_dari(e) not in TIPE_OTOMATIS and date.fromisoformat(e["tanggal"]) >= awal]
+    baru = sorted(otomatis + sendiri, key=lambda e: (e["tanggal"], e.get("jam", "")))
+    urutan = ["id", "tanggal", "jam", "wilayah", "dampak", "judul", "catatan", "perkiraan", "tipe", "otomatis"]
+    teks = "[\n" + ",\n".join("  " + json.dumps({k: e[k] for k in urutan if k in e} | {k: v for k, v in e.items() if k not in urutan},
+                                                ensure_ascii=False) for e in baru) + "\n]\n"
+    f.write_text(teks, encoding="utf-8")
+    print(f"Kalender: {len(otomatis)} otomatis ({sum(1 for e in otomatis if e.get('perkiraan'))} perkiraan), {len(sendiri)} buatan sendiri")
+
+
 def daftar_saham():
     kode = set()
     peta = DATA / "peta.json"
@@ -412,7 +473,58 @@ def main():
             gagal.append(simbol)
             if kunci in lama_market.get("indikator", {}):
                 market["indikator"][kunci] = {**lama_market["indikator"][kunci], "lama": True}
+    # 1b) indikator dari situs publik (komoditas, suku bunga, inflasi AS) + proksi asing
+    diambil = sekarang
+    lama_ind = lama_market.get("indikator", {})
+    manual = baca(DATA / "manual.json").get("indikator", {})
+
+    def simpan(kunci, nilai, nama):
+        if nilai:
+            market["indikator"][kunci] = {**nilai, "diambil": diambil}
+        else:
+            gagal.append(nama)
+            if kunci in lama_ind:
+                market["indikator"][kunci] = {**lama_ind[kunci], "lama": True}
+
+    simpan("batubara", sumber.te_komoditas("coal"), "batu bara")
+    simpan("cpo", sumber.te_komoditas("palm-oil"), "CPO")
+    simpan("timah", sumber.te_komoditas("tin") or sumber.timah_westmetall(), "timah")
+    simpan("birate", sumber.bi_rate(), "BI Rate")
+
+    fomc = sumber.jadwal_fomc()
+    fed = sumber.fed_funds()
+    if fed:
+        sebelumnya = lama_ind.get("fedfunds") or {**manual.get("fedfunds", {}), "sejak": "2026-09-17"}
+        hari_ini = datetime.now(WIB).date().isoformat()
+        if sebelumnya.get("v") is not None and fed["v"] != sebelumnya["v"]:
+            fed.update(arah="naik" if fed["v"] > sebelumnya["v"] else "turun", sejak=hari_ini)
+        else:
+            rapat = [a["tanggal"] for a in fomc if a["tanggal"] <= hari_ini]
+            terakhir = max(rapat) if rapat else None
+            if terakhir and terakhir > sebelumnya.get("sejak", ""):
+                fed.update(arah="tahan", sejak=terakhir)
+            else:
+                fed.update(arah=sebelumnya.get("arah", "tahan"), sejak=sebelumnya.get("sejak", hari_ini))
+        fed["tanggal"] = fed["sejak"]
+    simpan("fedfunds", fed, "Fed Funds")
+
+    eido = ambil("EIDO", "3mo")
+    if eido and len(eido["baris"]) > 21:
+        c = [b["c"] for b in eido["baris"]]
+        simpan("eido", {"v": round((c[-1] / c[-21] - 1) * 100, 2), "harga": round(c[-1], 2),
+                        "tanggal": tgl_wib(eido["baris"][-1]["t"]), "sumber": "Yahoo Finance (EIDO)"}, "EIDO")
+    else:
+        simpan("eido", None, "EIDO")
+
+    infl = sumber.inflasi_as()
+    bi = market["indikator"].get("birate", {})
+    market["ceklis"] = {"cpi": infl["melambat"] if infl else lama_market.get("ceklis", {}).get("cpi"),
+                        "bi": bi.get("arah") == "turun" if bi else None,
+                        "cpi_kalimat": infl["kalimat"] if infl else lama_market.get("ceklis", {}).get("cpi_kalimat")}
     market["gagal"] = list(gagal)
+
+    # 1c) kalender otomatis
+    perbarui_agenda(fomc)
 
     # 2) kondisi pasar (filter) + saham + level teknikal
     ihsg6 = ambil("^JKSE", "6mo")

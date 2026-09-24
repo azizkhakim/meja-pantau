@@ -4,7 +4,9 @@ Halaman pemantauan pribadi untuk IHSG, makro, dan kalender acara penting. Berjal
 
 - **Halaman:** `index.html`, ditampilkan oleh GitHub Pages.
 - **Harga otomatis:** GitHub Actions menjalankan `scripts/update_market.py` Senin–Jumat pukul 07.30, 12.30, 16.30, dan 20.30 WIB. Harga diambil dari Yahoo Finance lalu disimpan ke `data/market.json`.
-- **Data yang kamu isi sendiri:** `data/manual.json` (BI Rate, suku bunga The Fed, net asing, timah, batu bara, CPO, dan dua centang) dan `data/agenda.json` (kalender).
+- **Semua indikator otomatis:** Yahoo Finance (IHSG, yield AS, DXY, rupiah, emas, Brent, ETF EIDO), bi.go.id (BI Rate), tradingeconomics.com (Fed Funds, inflasi AS, timah, batu bara, CPO), Westmetall (cadangan timah). Kodenya di `scripts/sumber.py`.
+- **Kalender otomatis:** jadwal resmi dari federalreserve.gov (FOMC), bea.gov (PDB & PCE AS), dan kalender tradingeconomics (CPI, NFP, BI, BPS, beberapa hari sampai ±3 minggu ke depan). Acara yang belum terbit jadwalnya diperkirakan dari pola rilis dan diberi label *perkiraan*, lalu dikoreksi otomatis begitu jadwal resminya muncul.
+- `data/manual.json` hanya cadangan kalau satu sumber otomatis rusak. Kamu boleh menambah acara sendiri ke kalender; acara buatanmu tidak disentuh robot.
 
 Bukan rekomendasi jual atau beli. Keputusan dan risikonya tetap di tanganmu.
 
@@ -69,7 +71,6 @@ Kalau langkah ini gagal dengan pesan izin, buka **Settings → Actions → Gener
 |---|---|
 | Lihat kondisi pasar | Buka halaman. Harga otomatis diperbarui 4× sehari pada hari kerja. |
 | Harga terbaru sekarang juga | Tombol **Perbarui harga sekarang**, tunggu 2–3 menit, lalu muat ulang halaman |
-| Ubah BI Rate, suku bunga The Fed, net asing, timah, batu bara, CPO | **Ubah data** → isi di kartunya → **Simpan ke GitHub** |
 | Lihat acara di tanggal tertentu | Klik tanggalnya di kalender. Detailnya muncul di kotak kanan. |
 | Tambah acara ke kalender | **Ubah data** → klik tanggalnya → isi form di bawah kalender → **Simpan ke GitHub** |
 
@@ -77,12 +78,10 @@ Kalau belum sempat klik simpan, perubahan disimpan sementara di browser dan munc
 
 **Tanpa token:** klik **Unduh file**, lalu di GitHub buka folder `data/` → **Add file → Upload files** → unggah file itu (timpa yang lama).
 
-### Kapan mengisi data manual
-- **BI Rate:** setelah setiap RDG BI (tanggalnya ada di kalender)
-- **Suku bunga The Fed:** setelah setiap rapat FOMC
-- **Net asing:** setiap akhir pekan (sumber: berita pasar atau aplikasi sekuritas)
-- **Timah, batu bara & CPO:** kapan saja, misalnya seminggu sekali (tradingeconomics.com). CPO dalam ringgit per ton (RM/t), kontrak acuan Bursa Malaysia.
-- **Kalender:** jadwal The Fed dan BI untuk tahun berikutnya biasanya terbit sekitar Desember. Tambahkan sekali setahun.
+### Tidak ada lagi data yang wajib diisi manual
+Semua indikator dan kalender diperbarui robot. Kalau satu sumber gagal, kartunya diberi tanda **"data lama"** atau **"sumber otomatis sedang gagal"**. Hanya pada kondisi itu kolom isian manual muncul di mode **Ubah data**, sebagai cadangan sementara.
+
+**Catatan jujur:** data net beli/jual asing BEI tidak tersedia gratis untuk robot (IDX memblokir akses otomatis). Penggantinya **ETF EIDO** (iShares MSCI Indonesia di bursa AS), yang pergerakannya mencerminkan minat investor global terhadap saham Indonesia. Untuk angka net asing yang sebenarnya, tetap cek aplikasi sekuritas.
 
 ---
 
@@ -118,6 +117,7 @@ Secret tidak ikut terlihat di repo publik.
 
 | Gejala | Penyebab & solusi |
 |---|---|
+| Satu kartu bertanda "data lama" / "sumber otomatis sedang gagal" | Situs sumbernya mungkin berubah tampilan atau sedang memblokir. Lihat log di tab **Actions** (cari kata *gagal*), lalu perbaiki fungsi terkait di `scripts/sumber.py`. Sementara itu isi manual lewat **Ubah data**. |
 | Harga tidak berubah berhari-hari, ada tanda "data lama" | Buka tab **Actions**. Kalau ada tanda silang merah, klik untuk melihat pesannya. Kalau muncul *"This scheduled workflow is disabled"*, klik **Enable workflow**. GitHub mematikan jadwal otomatis kalau repo publik tidak ada aktivitas 60 hari. |
 | Semua harga gagal ("gagal" di log Actions) | Yahoo Finance mungkin mengubah cara aksesnya. Data lama tetap tampil. Periksa `scripts/update_market.py`, bagian `URL`. |
 | "Token ditolak (401)" | Token kedaluwarsa. Buat token baru (langkah 2) lalu tempel lagi di pengaturan halaman. |
@@ -147,7 +147,7 @@ Di `scripts/update_market.py`, tambahkan baris di `INDIKATOR` (kunci → simbol 
 ```
 index.html                       halaman
 data/market.json                 harga otomatis (jangan diedit manual)
-data/manual.json                 indikator manual + centang
+data/manual.json                 cadangan manual (dipakai hanya kalau sumber otomatis gagal)
 data/agenda.json                 kalender
 data/peta.json                   peta tema, indikator, acara → saham
 data/sinyal.json                 level teknikal tiap saham (otomatis)
@@ -155,6 +155,7 @@ data/jurnal.json                 jurnal sinyal (otomatis)
 data/backtest.json               rapor aturan (otomatis tiap Sabtu)
 data/notif.json                  catatan notifikasi terkirim (otomatis)
 scripts/backtest.py              uji aturan pada data 2 tahun
-scripts/update_market.py         pengambil harga
+scripts/update_market.py         robot utama: harga, indikator, kalender, level teknikal, jurnal, notifikasi
+scripts/sumber.py                pengambil data dari situs publik (indikator & jadwal)
 .github/workflows/update-market.yml   jadwal otomatis
 ```

@@ -311,7 +311,7 @@ details.gh summary{cursor:pointer;font-weight:600;font-family:var(--display);fon
   <section>
     <div class="sec-head">
       <h2>Indikator &amp; pemaknaannya</h2>
-      <p class="muted small">Kartu bertanda "otomatis" diperbarui 4× sehari pada hari kerja. Kartu lain diisi lewat tombol Ubah data.</p>
+      <p class="muted small">Semua kartu diperbarui otomatis 4× sehari pada hari kerja. Kalau satu sumber gagal, nilai terakhir tetap dipakai dan diberi tanda "data lama".</p>
     </div>
     <div class="grid" id="ind"></div>
   </section>
@@ -377,9 +377,9 @@ details.gh summary{cursor:pointer;font-weight:600;font-family:var(--display);fon
       <div class="list">
         <div><span>Kalender ekonomi</span><span><a href="https://id.investing.com/economic-calendar/" target="_blank" rel="noopener">id.investing.com</a></span></div>
         <div><span>Peluang arah bunga Fed</span><span><a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" rel="noopener">CME FedWatch</a></span></div>
-        <div><span>Timah, batu bara, CPO</span><span><a href="https://id.tradingeconomics.com/commodity/tin" target="_blank" rel="noopener">timah</a> · <a href="https://id.tradingeconomics.com/commodity/coal" target="_blank" rel="noopener">batu bara</a> · <a href="https://id.tradingeconomics.com/commodity/palm-oil" target="_blank" rel="noopener">CPO</a></span></div>
-        <div><span>Aliran dana asing</span><span><a href="https://www.idx.co.id/" target="_blank" rel="noopener">idx.co.id</a> · Stockbit</span></div>
-        <div><span>Harga otomatis</span><span>Yahoo Finance</span></div>
+        <div><span>Timah, batu bara, CPO, Fed Funds</span><span>tradingeconomics.com (otomatis)</span></div>
+        <div><span>Sentimen asing (proksi)</span><span>ETF EIDO · data net asing asli: idx.co.id / Stockbit</span></div>
+        <div><span>Harga, IHSG, EIDO</span><span>Yahoo Finance (otomatis)</span></div>
       </div>
     </div>
     <p class="foot">Halaman ini alat bantu pribadi, bukan rekomendasi jual atau beli. Ambang pemaknaan adalah aturan praktis yang bisa kamu ubah di bagian atas kode (daftar IND). Keputusan dan risikonya tetap di tanganmu.</p>
@@ -413,31 +413,31 @@ const IND = [
   {key:"usdidr",auto:true,label:"Kurs rupiah per USD",unit:"Rp",pre:true,dec:0,t:[17000,17500],hi:"bad",scale:[15500,18500],macro:true,
    text:{bad:"Rupiah lemah: asing enggan masuk dan BI menahan bunga. Eksportir (TINS, PTBA, ANTM) justru untung dari kurs.",mid:"Rupiah di zona waspada. BI masih berjaga.",good:"Rupiah stabil atau menguat: ruang BI menurunkan bunga terbuka."},
    impact:"Buruk untuk importir & utang dolar; baik untuk eksportir"},
-  {key:"birate",label:"BI Rate",unit:"%",dec:2,arah:true,macro:true,
+  {key:"birate",auto:true,label:"BI Rate",unit:"%",dec:2,arah:true,macro:true,
    text:{bad:"BI menaikkan bunga: kredit makin mahal, saham bank, properti, dan tol tertekan.",mid:"BI menahan bunga demi menjaga rupiah. Belum ada pelonggaran.",good:"BI menurunkan bunga: pendorong utama JSMR, BBRI, ASII."},
    impact:"Paling terasa ke: JSMR, BBRI, ASII"},
-  {key:"fedfunds",label:"Suku bunga The Fed (batas atas)",unit:"%",dec:2,arah:true,macro:true,
+  {key:"fedfunds",auto:true,label:"Suku bunga The Fed (batas atas)",unit:"%",dec:2,arah:true,macro:true,
    text:{bad:"The Fed menaikkan bunga: dolar menguat, tekanan ke rupiah dan IHSG.",mid:"The Fed menahan bunga. Pasar menunggu data inflasi berikutnya.",good:"The Fed menurunkan bunga: tekanan global mereda, BI punya ruang ikut turun."},
    impact:"Menentukan ruang gerak BI"},
   {key:"ihsg",auto:true,label:"IHSG",unit:"",dec:0,t:[6277,6700],hi:"good",scale:[5800,7200],macro:true,
    text:{bad:"Di bawah titik terendah 22 Sep (6.277): tren turun berlanjut. Perbesar kas, perketat batas rugi.",mid:"Di antara support 6.277 dan resistance 6.700. Pasar belum memilih arah.",good:"Tembus 6.700: tren turun patah. Porsi saham boleh diperbesar bertahap."},
    impact:"Kondisi pasar secara umum"},
-  {key:"asing",label:"Net asing sepekan",unit:"Rp mlr",dec:0,t:[-500,500],hi:"good",scale:[-4000,2000],macro:true,sign:true,
-   text:{bad:"Asing menjual besar. Hindari saham yang paling banyak dijual asing (bank big cap).",mid:"Aliran asing relatif seimbang.",good:"Asing kembali membeli: tanda awal pemulihan IHSG."},
-   impact:"Cek juga saham mana yang tetap dibeli asing"},
+  {key:"eido",auto:true,label:"Sentimen asing: ETF EIDO (20 hari)",unit:"%",dec:1,t:[-3,3],hi:"good",scale:[-15,15],macro:true,sign:true,
+   text:{bad:"EIDO turun lebih dari 3% dalam 20 hari: investor global sedang keluar dari saham Indonesia. Hindari saham yang paling banyak dijual asing (bank big cap).",mid:"Minat investor global terhadap saham Indonesia relatif stabil.",good:"EIDO naik lebih dari 3% dalam 20 hari: investor global kembali masuk, tanda awal pemulihan IHSG."},
+   impact:"Proksi aliran dana asing (iShares MSCI Indonesia ETF di bursa AS), bukan angka net beli/jual BEI"},
   {key:"brent",auto:true,label:"Minyak Brent",unit:"US$/bbl",dec:2,t:[75,95],hi:"bad",scale:[55,120],macro:true,
    text:{bad:"Minyak mahal: risiko inflasi naik, BI makin sulit menurunkan bunga. Positif untuk MEDC.",mid:"Harga minyak wajar.",good:"Minyak murah: inflasi mereda, beban impor BBM turun."},
    impact:"Baik untuk MEDC; buruk untuk inflasi & rupiah"},
   {key:"emas",auto:true,label:"Emas (kontrak berjangka)",unit:"US$/oz",dec:0,t:[4260,4440],hi:"good",scale:[4000,4700],
    text:{bad:"Di bawah 4.260: koreksi terkonfirmasi. Tunda beli ANTM, siap keluar lebih cepat.",mid:"Kisaran mendatar 4.260–4.440. Cicil ANTM kecil di dekat batas bawah.",good:"Tembus 4.440: tren naik berlanjut. ANTM boleh ditambah."},
    impact:"Untuk: ANTM, BRMS, EMAS, ARCI"},
-  {key:"timah",label:"Timah LME",unit:"US$/t",dec:0,t:[40000,50000],hi:"good",scale:[30000,60000],
+  {key:"timah",auto:true,label:"Timah LME",unit:"US$/t",dec:0,t:[40000,50000],hi:"good",scale:[30000,60000],
    text:{bad:"Harga timah turun jauh: TINS kehilangan penopang utama.",mid:"Harga timah sedang.",good:"Timah tinggi karena pasokan defisit: penopang utama TINS."},
    impact:"Untuk: TINS"},
-  {key:"batubara",label:"Batu bara Newcastle",unit:"US$/t",dec:1,t:[100,130],hi:"good",scale:[70,180],
+  {key:"batubara",auto:true,label:"Batu bara Newcastle",unit:"US$/t",dec:1,t:[100,130],hi:"good",scale:[70,180],
    text:{bad:"Batu bara murah: laba dan dividen PTBA, AADI tertekan.",mid:"Harga batu bara sedang.",good:"Batu bara tinggi: laba dan dividen PTBA, AADI terjaga."},
    impact:"Untuk: PTBA, AADI, ITMG"},
-  {key:"cpo",label:"CPO Bursa Malaysia",unit:"RM/t",dec:0,t:[4200,4800],hi:"good",scale:[3500,5500],
+  {key:"cpo",auto:true,label:"CPO Bursa Malaysia",unit:"RM/t",dec:0,t:[4200,4800],hi:"good",scale:[3500,5500],
    text:{bad:"CPO di bawah RM4.200: margin emiten sawit menipis.",mid:"Harga CPO sedang. Pantau stok dan ekspor Malaysia.",good:"CPO di atas RM4.800: laba emiten sawit terdorong naik."},
    impact:"Untuk: AALI, LSIP, TAPG, DSNG, SSMS"}
 ];
@@ -474,12 +474,16 @@ const dirty=new Set();
 
 function indItem(d){
   if(d.auto){
-    const q=market.indikator?.[d.key]; if(!q) return {};
-    const chg = num(q.prev) ? (q.v/q.prev-1)*100 : null;
-    return {v:q.v, t:q.t, chg, lama:q.lama||ageDays(q.t)>STALE_DAYS, auto:true};
+    const q=market.indikator?.[d.key];
+    if(q&&num(q.v)!=null){
+      const chg = num(q.prev) ? (q.v/q.prev-1)*100 : null;
+      return {v:q.v, t:q.t, tanggal:q.tanggal, arah:q.arah, sumber:q.sumber, chg, lama:q.lama||ageDays(q.diambil||q.t)>STALE_DAYS, auto:true};
+    }
   }
-  return manual.indikator?.[d.key]||{};
+  const m=manual.indikator?.[d.key];
+  return m&&num(m.v)!=null ? {...m, cadangan:!!d.auto} : {};
 }
+function tglPendek(iso){const x=new Date(iso+"T00:00:00");return isNaN(x)?"":x.toLocaleDateString("id-ID",{day:"numeric",month:"short"});}
 function zoneOf(def,item){
   if(!item||num(item.v)==null) return "none";
   if(def.arah){const a=item.arah;return a==="naik"?"bad":a==="turun"?"good":"mid";}
@@ -593,10 +597,11 @@ function renderInd(){
   $("ind").innerHTML=IND.map(d=>{
     const it=indItem(d), z=zoneOf(d,it), v=num(it.v), has=v!=null;
     const vtxt=has?`${d.pre?`<small style="margin:0 4px 0 0">${d.unit}</small>`:""}${d.sign&&v>0?"+":""}${fmt(v,d.dec)}${d.pre?"":`<small>${d.unit}</small>`}`:"Belum diisi";
-    const meta = d.auto
-      ? `<p class="ket">${has?`${chgHtml(it.chg)} vs kemarin · `:""}<span class="auto">otomatis${it.t?" · "+esc(wibTime(it.t)):""}</span>${it.lama?' · <span class="stale">data lama</span>':""}</p>`
-      : (it.ket?`<p class="ket">Keterangan: ${esc(it.ket)}</p>`:"");
-    const edit=(editing&&!d.auto)?`<div class="edit">
+    const kapan = it.tanggal ? (d.arah?"keputusan "+tglPendek(it.tanggal):tglPendek(it.tanggal)) : (it.t?wibTime(it.t):"");
+    const meta = it.auto
+      ? `<p class="ket">${has&&it.chg!=null?`${chgHtml(it.chg)} vs kemarin · `:""}<span class="auto">otomatis${kapan?" · "+esc(kapan):""}${it.sumber?" · "+esc(it.sumber):""}</span>${it.lama?' · <span class="stale">data lama</span>':""}</p>`
+      : (it.cadangan?`<p class="ket"><span class="stale">Sumber otomatis sedang gagal</span>, memakai isian manual${it.ket?": "+esc(it.ket):""}</p>`:(it.ket?`<p class="ket">Keterangan: ${esc(it.ket)}</p>`:""));
+    const edit=(editing&&!it.auto&&!["ihsg","us10y","dxy","usdidr","emas","brent","eido"].includes(d.key))?`<div class="edit">
       <input class="n" id="in-${d.key}-v" type="number" step="any" value="${has?v:""}" aria-label="Nilai ${esc(d.label)}">
       ${d.arah?`<select id="in-${d.key}-arah" aria-label="Arah terakhir">${["naik","tahan","turun"].map(a=>`<option value="${a}"${(it.arah||"tahan")===a?" selected":""}>${a}</option>`).join("")}</select>`:""}
       <input class="k" id="in-${d.key}-ket" value="${esc(it.ket||"")}" placeholder="keterangan, mis. 24 Sep" aria-label="Keterangan">
@@ -621,15 +626,16 @@ function saveInd(key){
 
 // ================= Tanda suku bunga turun =================
 function stepsData(){
-  const c=manual.ceklis||{};
+  const oc=market.ceklis||{}, mc=manual.ceklis||{};
+  const pilih=k=>oc[k]==null?{manual:true,done:!!mc[k]}:{manual:false,done:!!oc[k]};
   const auto=(k,test)=>{const d=IND.find(x=>x.key===k);const v=num(indItem(d).v);return v==null?null:test(v);};
   return [
-    {id:"cpi",label:"Inflasi AS (CPI/PCE) melambat",src:"Centang sendiri setelah rilis data",manual:true,done:!!c.cpi},
+    {id:"cpi",label:"Inflasi AS (CPI) melambat",src:oc.cpi_kalimat?"Otomatis: "+oc.cpi_kalimat:"Centang sendiri setelah rilis data",...pilih("cpi")},
     {id:"y",label:"Yield AS 10 tahun di bawah 5%",src:"Otomatis dari kartu yield",done:auto("us10y",v=>v<5)},
     {id:"dxy",label:"Indeks dolar di bawah 100",src:"Otomatis dari kartu DXY",done:auto("dxy",v=>v<100)},
     {id:"idr",label:"Rupiah kembali di bawah Rp17.000",src:"Otomatis dari kartu kurs",done:auto("usdidr",v=>v<17000)},
     {id:"oil",label:"Brent turun di bawah US$90",src:"Otomatis dari kartu minyak",done:auto("brent",v=>v<90)},
-    {id:"bi",label:"BI memberi sinyal pelonggaran",src:"Centang sendiri dari pernyataan RDG",manual:true,done:!!c.bi}
+    {id:"bi",label:"BI mulai menurunkan bunga",src:"Otomatis dari keputusan BI Rate terakhir",...pilih("bi")}
   ];
 }
 function renderSteps(){

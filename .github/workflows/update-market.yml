@@ -30,7 +30,7 @@ jobs:
         if: github.event.schedule == '0 1 * * 6'
         run: python scripts/backtest.py
 
-      - name: Ambil harga, hitung level teknikal, perbarui jurnal, kirim notifikasi
+      - name: Ambil harga & indikator, perbarui kalender, level teknikal, jurnal, notifikasi
         if: github.event.schedule != '0 1 * * 6'
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
         run: |
           git config user.name "meja-pantau-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/market.json data/sinyal.json data/jurnal.json data/notif.json data/backtest.json
+          git add data/market.json data/sinyal.json data/jurnal.json data/notif.json data/backtest.json data/agenda.json
           if git diff --cached --quiet; then
             echo "Tidak ada perubahan."
             exit 0
