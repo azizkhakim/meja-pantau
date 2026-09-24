@@ -1,0 +1,102 @@
+{
+  "_catatan": "Peta keterkaitan tema, indikator, dan acara dengan saham. Boleh diubah: tambah/hapus kode saham di 'tema', atau ubah aturan. Kode saham baru otomatis ikut dihitung robot pada pembaruan berikutnya.",
+  "tema": {
+    "suku_bunga_turun": {
+      "label": "Sensitif suku bunga",
+      "penjelasan": "Bank, properti, otomotif, dan jalan tol naik saat bunga dan yield turun.",
+      "saham": ["BBRI", "BMRI", "BBNI", "BBCA", "ASII", "JSMR", "CTRA", "BSDE", "PWON"]
+    },
+    "eksportir_dolar": {
+      "label": "Eksportir berpendapatan dolar",
+      "penjelasan": "Untung saat rupiah melemah karena pendapatan dalam dolar.",
+      "saham": ["PTBA", "AADI", "ITMG", "ANTM", "TINS"]
+    },
+    "emas": {
+      "label": "Emas",
+      "penjelasan": "Bergerak searah harga emas dunia.",
+      "saham": ["ANTM", "MDKA", "BRMS", "ARCI", "PSAB", "EMAS"]
+    },
+    "minyak": {
+      "label": "Minyak & gas",
+      "penjelasan": "Diuntungkan harga minyak tinggi.",
+      "saham": ["MEDC", "ENRG", "AKRA", "ELSA"]
+    },
+    "batubara": {
+      "label": "Batu bara",
+      "penjelasan": "Laba dan dividen naik saat harga batu bara tinggi.",
+      "saham": ["PTBA", "AADI", "ITMG", "INDY", "BUMI"]
+    },
+    "timah": {
+      "label": "Timah",
+      "penjelasan": "Bergerak searah harga timah LME.",
+      "saham": ["TINS"]
+    },
+    "defensif": {
+      "label": "Defensif",
+      "penjelasan": "Kebutuhan pokok dan telekomunikasi; cenderung tahan saat pasar tertekan.",
+      "saham": ["TLKM", "ICBP", "INDF", "KLBF", "MYOR"]
+    }
+  },
+  "aturan_indikator": [
+    {"tema": "emas", "ind": "emas", "zona": ["good"], "alasan": "Emas di atas 4.440"},
+    {"tema": "timah", "ind": "timah", "zona": ["good"], "alasan": "Harga timah tinggi"},
+    {"tema": "batubara", "ind": "batubara", "zona": ["good"], "alasan": "Harga batu bara tinggi"},
+    {"tema": "minyak", "ind": "brent", "zona": ["bad"], "alasan": "Minyak di atas US$95"},
+    {"tema": "eksportir_dolar", "ind": "usdidr", "zona": ["bad"], "alasan": "Rupiah di atas Rp17.500"},
+    {"tema": "suku_bunga_turun", "ind": "us10y", "zona": ["good"], "alasan": "Yield AS di bawah 4,5%"},
+    {"tema": "suku_bunga_turun", "ind": "birate", "arah": "turun", "alasan": "BI menurunkan bunga"},
+    {"tema": "suku_bunga_turun", "ind": "fedfunds", "arah": "turun", "alasan": "The Fed menurunkan bunga"},
+    {"tema": "defensif", "sikap": "bad", "alasan": "Sikap pasar: bertahan"}
+  ],
+  "acara": [
+    {
+      "kata": ["tenaga kerja", "nfp"],
+      "skenario": [
+        {"kondisi": "Lebih kuat dari perkiraan", "efek": "Yield dan dolar naik, peluang The Fed menaikkan bunga bertambah", "diuntungkan": ["eksportir_dolar"], "tertekan": ["suku_bunga_turun", "emas"]},
+        {"kondisi": "Lebih lemah dari perkiraan", "efek": "Yield turun, dolar melemah, harapan bunga turun", "diuntungkan": ["suku_bunga_turun", "emas"], "tertekan": ["eksportir_dolar"]}
+      ]
+    },
+    {
+      "kata": ["cpi", "pce", "ppi", "inflasi as", "inflasi produsen"],
+      "skenario": [
+        {"kondisi": "Inflasi di atas perkiraan", "efek": "The Fed makin ketat, yield naik", "diuntungkan": ["eksportir_dolar"], "tertekan": ["suku_bunga_turun", "emas"]},
+        {"kondisi": "Inflasi di bawah perkiraan", "efek": "Ruang bunga turun terbuka, yield turun", "diuntungkan": ["suku_bunga_turun", "emas"], "tertekan": []}
+      ]
+    },
+    {
+      "kata": ["pdb as"],
+      "skenario": [
+        {"kondisi": "Ekonomi AS tumbuh kuat", "efek": "Yield naik, dolar menguat", "diuntungkan": ["eksportir_dolar"], "tertekan": ["suku_bunga_turun"]},
+        {"kondisi": "Ekonomi AS melambat", "efek": "Yield turun, harapan bunga turun", "diuntungkan": ["suku_bunga_turun", "emas"], "tertekan": ["batubara", "minyak"]}
+      ]
+    },
+    {
+      "kata": ["the fed", "fomc"],
+      "skenario": [
+        {"kondisi": "Menaikkan bunga / nada ketat", "efek": "Dolar menguat, dana asing keluar dari pasar berkembang", "diuntungkan": ["defensif", "eksportir_dolar"], "tertekan": ["suku_bunga_turun", "emas"]},
+        {"kondisi": "Menahan / nada lebih lunak", "efek": "Tekanan global mereda, yield turun", "diuntungkan": ["suku_bunga_turun", "emas"], "tertekan": []}
+      ]
+    },
+    {
+      "kata": ["bi rate", "rdg"],
+      "skenario": [
+        {"kondisi": "BI menurunkan bunga", "efek": "Kredit lebih murah; saham sensitif bunga naik", "diuntungkan": ["suku_bunga_turun"], "tertekan": []},
+        {"kondisi": "BI menahan / menaikkan bunga", "efek": "Rupiah dijaga, pertumbuhan kredit tertahan", "diuntungkan": ["defensif", "eksportir_dolar"], "tertekan": ["suku_bunga_turun"]}
+      ]
+    },
+    {
+      "kata": ["inflasi indonesia"],
+      "skenario": [
+        {"kondisi": "Inflasi rendah", "efek": "Ruang BI menurunkan bunga", "diuntungkan": ["suku_bunga_turun"], "tertekan": []},
+        {"kondisi": "Inflasi naik", "efek": "BI cenderung menahan bunga", "diuntungkan": ["defensif"], "tertekan": ["suku_bunga_turun"]}
+      ]
+    },
+    {
+      "kata": ["pertumbuhan ekonomi indonesia", "pdb indonesia"],
+      "skenario": [
+        {"kondisi": "Tumbuh di atas perkiraan", "efek": "Laba emiten domestik membaik", "diuntungkan": ["suku_bunga_turun"], "tertekan": []},
+        {"kondisi": "Melambat", "efek": "Tekanan ke BI untuk melonggarkan bunga", "diuntungkan": ["defensif"], "tertekan": ["suku_bunga_turun"]}
+      ]
+    }
+  ]
+}

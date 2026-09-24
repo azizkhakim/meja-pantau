@@ -1,10 +1,10 @@
 # Meja Pantau
 
-Halaman pemantauan pribadi untuk IHSG, makro, dan daftar saham. Berjalan gratis di GitHub, tanpa server dan tanpa langganan apa pun.
+Halaman pemantauan pribadi untuk IHSG, makro, dan kalender acara penting. Berjalan gratis di GitHub, tanpa server dan tanpa langganan apa pun.
 
 - **Halaman:** `index.html`, ditampilkan oleh GitHub Pages.
 - **Harga otomatis:** GitHub Actions menjalankan `scripts/update_market.py` Senin–Jumat pukul 07.30, 12.30, 16.30, dan 20.30 WIB. Harga diambil dari Yahoo Finance lalu disimpan ke `data/market.json`.
-- **Data yang kamu isi sendiri:** `data/manual.json` (BI Rate, suku bunga The Fed, net asing, timah, batu bara, dan dua centang), `data/saham.json` (daftar pantau), `data/agenda.json` (kalender).
+- **Data yang kamu isi sendiri:** `data/manual.json` (BI Rate, suku bunga The Fed, net asing, timah, batu bara, dan dua centang) dan `data/agenda.json` (kalender).
 
 Bukan rekomendasi jual atau beli. Keputusan dan risikonya tetap di tanganmu.
 
@@ -70,9 +70,8 @@ Kalau langkah ini gagal dengan pesan izin, buka **Settings → Actions → Gener
 | Lihat kondisi pasar | Buka halaman. Harga otomatis diperbarui 4× sehari pada hari kerja. |
 | Harga terbaru sekarang juga | Tombol **Perbarui harga sekarang**, tunggu 2–3 menit, lalu muat ulang halaman |
 | Ubah BI Rate, suku bunga The Fed, net asing, timah, batu bara | **Ubah data** → isi di kartunya → **Simpan ke GitHub** |
-| Tambah atau ubah saham, harga beli, batas rugi, target | **Ubah data** → tabel daftar pantau → **Simpan ke GitHub** |
-| Tambah acara ke kalender | **Lihat semua acara** → **Ubah data** → form di bawah kalender → **Simpan ke GitHub** |
-| Isi modal dan risiko | Kolom di atas tabel. Hanya tersimpan di browser itu, tidak dikirim ke GitHub, karena repo ini publik. |
+| Lihat acara di tanggal tertentu | Klik tanggalnya di kalender. Detailnya muncul di kotak kanan. |
+| Tambah acara ke kalender | **Ubah data** → klik tanggalnya → isi form di bawah kalender → **Simpan ke GitHub** |
 
 Kalau belum sempat klik simpan, perubahan disimpan sementara di browser dan muncul lagi saat halaman dibuka.
 
@@ -92,7 +91,6 @@ Kalau belum sempat klik simpan, perubahan disimpan sementara di browser dan munc
 | Gejala | Penyebab & solusi |
 |---|---|
 | Harga tidak berubah berhari-hari, ada tanda "data lama" | Buka tab **Actions**. Kalau ada tanda silang merah, klik untuk melihat pesannya. Kalau muncul *"This scheduled workflow is disabled"*, klik **Enable workflow**. GitHub mematikan jadwal otomatis kalau repo publik tidak ada aktivitas 60 hari. |
-| Satu saham tidak ada harganya | Pastikan kodenya benar (misalnya `BBRI`, bukan `BRI`). Saham baru mendapat harga setelah pembaruan berikutnya. |
 | Semua harga gagal ("gagal" di log Actions) | Yahoo Finance mungkin mengubah cara aksesnya. Data lama tetap tampil. Periksa `scripts/update_market.py`, bagian `URL`. |
 | "Token ditolak (401)" | Token kedaluwarsa. Buat token baru (langkah 2) lalu tempel lagi di pengaturan halaman. |
 | "Akses ditolak (403/404)" | Token belum punya izin Contents/Actions **Read and write**, atau dibuat untuk repo lain. |
@@ -122,7 +120,6 @@ Di `scripts/update_market.py`, tambahkan baris di `INDIKATOR` (kunci → simbol 
 index.html                       halaman
 data/market.json                 harga otomatis (jangan diedit manual)
 data/manual.json                 indikator manual + centang
-data/saham.json                  daftar pantau
 data/agenda.json                 kalender
 scripts/update_market.py         pengambil harga
 .github/workflows/update-market.yml   jadwal otomatis

@@ -24,14 +24,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Ambil harga terbaru
+      - name: Ambil harga terbaru & hitung level teknikal
         run: python scripts/update_market.py
 
       - name: Simpan kalau ada perubahan
         run: |
           git config user.name "meja-pantau-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/market.json
+          git add data/market.json data/sinyal.json
           if git diff --cached --quiet; then
             echo "Tidak ada perubahan."
             exit 0
