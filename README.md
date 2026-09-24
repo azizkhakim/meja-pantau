@@ -86,6 +86,34 @@ Kalau belum sempat klik simpan, perubahan disimpan sementara di browser dan munc
 
 ---
 
+## Saham layak dipantau: cara kerja & rapor
+
+- **Peta keterkaitan** (`data/peta.json`): tema (emas, batu bara, sawit, dan lainnya), saham anggotanya, aturan kapan tema aktif, dan skenario tiap acara. Tambah atau hapus kode saham di sini.
+- **Level teknikal** dihitung robot 4× sehari (`scripts/update_market.py`, fungsi `setup_teknikal`). Kandidat hanya muncul kalau: tren naik dengan MA50 menanjak, lebih kuat dari IHSG dalam 60 hari, harga kembali dekat MA20, RSI < 75, cut loss ≤ 9%, transaksi ≥ Rp5 miliar/hari, **dan IHSG di atas MA50**.
+- **Rencana keluar:** jual separuh di TP1 lalu pindahkan cut loss ke harga beli, sisanya di TP2. Tutup setelah 20 hari bursa.
+- **Rapor aturan (backtest)**: `scripts/backtest.py` menguji aturan yang sama pada data 2 tahun. Jalan otomatis setiap Sabtu pagi. Hasilnya tampil di halaman. Aturan tanpa filter IHSG dan kekuatan relatif terbukti rugi, jadi jangan dilonggarkan tanpa menguji ulang.
+- **Jurnal sinyal** (`data/jurnal.json`): setiap kandidat yang lolos semua syarat dicatat otomatis, lalu statusnya diikuti sampai selesai. Ini rapor nyata dari waktu ke waktu.
+
+Menguji perubahan aturan sendiri: ubah angka di bagian atas `scripts/update_market.py`, lalu jalankan `python3 scripts/backtest.py` dan bandingkan hasilnya sebelum dikirim.
+
+---
+
+## Notifikasi Telegram (gratis, sekali atur ±5 menit)
+
+Robot mengirim pesan saat: ada kandidat baru, order terisi, TP1/TP2 atau cut loss tersentuh, IHSG naik/turun melewati MA50, dan pagi hari sebelum acara berdampak tinggi (H-1 dan hari-H).
+
+1. Di Telegram, buka **@BotFather** → kirim `/newbot` → beri nama, misalnya `Meja Pantau Aziz`, dan username yang berakhiran `bot`. Salin **token** yang diberikan (bentuknya `123456789:AA...`).
+2. Buka bot barumu dan kirim pesan apa saja, misalnya `halo`.
+3. Buka di browser: `https://api.telegram.org/botTOKEN/getUpdates` (ganti `TOKEN`). Cari `"chat":{"id":` lalu salin angkanya. Itu **chat ID**.
+4. Di repo GitHub: **Settings → Secrets and variables → Actions → New repository secret**, buat dua secret:
+   - `TELEGRAM_TOKEN` = token dari langkah 1
+   - `TELEGRAM_CHAT_ID` = angka dari langkah 3
+5. Tes: **Actions → Perbarui data pasar → Run workflow**. Pesan hanya dikirim kalau ada kejadian baru, jadi tidak ada pesan juga normal.
+
+Secret tidak ikut terlihat di repo publik.
+
+---
+
 ## Kalau ada masalah
 
 | Gejala | Penyebab & solusi |
@@ -121,6 +149,12 @@ index.html                       halaman
 data/market.json                 harga otomatis (jangan diedit manual)
 data/manual.json                 indikator manual + centang
 data/agenda.json                 kalender
+data/peta.json                   peta tema, indikator, acara → saham
+data/sinyal.json                 level teknikal tiap saham (otomatis)
+data/jurnal.json                 jurnal sinyal (otomatis)
+data/backtest.json               rapor aturan (otomatis tiap Sabtu)
+data/notif.json                  catatan notifikasi terkirim (otomatis)
+scripts/backtest.py              uji aturan pada data 2 tahun
 scripts/update_market.py         pengambil harga
 .github/workflows/update-market.yml   jadwal otomatis
 ```

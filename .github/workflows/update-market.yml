@@ -4,6 +4,8 @@ on:
   schedule:
     # Senin–Jumat pukul 07.30, 12.30, 16.30, 20.30 WIB (jadwal GitHub memakai UTC = WIB - 7)
     - cron: "30 0,5,9,13 * * 1-5"
+    # Sabtu 08.00 WIB: uji ulang aturan (backtest) dengan data terbaru
+    - cron: "0 1 * * 6"
   workflow_dispatch: {}   # tombol "Run workflow" / "Perbarui harga sekarang" di halaman
 
 permissions:
@@ -16,7 +18,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -24,14 +26,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Ambil harga terbaru & hitung level teknikal
+      - name: Uji ulang aturan (Sabtu)
+        if: github.event.schedule == '0 1 * * 6'
+        run: python scripts/backtest.py
+
+      - name: Ambil harga, hitung level teknikal, perbarui jurnal, kirim notifikasi
+        if: github.event.schedule != '0 1 * * 6'
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scripts/update_market.py
 
       - name: Simpan kalau ada perubahan
         run: |
           git config user.name "meja-pantau-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/market.json data/sinyal.json
+          git add data/market.json data/sinyal.json data/jurnal.json data/notif.json data/backtest.json
           if git diff --cached --quiet; then
             echo "Tidak ada perubahan."
             exit 0

@@ -1,0 +1,1184 @@
+{
+ "dibuat": "2026-09-24T09:38:42.417272+00:00",
+ "periode": "2 tahun terakhir (60 hari pertama untuk pemanasan indikator)",
+ "asumsi": "Order berlaku 5 hari; cut loss diutamakan kalau bersamaan dengan target; maks. 20 hari; biaya beli 0,15% + jual 0,25%.",
+ "ihsg_pct": -11.4,
+ "semua": {
+  "A": {
+   "n": 176,
+   "menang_pct": 55.1,
+   "rata_pct": 0.81,
+   "rata_R": 0.08,
+   "profit_factor": 1.25,
+   "rata_hari": 9.2,
+   "cut_loss": 60
+  },
+  "B": {
+   "n": 176,
+   "menang_pct": 55.1,
+   "rata_pct": 1.13,
+   "rata_R": 0.12,
+   "profit_factor": 1.35,
+   "rata_hari": 11.4,
+   "cut_loss": 60
+  }
+ },
+ "paruh": {
+  "belah": "2025-10-13",
+  "awal": {
+   "n": 88,
+   "menang_pct": 52.3,
+   "rata_pct": 0.78,
+   "rata_R": 0.14,
+   "profit_factor": 1.23,
+   "rata_hari": 11.9,
+   "cut_loss": 31
+  },
+  "akhir": {
+   "n": 88,
+   "menang_pct": 58.0,
+   "rata_pct": 1.47,
+   "rata_R": 0.1,
+   "profit_factor": 1.49,
+   "rata_hari": 10.9,
+   "cut_loss": 29
+  }
+ },
+ "per_tema": {
+  "suku_bunga_turun": {
+   "label": "Sensitif suku bunga",
+   "A": {
+    "n": 30,
+    "menang_pct": 43.3,
+    "rata_pct": -2.08,
+    "rata_R": -0.18,
+    "profit_factor": 0.48,
+    "rata_hari": 10.5,
+    "cut_loss": 14
+   },
+   "B": {
+    "n": 30,
+    "menang_pct": 43.3,
+    "rata_pct": -2.23,
+    "rata_R": -0.21,
+    "profit_factor": 0.44,
+    "rata_hari": 12.0,
+    "cut_loss": 14
+   }
+  },
+  "eksportir_dolar": {
+   "label": "Eksportir berpendapatan dolar",
+   "A": {
+    "n": 16,
+    "menang_pct": 75.0,
+    "rata_pct": 3.5,
+    "rata_R": 0.47,
+    "profit_factor": 2.75,
+    "rata_hari": 6.4,
+    "cut_loss": 4
+   },
+   "B": {
+    "n": 16,
+    "menang_pct": 75.0,
+    "rata_pct": 3.74,
+    "rata_R": 0.52,
+    "profit_factor": 2.87,
+    "rata_hari": 10.4,
+    "cut_loss": 4
+   }
+  },
+  "emas": {
+   "label": "Emas",
+   "A": {
+    "n": 25,
+    "menang_pct": 68.0,
+    "rata_pct": 3.03,
+    "rata_R": 0.47,
+    "profit_factor": 2.03,
+    "rata_hari": 7.0,
+    "cut_loss": 8
+   },
+   "B": {
+    "n": 25,
+    "menang_pct": 68.0,
+    "rata_pct": 3.94,
+    "rata_R": 0.59,
+    "profit_factor": 2.34,
+    "rata_hari": 9.0,
+    "cut_loss": 8
+   }
+  },
+  "minyak": {
+   "label": "Minyak & gas",
+   "A": {
+    "n": 24,
+    "menang_pct": 50.0,
+    "rata_pct": 0.03,
+    "rata_R": -0.49,
+    "profit_factor": 1.01,
+    "rata_hari": 7.9,
+    "cut_loss": 9
+   },
+   "B": {
+    "n": 24,
+    "menang_pct": 50.0,
+    "rata_pct": 0.46,
+    "rata_R": -0.46,
+    "profit_factor": 1.12,
+    "rata_hari": 9.4,
+    "cut_loss": 9
+   }
+  },
+  "batubara": {
+   "label": "Batu bara",
+   "A": {
+    "n": 24,
+    "menang_pct": 58.3,
+    "rata_pct": 1.56,
+    "rata_R": 0.29,
+    "profit_factor": 1.48,
+    "rata_hari": 8.0,
+    "cut_loss": 7
+   },
+   "B": {
+    "n": 24,
+    "menang_pct": 58.3,
+    "rata_pct": 2.29,
+    "rata_R": 0.37,
+    "profit_factor": 1.71,
+    "rata_hari": 11.5,
+    "cut_loss": 7
+   }
+  },
+  "timah": {
+   "label": "Timah",
+   "A": {
+    "n": 6,
+    "menang_pct": 83.3,
+    "rata_pct": 6.44,
+    "rata_R": 0.58,
+    "profit_factor": 4.91,
+    "rata_hari": 6.3,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 83.3,
+    "rata_pct": 6.81,
+    "rata_R": 0.63,
+    "profit_factor": 5.13,
+    "rata_hari": 10.5,
+    "cut_loss": 1
+   }
+  },
+  "nikel": {
+   "label": "Nikel",
+   "A": {
+    "n": 12,
+    "menang_pct": 66.7,
+    "rata_pct": 3.39,
+    "rata_R": 0.43,
+    "profit_factor": 2.35,
+    "rata_hari": 8.7,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 12,
+    "menang_pct": 66.7,
+    "rata_pct": 3.03,
+    "rata_R": 0.4,
+    "profit_factor": 2.21,
+    "rata_hari": 14.6,
+    "cut_loss": 2
+   }
+  },
+  "sawit": {
+   "label": "Sawit (CPO)",
+   "A": {
+    "n": 22,
+    "menang_pct": 59.1,
+    "rata_pct": 1.27,
+    "rata_R": 0.22,
+    "profit_factor": 1.47,
+    "rata_hari": 10.0,
+    "cut_loss": 7
+   },
+   "B": {
+    "n": 22,
+    "menang_pct": 59.1,
+    "rata_pct": 1.61,
+    "rata_R": 0.28,
+    "profit_factor": 1.59,
+    "rata_hari": 11.7,
+    "cut_loss": 7
+   }
+  },
+  "defensif": {
+   "label": "Defensif",
+   "A": {
+    "n": 33,
+    "menang_pct": 45.5,
+    "rata_pct": -0.48,
+    "rata_R": -0.03,
+    "profit_factor": 0.84,
+    "rata_hari": 11.6,
+    "cut_loss": 12
+   },
+   "B": {
+    "n": 33,
+    "menang_pct": 45.5,
+    "rata_pct": -0.37,
+    "rata_R": -0.02,
+    "profit_factor": 0.88,
+    "rata_hari": 12.6,
+    "cut_loss": 12
+   }
+  }
+ },
+ "per_saham": {
+  "AADI": {
+   "A": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 2.97,
+    "rata_R": 0.27,
+    "profit_factor": 2.43,
+    "rata_hari": 7.7,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 4.44,
+    "rata_R": 0.46,
+    "profit_factor": 3.14,
+    "rata_hari": 11.3,
+    "cut_loss": 1
+   }
+  },
+  "AALI": {
+   "A": {
+    "n": 4,
+    "menang_pct": 25.0,
+    "rata_pct": -0.83,
+    "rata_R": -0.17,
+    "profit_factor": 0.63,
+    "rata_hari": 13.8,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 25.0,
+    "rata_pct": -0.22,
+    "rata_R": -0.08,
+    "profit_factor": 0.9,
+    "rata_hari": 13.8,
+    "cut_loss": 1
+   }
+  },
+  "ADMR": {
+   "A": {
+    "n": 6,
+    "menang_pct": 50.0,
+    "rata_pct": 0.85,
+    "rata_R": 0.27,
+    "profit_factor": 1.32,
+    "rata_hari": 10.2,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 50.0,
+    "rata_pct": 1.19,
+    "rata_R": 0.33,
+    "profit_factor": 1.44,
+    "rata_hari": 13.7,
+    "cut_loss": 1
+   }
+  },
+  "AKRA": {
+   "A": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": 0.55,
+    "rata_R": 0.3,
+    "profit_factor": 1.22,
+    "rata_hari": 11.2,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": -0.83,
+    "rata_R": 0.06,
+    "profit_factor": 0.66,
+    "rata_hari": 12.5,
+    "cut_loss": 1
+   }
+  },
+  "AMRT": {
+   "A": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -6.02,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 4.0,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -6.02,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 4.0,
+    "cut_loss": 1
+   }
+  },
+  "ANTM": {
+   "A": {
+    "n": 5,
+    "menang_pct": 60.0,
+    "rata_pct": 0.19,
+    "rata_R": 0.3,
+    "profit_factor": 1.06,
+    "rata_hari": 5.2,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 60.0,
+    "rata_pct": -0.8,
+    "rata_R": 0.18,
+    "profit_factor": 0.75,
+    "rata_hari": 6.8,
+    "cut_loss": 2
+   }
+  },
+  "ARCI": {
+   "A": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 5.26,
+    "rata_R": 0.69,
+    "profit_factor": 3.14,
+    "rata_hari": 8.0,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 11.24,
+    "rata_R": 1.54,
+    "profit_factor": 5.58,
+    "rata_hari": 9.7,
+    "cut_loss": 1
+   }
+  },
+  "ASII": {
+   "A": {
+    "n": 5,
+    "menang_pct": 80.0,
+    "rata_pct": 3.63,
+    "rata_R": 0.54,
+    "profit_factor": 5.18,
+    "rata_hari": 16.0,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 80.0,
+    "rata_pct": 4.58,
+    "rata_R": 0.71,
+    "profit_factor": 6.27,
+    "rata_hari": 18.2,
+    "cut_loss": 0
+   }
+  },
+  "BBCA": {
+   "A": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 0.7,
+    "rata_R": 0.21,
+    "profit_factor": 1.42,
+    "rata_hari": 10.7,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 1.22,
+    "rata_R": 0.33,
+    "profit_factor": 1.73,
+    "rata_hari": 11.3,
+    "cut_loss": 1
+   }
+  },
+  "BBNI": {
+   "A": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -4.12,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 4.0,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -4.12,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 4.0,
+    "cut_loss": 1
+   }
+  },
+  "BBRI": {
+   "A": {
+    "n": 4,
+    "menang_pct": 50.0,
+    "rata_pct": -0.7,
+    "rata_R": -0.02,
+    "profit_factor": 0.72,
+    "rata_hari": 4.0,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 50.0,
+    "rata_pct": -0.83,
+    "rata_R": -0.05,
+    "profit_factor": 0.67,
+    "rata_hari": 6.8,
+    "cut_loss": 2
+   }
+  },
+  "BBTN": {
+   "A": {
+    "n": 3,
+    "menang_pct": 0.0,
+    "rata_pct": -9.37,
+    "rata_R": -1.02,
+    "profit_factor": 0.0,
+    "rata_hari": 8.7,
+    "cut_loss": 3
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 0.0,
+    "rata_pct": -9.37,
+    "rata_R": -1.02,
+    "profit_factor": 0.0,
+    "rata_hari": 8.7,
+    "cut_loss": 3
+   }
+  },
+  "BMRI": {
+   "A": {
+    "n": 4,
+    "menang_pct": 50.0,
+    "rata_pct": -1.93,
+    "rata_R": -0.41,
+    "profit_factor": 0.43,
+    "rata_hari": 9.5,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 50.0,
+    "rata_pct": -2.46,
+    "rata_R": -0.54,
+    "profit_factor": 0.27,
+    "rata_hari": 11.8,
+    "cut_loss": 2
+   }
+  },
+  "BRIS": {
+   "A": {
+    "n": 0
+   },
+   "B": {
+    "n": 0
+   }
+  },
+  "BRMS": {
+   "A": {
+    "n": 6,
+    "menang_pct": 100.0,
+    "rata_pct": 8.48,
+    "rata_R": 1.04,
+    "profit_factor": null,
+    "rata_hari": 8.2,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 100.0,
+    "rata_pct": 9.21,
+    "rata_R": 1.14,
+    "profit_factor": null,
+    "rata_hari": 10.0,
+    "cut_loss": 0
+   }
+  },
+  "BSDE": {
+   "A": {
+    "n": 2,
+    "menang_pct": 0.0,
+    "rata_pct": -9.78,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 12.0,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 2,
+    "menang_pct": 0.0,
+    "rata_pct": -9.78,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 12.0,
+    "cut_loss": 2
+   }
+  },
+  "BUMI": {
+   "A": {
+    "n": 5,
+    "menang_pct": 60.0,
+    "rata_pct": 1.99,
+    "rata_R": 0.19,
+    "profit_factor": 1.51,
+    "rata_hari": 7.0,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 60.0,
+    "rata_pct": 4.78,
+    "rata_R": 0.46,
+    "profit_factor": 2.23,
+    "rata_hari": 9.0,
+    "cut_loss": 2
+   }
+  },
+  "CTRA": {
+   "A": {
+    "n": 3,
+    "menang_pct": 33.3,
+    "rata_pct": -2.41,
+    "rata_R": -0.12,
+    "profit_factor": 0.38,
+    "rata_hari": 13.0,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 33.3,
+    "rata_pct": -3.2,
+    "rata_R": -0.26,
+    "profit_factor": 0.17,
+    "rata_hari": 13.7,
+    "cut_loss": 1
+   }
+  },
+  "DSNG": {
+   "A": {
+    "n": 3,
+    "menang_pct": 100.0,
+    "rata_pct": 9.74,
+    "rata_R": 1.15,
+    "profit_factor": null,
+    "rata_hari": 7.0,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 100.0,
+    "rata_pct": 10.2,
+    "rata_R": 1.19,
+    "profit_factor": null,
+    "rata_hari": 10.0,
+    "cut_loss": 0
+   }
+  },
+  "ELSA": {
+   "A": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": -0.64,
+    "rata_R": 0.07,
+    "profit_factor": 0.8,
+    "rata_hari": 10.8,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": -0.87,
+    "rata_R": 0.07,
+    "profit_factor": 0.73,
+    "rata_hari": 13.0,
+    "cut_loss": 1
+   }
+  },
+  "EMAS": {
+   "A": {
+    "n": 0
+   },
+   "B": {
+    "n": 0
+   }
+  },
+  "ENRG": {
+   "A": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": -2.68,
+    "rata_R": -2.76,
+    "profit_factor": 0.61,
+    "rata_hari": 3.2,
+    "cut_loss": 3
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": -3.08,
+    "rata_R": -2.82,
+    "profit_factor": 0.55,
+    "rata_hari": 4.6,
+    "cut_loss": 3
+   }
+  },
+  "EXCL": {
+   "A": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": -0.06,
+    "rata_R": -0.11,
+    "profit_factor": 0.98,
+    "rata_hari": 8.2,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": 1.29,
+    "rata_R": 0.04,
+    "profit_factor": 1.41,
+    "rata_hari": 8.4,
+    "cut_loss": 2
+   }
+  },
+  "HRUM": {
+   "A": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": -1.56,
+    "rata_R": -0.09,
+    "profit_factor": 0.69,
+    "rata_hari": 8.2,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 40.0,
+    "rata_pct": -1.81,
+    "rata_R": -0.1,
+    "profit_factor": 0.64,
+    "rata_hari": 11.6,
+    "cut_loss": 2
+   }
+  },
+  "ICBP": {
+   "A": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -4.99,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 2.0,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -4.99,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 2.0,
+    "cut_loss": 1
+   }
+  },
+  "INCO": {
+   "A": {
+    "n": 7,
+    "menang_pct": 57.1,
+    "rata_pct": 2.23,
+    "rata_R": 0.34,
+    "profit_factor": 1.78,
+    "rata_hari": 11.9,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 7,
+    "menang_pct": 57.1,
+    "rata_pct": 2.44,
+    "rata_R": 0.39,
+    "profit_factor": 1.85,
+    "rata_hari": 14.0,
+    "cut_loss": 1
+   }
+  },
+  "INDF": {
+   "A": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": 0.95,
+    "rata_R": 0.28,
+    "profit_factor": 1.92,
+    "rata_hari": 10.5,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": 0.0,
+    "rata_R": 0.05,
+    "profit_factor": 1.0,
+    "rata_hari": 11.5,
+    "cut_loss": 1
+   }
+  },
+  "INDY": {
+   "A": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 4.57,
+    "rata_R": 0.78,
+    "profit_factor": 2.28,
+    "rata_hari": 5.7,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 3.3,
+    "rata_R": 0.5,
+    "profit_factor": 1.92,
+    "rata_hari": 7.7,
+    "cut_loss": 1
+   }
+  },
+  "ISAT": {
+   "A": {
+    "n": 4,
+    "menang_pct": 50.0,
+    "rata_pct": -0.86,
+    "rata_R": 0.03,
+    "profit_factor": 0.72,
+    "rata_hari": 16.2,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 50.0,
+    "rata_pct": -0.27,
+    "rata_R": 0.12,
+    "profit_factor": 0.91,
+    "rata_hari": 16.5,
+    "cut_loss": 1
+   }
+  },
+  "ITMG": {
+   "A": {
+    "n": 1,
+    "menang_pct": 100.0,
+    "rata_pct": 3.16,
+    "rata_R": 0.92,
+    "profit_factor": null,
+    "rata_hari": 7.0,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 1,
+    "menang_pct": 100.0,
+    "rata_pct": 4.68,
+    "rata_R": 1.32,
+    "profit_factor": null,
+    "rata_hari": 15.0,
+    "cut_loss": 0
+   }
+  },
+  "JSMR": {
+   "A": {
+    "n": 2,
+    "menang_pct": 0.0,
+    "rata_pct": -8.16,
+    "rata_R": -1.01,
+    "profit_factor": 0.0,
+    "rata_hari": 12.5,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 2,
+    "menang_pct": 0.0,
+    "rata_pct": -8.16,
+    "rata_R": -1.01,
+    "profit_factor": 0.0,
+    "rata_hari": 12.5,
+    "cut_loss": 2
+   }
+  },
+  "KLBF": {
+   "A": {
+    "n": 3,
+    "menang_pct": 0.0,
+    "rata_pct": -6.46,
+    "rata_R": -0.75,
+    "profit_factor": 0.0,
+    "rata_hari": 14.7,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 0.0,
+    "rata_pct": -6.46,
+    "rata_R": -0.75,
+    "profit_factor": 0.0,
+    "rata_hari": 14.7,
+    "cut_loss": 2
+   }
+  },
+  "LSIP": {
+   "A": {
+    "n": 5,
+    "menang_pct": 80.0,
+    "rata_pct": 4.28,
+    "rata_R": 0.54,
+    "profit_factor": 5.14,
+    "rata_hari": 9.4,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 80.0,
+    "rata_pct": 3.4,
+    "rata_R": 0.45,
+    "profit_factor": 4.28,
+    "rata_hari": 13.2,
+    "cut_loss": 1
+   }
+  },
+  "MBMA": {
+   "A": {
+    "n": 1,
+    "menang_pct": 100.0,
+    "rata_pct": 8.06,
+    "rata_R": 0.87,
+    "profit_factor": null,
+    "rata_hari": 7.0,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 1,
+    "menang_pct": 100.0,
+    "rata_pct": 3.83,
+    "rata_R": 0.43,
+    "profit_factor": null,
+    "rata_hari": 15.0,
+    "cut_loss": 0
+   }
+  },
+  "MDKA": {
+   "A": {
+    "n": 6,
+    "menang_pct": 50.0,
+    "rata_pct": -0.4,
+    "rata_R": 0.02,
+    "profit_factor": 0.92,
+    "rata_hari": 7.0,
+    "cut_loss": 3
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 50.0,
+    "rata_pct": -0.24,
+    "rata_R": 0.02,
+    "profit_factor": 0.95,
+    "rata_hari": 9.8,
+    "cut_loss": 3
+   }
+  },
+  "MEDC": {
+   "A": {
+    "n": 6,
+    "menang_pct": 33.3,
+    "rata_pct": -1.67,
+    "rata_R": -0.36,
+    "profit_factor": 0.6,
+    "rata_hari": 4.7,
+    "cut_loss": 4
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 33.3,
+    "rata_pct": -0.58,
+    "rata_R": -0.23,
+    "profit_factor": 0.86,
+    "rata_hari": 6.5,
+    "cut_loss": 4
+   }
+  },
+  "MYOR": {
+   "A": {
+    "n": 2,
+    "menang_pct": 0.0,
+    "rata_pct": -8.52,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 13.0,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 2,
+    "menang_pct": 0.0,
+    "rata_pct": -8.52,
+    "rata_R": -1.0,
+    "profit_factor": 0.0,
+    "rata_hari": 13.0,
+    "cut_loss": 2
+   }
+  },
+  "NCKL": {
+   "A": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": 4.24,
+    "rata_R": 0.48,
+    "profit_factor": 2.71,
+    "rata_hari": 3.5,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": 3.86,
+    "rata_R": 0.43,
+    "profit_factor": 2.55,
+    "rata_hari": 15.5,
+    "cut_loss": 1
+   }
+  },
+  "PSAB": {
+   "A": {
+    "n": 5,
+    "menang_pct": 60.0,
+    "rata_pct": 2.13,
+    "rata_R": 0.38,
+    "profit_factor": 1.54,
+    "rata_hari": 6.8,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 5,
+    "menang_pct": 60.0,
+    "rata_pct": 3.01,
+    "rata_R": 0.43,
+    "profit_factor": 1.77,
+    "rata_hari": 8.6,
+    "cut_loss": 2
+   }
+  },
+  "PTBA": {
+   "A": {
+    "n": 1,
+    "menang_pct": 100.0,
+    "rata_pct": 4.38,
+    "rata_R": 0.87,
+    "profit_factor": null,
+    "rata_hari": 8.0,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 1,
+    "menang_pct": 100.0,
+    "rata_pct": 4.93,
+    "rata_R": 0.97,
+    "profit_factor": null,
+    "rata_hari": 20.0,
+    "cut_loss": 0
+   }
+  },
+  "PWON": {
+   "A": {
+    "n": 0
+   },
+   "B": {
+    "n": 0
+   }
+  },
+  "RAJA": {
+   "A": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": 6.31,
+    "rata_R": 0.68,
+    "profit_factor": 6.04,
+    "rata_hari": 11.5,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 4,
+    "menang_pct": 75.0,
+    "rata_pct": 9.41,
+    "rata_R": 0.99,
+    "profit_factor": 8.51,
+    "rata_hari": 12.0,
+    "cut_loss": 0
+   }
+  },
+  "SIDO": {
+   "A": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -5.69,
+    "rata_R": -0.86,
+    "profit_factor": 0.0,
+    "rata_hari": 20.0,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 1,
+    "menang_pct": 0.0,
+    "rata_pct": -5.69,
+    "rata_R": -0.86,
+    "profit_factor": 0.0,
+    "rata_hari": 20.0,
+    "cut_loss": 0
+   }
+  },
+  "SMRA": {
+   "A": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": 1.07,
+    "rata_R": 0.43,
+    "profit_factor": 1.41,
+    "rata_hari": 10.3,
+    "cut_loss": 0
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 66.7,
+    "rata_pct": -0.9,
+    "rata_R": 0.09,
+    "profit_factor": 0.66,
+    "rata_hari": 13.7,
+    "cut_loss": 0
+   }
+  },
+  "SSMS": {
+   "A": {
+    "n": 3,
+    "menang_pct": 33.3,
+    "rata_pct": -3.61,
+    "rata_R": -0.27,
+    "profit_factor": 0.36,
+    "rata_hari": 8.0,
+    "cut_loss": 2
+   },
+   "B": {
+    "n": 3,
+    "menang_pct": 33.3,
+    "rata_pct": -2.8,
+    "rata_R": -0.12,
+    "profit_factor": 0.51,
+    "rata_hari": 8.0,
+    "cut_loss": 2
+   }
+  },
+  "TAPG": {
+   "A": {
+    "n": 7,
+    "menang_pct": 57.1,
+    "rata_pct": -1.23,
+    "rata_R": 0.01,
+    "profit_factor": 0.7,
+    "rata_hari": 10.4,
+    "cut_loss": 3
+   },
+   "B": {
+    "n": 7,
+    "menang_pct": 57.1,
+    "rata_pct": -0.4,
+    "rata_R": 0.15,
+    "profit_factor": 0.9,
+    "rata_hari": 11.7,
+    "cut_loss": 3
+   }
+  },
+  "TINS": {
+   "A": {
+    "n": 6,
+    "menang_pct": 83.3,
+    "rata_pct": 6.44,
+    "rata_R": 0.58,
+    "profit_factor": 4.91,
+    "rata_hari": 6.3,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 83.3,
+    "rata_pct": 6.81,
+    "rata_R": 0.63,
+    "profit_factor": 5.13,
+    "rata_hari": 10.5,
+    "cut_loss": 1
+   }
+  },
+  "TLKM": {
+   "A": {
+    "n": 6,
+    "menang_pct": 50.0,
+    "rata_pct": 1.04,
+    "rata_R": 0.28,
+    "profit_factor": 1.58,
+    "rata_hari": 13.5,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 50.0,
+    "rata_pct": 1.19,
+    "rata_R": 0.33,
+    "profit_factor": 1.67,
+    "rata_hari": 14.3,
+    "cut_loss": 1
+   }
+  },
+  "UNVR": {
+   "A": {
+    "n": 6,
+    "menang_pct": 83.3,
+    "rata_pct": 5.15,
+    "rata_R": 0.64,
+    "profit_factor": 7.16,
+    "rata_hari": 9.7,
+    "cut_loss": 1
+   },
+   "B": {
+    "n": 6,
+    "menang_pct": 83.3,
+    "rata_pct": 4.75,
+    "rata_R": 0.58,
+    "profit_factor": 6.69,
+    "rata_hari": 13.5,
+    "cut_loss": 1
+   }
+  }
+ }
+}

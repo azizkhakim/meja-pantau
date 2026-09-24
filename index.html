@@ -156,6 +156,16 @@ td.r,th.r{text-align:right}
 .chips2 em{font-style:normal;font-size:11.5px;color:var(--ink-3);margin-right:2px}
 .chip{font-family:var(--mono);font-size:11.5px;padding:2px 6px;border-radius:5px;background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
 .chip.ok{border-color:var(--good);color:var(--good);font-weight:600}
+.chip.hold{border-color:var(--good);border-style:dashed;color:var(--good)}
+.gate{display:flex;gap:12px;align-items:flex-start;border-radius:10px;padding:12px 14px;font-size:14px}
+.gate.bad{background:var(--mid-soft)} .gate.good{background:var(--good-soft)}
+.gate b{display:block;margin-bottom:2px}
+.rapor{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rapor div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.rapor b{display:block;font-family:var(--mono);font-size:20px;font-weight:500}
+.rapor span{font-size:12px;color:var(--ink-3)}
+.mini{min-width:560px}
+.mini td,.mini th{padding:7px 10px;font-size:13px}
 .chip.dn{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--bad)}
 details.wait summary{cursor:pointer;font-size:14px;color:var(--ink-2)}
 .waitlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px 18px;margin-top:10px;font-size:13px}
@@ -315,13 +325,17 @@ details.gh summary{cursor:pointer;font-weight:600;font-family:var(--display);fon
     <div class="themes" id="temaAktif"></div>
     <h3 class="subh">Menjelang acara berdampak tinggi (14 hari ke depan)</h3>
     <div class="evcards" id="evCards"></div>
-    <h3 class="subh">Kandidat siap entry</h3>
+    <div class="gate" id="gate"></div>
+    <h3 class="subh">Kandidat</h3>
     <div class="tbl-wrap"><table>
       <thead><tr><th>Saham</th><th>Kenapa relevan</th><th class="r">Harga</th><th>Setup</th><th class="r">Area entry</th><th class="r">Cut loss</th><th class="r">TP1 / TP2</th><th class="r">R:R</th><th>Posisi harga</th></tr></thead>
       <tbody id="kandidat"></tbody>
     </table></div>
     <details class="wait" id="waitBox"><summary id="waitSum">Relevan tapi belum layak entry</summary><div class="waitlist" id="waitList"></div></details>
-    <p class="foot">Kandidat dipilih dengan aturan tetap: sahamnya berkaitan dengan tema aktif atau skenario acara (peta di <code>data/peta.json</code>), <b>dan</b> pola teknikalnya memenuhi syarat (tren naik lalu koreksi ke MA20, atau menembus harga tertinggi 20 hari dengan volume besar; RSI di bawah 75; cut loss maks. 9%). TP1 = 1,5× risiko, TP2 = 2,5× risiko atau harga tertinggi 60 hari. Chip hijau = siap entry. Bukan rekomendasi jual/beli; cek ulang harga di aplikasi sekuritas sebelum transaksi.</p>
+    <p class="foot">Kandidat dipilih dengan aturan tetap: sahamnya berkaitan dengan tema aktif atau skenario acara (peta di <code>data/peta.json</code>), <b>dan</b> lolos syarat teknikal: tren naik dengan MA50 menanjak, lebih kuat dari IHSG dalam 60 hari, harga kembali dekat MA20, RSI di bawah 75, cut loss maks. 9%, transaksi minimal Rp5 miliar/hari, <b>dan IHSG di atas MA50</b>. Rencana keluar yang diuji: jual separuh di TP1 lalu pindahkan cut loss ke harga beli, sisanya di TP2; tutup setelah 20 hari bursa. Chip hijau = siap entry, hijau putus-putus = siap begitu IHSG pulih. Bukan rekomendasi jual/beli; cek ulang harga di aplikasi sekuritas sebelum transaksi.</p>
+
+    <details class="wait" id="btBox"><summary>Rapor aturan: hasil uji data 2 tahun (backtest)</summary><div id="btBody" style="display:flex;flex-direction:column;gap:12px;margin-top:12px"></div></details>
+    <details class="wait" id="jBox"><summary id="jSum">Jurnal sinyal (catatan otomatis)</summary><div id="jBody" style="display:flex;flex-direction:column;gap:12px;margin-top:12px"></div></details>
   </section>
 
   <section>
@@ -454,7 +468,7 @@ function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTim
 
 // ================= State =================
 let market={indikator:{}}, manual={indikator:{},ceklis:{}}, agenda=[];
-let peta={tema:{},aturan_indikator:[],acara:[]}, sinyal={saham:{}};
+let peta={tema:{},aturan_indikator:[],acara:[]}, sinyal={saham:{}}, backtest=null, jurnal=null;
 let editing=false, calFilter="all", selDate=null, calMonth=null;
 const dirty=new Set();
 
@@ -630,14 +644,15 @@ function renderSteps(){
 }
 
 // ================= Saham layak dipantau =================
-const SIAP=s=>s&&(s.setup==="pullback"||s.setup==="breakout");
+const SIAP=s=>s&&s.setup==="pullback";
+const TAHAN=s=>s&&s.siap_jika_pasar_pulih;
 function skenarioAcara(e){const j=(e.judul||"").toLowerCase();return (peta.acara||[]).find(a=>a.kata.some(k=>j.includes(k)));}
 function temaLabel(t){return peta.tema?.[t]?.label||t;}
 function sahamDi(t){return peta.tema?.[t]?.saham||[];}
 function chip(tk,tertekan){
   const s=sinyal.saham?.[tk];
   const tip=s?`${tk} ${fmt(s.v)} · ${SIAP(s)?"siap entry "+fmt(s.entry[0])+"–"+fmt(s.entry[1]):s.alasan}`:tk;
-  return `<span class="chip ${tertekan?"dn":SIAP(s)?"ok":""}" title="${esc(tip)}">${esc(tk)}</span>`;
+  return `<span class="chip ${tertekan?"dn":SIAP(s)?"ok":TAHAN(s)?"hold":""}" title="${esc(tip)}">${esc(tk)}</span>`;
 }
 function daftarChip(temas,tertekan){
   const tks=[...new Set(temas.flatMap(sahamDi))];
@@ -665,6 +680,7 @@ function acaraDekat(){
     .sort((a,b)=>(a.tanggal+(a.jam||"")).localeCompare(b.tanggal+(b.jam||""))).slice(0,4);
 }
 function posisiHarga(s){
+  if(TAHAN(s)) return {c:"mid",t:"Tunggu IHSG di atas MA50"};
   const h=num(s.v),[a,b]=s.entry;
   if(h<=s.cl) return {c:"bad",t:"Di bawah cut loss, batal"};
   if(h<a) return {c:"mid",t:"Di bawah area entry"};
@@ -690,7 +706,13 @@ function renderSaham(){
   for(const e of dekat) for(const s of skenarioAcara(e).skenario) for(const t of s.diuntungkan) for(const x of sahamDi(t))
     add(x,`${e.judul.replace(/\s*\(.*?\)\s*/g," ").trim()} ${new Date(e.tanggal+"T00:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"short"})}, jika ${s.kondisi.toLowerCase()}`);
   const relevan=Object.keys(why).filter(t=>ss[t]);
-  const siap=relevan.filter(t=>SIAP(ss[t])).map(t=>({t,s:ss[t],p:posisiHarga(ss[t])}))
+  const px=sinyal.pasar;
+  $("gate").className="gate "+(px?(px.ihsg_kuat?"good":"bad"):"");
+  $("gate").hidden=!px;
+  if(px) $("gate").innerHTML=px.ihsg_kuat
+    ? `<div><b>Filter pasar: aktif untuk beli</b>IHSG ${fmt(px.ihsg)} di atas MA50 (${fmt(px.ihsg_ma50)}). Kandidat yang lolos syarat boleh dipertimbangkan.</div>`
+    : `<div><b>Filter pasar: tahan pembelian baru</b>IHSG ${fmt(px.ihsg)} di bawah MA50 (${fmt(px.ihsg_ma50)}). Dalam uji 2 tahun, sinyal beli saat pasar seperti ini lebih sering gagal. Kandidat di bawah ditampilkan sebagai persiapan; aktif begitu IHSG kembali ke atas MA50.</div>`;
+  const siap=relevan.filter(t=>SIAP(ss[t])||TAHAN(ss[t])).map(t=>({t,s:ss[t],p:posisiHarga(ss[t])}))
     .sort((a,b)=>(a.p.c==="acc"?0:1)-(b.p.c==="acc"?0:1)||why[b.t].length-why[a.t].length||b.s.rr2-a.s.rr2);
   $("kandidat").innerHTML=siap.length?siap.map(({t,s,p})=>{
     const chg=num(s.prev)?(s.v/s.prev-1)*100:null;
@@ -698,17 +720,46 @@ function renderSaham(){
       <td><div class="tk">${esc(t)}</div><div class="nm">${esc(s.nama||"")}</div></td>
       <td><div class="why">${why[t].slice(0,3).map(w=>`<span>${esc(w)}</span>`).join("")}${why[t].length>3?`<span>+${why[t].length-3} alasan lain</span>`:""}</div></td>
       <td class="r"><span class="num">${fmt(s.v)}</span>${chg!=null?`<br>${chgHtml(chg)}`:""}${s.lama?'<br><span class="stale small">data lama</span>':""}</td>
-      <td><span class="pill ${s.setup==="breakout"?"good":"acc"}">${s.setup==="breakout"?"Breakout":"Pullback"}</span><div class="nm" style="max-width:24ch;margin-top:4px">${esc(s.alasan)}</div></td>
+      <td><span class="pill acc">Pullback</span><div class="nm" style="max-width:24ch;margin-top:4px">${esc(TAHAN(s)?"Tren naik, MA50 menanjak, lebih kuat dari IHSG, dekat MA20.":s.alasan)}</div></td>
       <td class="r num">${fmt(s.entry[0])}–${fmt(s.entry[1])}</td>
       <td class="r num">${fmt(s.cl)}<br><span class="small muted">−${fmt(s.risiko_pct,1)}%</span></td>
       <td class="r num">${fmt(s.tp1)} / ${fmt(s.tp2)}</td>
       <td class="r num">1 : ${fmt(s.rr2,1)}</td>
       <td><span class="pill ${p.c}">${p.t}</span></td></tr>`;}).join("")
     :`<tr><td colspan="9" class="muted">Belum ada saham relevan yang pola teknikalnya memenuhi syarat. Tidak masuk juga termasuk keputusan.</td></tr>`;
-  const tunggu=relevan.filter(t=>!SIAP(ss[t])).sort();
+  const tunggu=relevan.filter(t=>!SIAP(ss[t])&&!TAHAN(ss[t])).sort();
   $("waitSum").textContent=`Relevan tapi belum layak entry (${tunggu.length})`;
   $("waitBox").hidden=!tunggu.length;
   $("waitList").innerHTML=tunggu.map(t=>`<div><span class="tk">${esc(t)}</span><span>${fmt(ss[t].v)} · ${esc(ss[t].alasan)}</span></div>`).join("");
+  renderRapor(); renderJurnal();
+}
+function statBox(v,label){return `<div><b>${v}</b><span>${esc(label)}</span></div>`;}
+function renderRapor(){
+  $("btBox").hidden=!backtest;
+  if(!backtest) return;
+  const B=backtest.semua.B, pr=backtest.paruh||{};
+  const tbl=Object.values(backtest.per_tema).filter(r=>r.B.n).sort((a,b)=>b.B.rata_pct-a.B.rata_pct).map(r=>`<tr><td>${esc(r.label)}</td><td class="r num">${r.B.n}</td><td class="r num">${fmt(r.B.menang_pct,0)}%</td><td class="r num"><span class="${r.B.rata_pct>=0?"pl up":"pl dn"}">${r.B.rata_pct>0?"+":""}${fmt(r.B.rata_pct,2)}%</span></td><td class="r num">${r.B.profit_factor??"–"}</td></tr>`).join("");
+  $("btBody").innerHTML=`<div class="rapor">
+      ${statBox(B.n,"transaksi dalam 2 tahun")}${statBox(fmt(B.menang_pct,0)+"%","transaksi untung")}
+      ${statBox((B.rata_pct>0?"+":"")+fmt(B.rata_pct,2)+"%","rata-rata per transaksi (setelah biaya)")}
+      ${statBox(B.profit_factor??"–","profit factor (di atas 1 = untung)")}
+      ${statBox(fmt(B.rata_hari,0)+" hari","rata-rata lama posisi")}
+      ${statBox((backtest.ihsg_pct>0?"+":"")+fmt(backtest.ihsg_pct,1)+"%","IHSG di periode yang sama")}
+    </div>
+    ${pr.awal?`<p class="small muted">Konsistensi: paruh pertama ${pr.awal.rata_pct>0?"+":""}${fmt(pr.awal.rata_pct,2)}% per transaksi (PF ${pr.awal.profit_factor}), paruh kedua ${pr.akhir.rata_pct>0?"+":""}${fmt(pr.akhir.rata_pct,2)}% (PF ${pr.akhir.profit_factor}).</p>`:""}
+    <div class="tbl-wrap"><table class="mini"><thead><tr><th>Tema</th><th class="r">Transaksi</th><th class="r">Untung</th><th class="r">Rata-rata</th><th class="r">PF</th></tr></thead><tbody>${tbl}</tbody></table></div>
+    <p class="foot">Diuji ${esc(wibTime(backtest.dibuat))}. ${esc(backtest.asumsi)} Hasil masa lalu tidak menjamin hasil ke depan; jumlah transaksi per tema masih kecil. Tema dengan rata-rata negatif (misalnya sensitif suku bunga) patut diperlakukan lebih hati-hati. Jalankan ulang dengan <code>python3 scripts/backtest.py</code>.</p>`;
+}
+function renderJurnal(){
+  const cs=(jurnal?.catatan||[]).slice().reverse();
+  const r=jurnal?.rapor;
+  $("jSum").textContent=`Jurnal sinyal (${cs.length} catatan)`;
+  const label={menunggu:["mid","Menunggu harga turun ke entry"],terbuka:["acc","Posisi terbuka"],batal:["none","Batal"],
+    "tp2":["good","Selesai di TP2"],"tp1+impas":["good","TP1, sisa impas"],"tp1+habis waktu":["good","TP1, sisa habis waktu"],"cut loss":["bad","Kena cut loss"],"habis waktu":["none","Habis waktu (20 hari)"]};
+  $("jBody").innerHTML=(r?`<div class="rapor">${statBox(r.selesai,"sinyal selesai")}${statBox(r.menang,"untung")}${statBox((r.rata_pct>0?"+":"")+fmt(r.rata_pct,2)+"%","rata-rata per sinyal")}${statBox((r.total_pct>0?"+":"")+fmt(r.total_pct,1)+"%","jumlah hasil")}</div>`:"")
+    +(cs.length?`<div class="tbl-wrap"><table class="mini"><thead><tr><th>Tanggal</th><th>Saham</th><th class="r">Entry</th><th class="r">CL</th><th class="r">TP1 / TP2</th><th>Status</th><th class="r">Hasil</th></tr></thead><tbody>${cs.slice(0,30).map(c=>{const [k,t]=label[c.status]||["none",c.status];return `<tr><td class="num">${esc(c.tanggal)}</td><td class="tk" style="font-size:13px">${esc(c.saham)}</td><td class="r num">${fmt(c.entry[0])}–${fmt(c.entry[1])}${c.beli?`<br><span class="small muted">beli ${fmt(c.beli)}</span>`:""}</td><td class="r num">${fmt(c.cl)}</td><td class="r num">${fmt(c.tp1)} / ${fmt(c.tp2)}</td><td><span class="pill ${k}">${esc(t)}</span>${c.tp1_kena&&c.status==="terbuka"?' <span class="small muted">TP1 sudah</span>':""}</td><td class="r num">${c.hasil_pct!=null?`<span class="${c.hasil_pct>=0?"pl up":"pl dn"}">${c.hasil_pct>0?"+":""}${fmt(c.hasil_pct,2)}%</span>`:"–"}</td></tr>`;}).join("")}</tbody></table></div>`
+      :`<p class="small muted">Belum ada catatan. Setiap kandidat yang lolos semua syarat (termasuk filter IHSG) otomatis dicatat di sini, lalu statusnya diperbarui sampai selesai: kena TP, cut loss, atau habis waktu.</p>`)
+    +`<p class="foot">Jurnal memakai aturan yang sama dengan backtest: order berlaku 5 hari bursa, jual separuh di TP1, cut loss dipindah ke harga beli, sisa di TP2, maksimal 20 hari. Hasil sudah dipotong biaya transaksi.</p>`;
 }
 
 function renderAll(){renderVerdict();renderCal();renderSaham();renderInd();renderSteps();}
@@ -788,7 +839,7 @@ async function load(){
     const [m,man,ag]=await Promise.all([loadJSON("data/market.json"),loadJSON(FILES.manual),loadJSON(FILES.agenda)]);
     market=m; manual=man; agenda=ag;
     // opsional: kalau belum ada, bagian saham menampilkan pesan kosong
-    [peta,sinyal]=await Promise.all([loadJSON("data/peta.json").catch(()=>peta),loadJSON("data/sinyal.json").catch(()=>sinyal)]);
+    [peta,sinyal,backtest,jurnal]=await Promise.all([loadJSON("data/peta.json").catch(()=>peta),loadJSON("data/sinyal.json").catch(()=>sinyal),loadJSON("data/backtest.json").catch(()=>null),loadJSON("data/jurnal.json").catch(()=>null)]);
   }catch(e){
     $("errBox").hidden=false;
     $("errBox").innerHTML=location.protocol==="file:"

@@ -15,16 +15,20 @@ Ini alat bantu, bukan rekomendasi jual/beli.
 """
 
 import json
+import os
 import time
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 OUT_MARKET = DATA / "market.json"
 OUT_SINYAL = DATA / "sinyal.json"
+OUT_JURNAL = DATA / "jurnal.json"
+OUT_NOTIF = DATA / "notif.json"
+WIB = timezone(timedelta(hours=7))
 
 # kunci indikator di halaman -> simbol Yahoo Finance
 INDIKATOR = {
@@ -40,12 +44,19 @@ URL = "https://query1.finance.yahoo.com/v8/finance/chart/{}?range={}&interval=1d
 HEADERS = {"User-Agent": "Mozilla/5.0 (Meja Pantau; pemakaian pribadi)"}
 
 # ---- aturan teknikal (ubah di sini kalau mau lebih longgar/ketat) ----
+# Aturan ini lolos backtest 2 tahun (lihat scripts/backtest.py); versi tanpa filter pasar & kekuatan relatif rugi.
 RSI_JENUH_BELI = 75      # di atas ini: tunggu koreksi
-VOL_BREAKOUT = 1.5       # volume hari ini minimal 1,5x rata-rata 20 hari
+MA50_NAIK_HARI = 10      # MA50 hari ini harus di atas MA50 10 hari lalu
+KUAT_HARI = 60           # saham harus naik lebih banyak dari IHSG dalam 60 hari terakhir
 RISIKO_MAKS = 0.09       # jarak cut loss maksimal 9% dari entry
 RR_TP1 = 1.5             # take profit 1 = 1,5x risiko
 RR_TP2 = 2.5             # take profit 2 = 2,5x risiko (atau harga tertinggi 60 hari kalau lebih tinggi)
 LIKUID_MIN = 5e9         # nilai transaksi rata-rata 20 hari minimal Rp5 miliar/hari
+
+# ---- aturan eksekusi (dipakai jurnal dan backtest) ----
+BERLAKU_ORDER = 5        # order beli berlaku 5 hari bursa setelah sinyal
+MAKS_TAHAN = 20          # posisi ditutup setelah 20 hari bursa
+# Jual separuh di TP1 lalu cut loss dipindah ke harga beli; sisanya di TP2.
 
 
 def ambil(simbol, rentang="5d"):
@@ -109,15 +120,27 @@ def rata(xs):
     return sum(xs) / len(xs) if xs else None
 
 
-def setup_teknikal(baris, harga):
-    """Hitung tren dan level entry / cut loss / take profit dengan aturan tetap."""
-    if len(baris) < 60:
+def konteks_pasar(baris_ihsg):
+    """Kondisi IHSG: di atas MA50 atau tidak, dan kenaikan 60 hari (dipakai filter)."""
+    c = [b["c"] for b in baris_ihsg]
+    if len(c) < max(50, KUAT_HARI + 1):
+        return None
+    ma50 = rata(c[-50:])
+    return {"ihsg": round(c[-1], 1), "ihsg_ma50": round(ma50, 1), "ihsg_kuat": c[-1] > ma50,
+            "ihsg_ret60": round(c[-1] / c[-1 - KUAT_HARI] - 1, 4)}
+
+
+def setup_teknikal(baris, harga, pasar=None):
+    """Hitung tren dan level entry / cut loss / take profit dengan aturan tetap.
+
+    pasar: hasil konteks_pasar(); kalau None, filter pasar dan kekuatan relatif dilewati.
+    """
+    if len(baris) < max(60, MA50_NAIK_HARI + 50, KUAT_HARI + 1):
         return {"setup": "tunggu", "alasan": "Data harga kurang dari 60 hari."}
 
     c = [b["c"] for b in baris]
     h = [b["h"] for b in baris]
     l = [b["l"] for b in baris]
-    vol = [b["vol"] for b in baris]
     c[-1] = harga  # pakai harga terakhir (bisa di tengah sesi)
 
     ma20, ma50 = rata(c[-20:]), rata(c[-50:])
@@ -126,9 +149,9 @@ def setup_teknikal(baris, harga):
     naik = [max(c[i] - c[i - 1], 0) for i in range(len(c) - 14, len(c))]
     turun = [max(c[i - 1] - c[i], 0) for i in range(len(c) - 14, len(c))]
     rsi = 100.0 if rata(turun) == 0 else 100 - 100 / (1 + rata(naik) / rata(turun))
-    tinggi20_sebelum = max(h[-21:-1])
     tinggi60 = max(h[-60:])
-    vol_rasio = vol[-1] / rata(vol[-21:-1]) if rata(vol[-21:-1]) else 0
+    ma50_lalu = rata(c[-50 - MA50_NAIK_HARI:-MA50_NAIK_HARI])
+    ret60 = c[-1] / c[-1 - KUAT_HARI] - 1
 
     if harga > ma50 and ma20 > ma50:
         tren = "naik"
@@ -165,13 +188,19 @@ def setup_teknikal(baris, harga):
         return {**info, "setup": "tunggu", "alasan": f"RSI {rsi:.0f}, jenuh beli. Tunggu koreksi."}
     if tren == "turun":
         return {**info, "setup": "tunggu", "alasan": "Tren turun (harga dan MA20 di bawah MA50)."}
-    if harga >= tinggi20_sebelum and vol_rasio >= VOL_BREAKOUT:
-        return level(tinggi20_sebelum, tinggi20_sebelum + 0.5 * atr, tinggi20_sebelum - 1.2 * atr, "breakout",
-                     f"Menembus harga tertinggi 20 hari ({bulat(tinggi20_sebelum)}) dengan volume {vol_rasio:.1f}x rata-rata.")
     if tren == "naik" and ma20 - 0.5 * atr <= harga <= ma20 + 1.0 * atr:
+        if ma50 <= ma50_lalu:
+            return {**info, "setup": "tunggu", "alasan": "Dekat MA20, tapi MA50 belum menanjak. Tren belum cukup kuat."}
+        if pasar and ret60 <= pasar["ihsg_ret60"]:
+            return {**info, "setup": "tunggu",
+                    "alasan": f"Dekat MA20, tapi kalah kuat dari IHSG dalam {KUAT_HARI} hari ({ret60 * 100:+.1f}% vs {pasar['ihsg_ret60'] * 100:+.1f}%)."}
         e_bawah = ma20 - 0.5 * atr
-        return level(e_bawah, min(harga, ma20 + 0.5 * atr), e_bawah - 1.2 * atr, "pullback",
-                     "Tren naik dan harga kembali dekat MA20: area beli saat koreksi.")
+        s = level(e_bawah, min(harga, ma20 + 0.5 * atr), e_bawah - 1.2 * atr, "pullback",
+                  "Tren naik, MA50 menanjak, lebih kuat dari IHSG, dan harga kembali dekat MA20.")
+        if s["setup"] == "pullback" and pasar and not pasar["ihsg_kuat"]:
+            return {**s, "setup": "tunggu", "siap_jika_pasar_pulih": True,
+                    "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50."}
+        return s
     if tren == "naik" and harga > ma20:
         return {**info, "setup": "tunggu", "area_tunggu": [bulat(ma20 - 0.5 * atr), bulat(ma20 + 0.5 * atr)],
                 "alasan": f"Sudah naik jauh dari MA20. Tunggu koreksi ke sekitar {bulat(ma20)}."}
@@ -179,6 +208,170 @@ def setup_teknikal(baris, harga):
         return {**info, "setup": "tunggu",
                 "alasan": f"Terkoreksi ke bawah MA20 ({bulat(ma20)}). Tunggu harga kembali ke atas {bulat(ma20 - 0.5 * atr)} sebelum masuk."}
     return {**info, "setup": "tunggu", "alasan": "Belum ada tren yang jelas."}
+
+
+def jalankan_posisi(baris, mulai, atas, cl, tp1, tp2, bagi_dua=True):
+    """Simulasikan order beli & pengelolaan posisi mulai dari indeks `mulai` (hari setelah sinyal).
+
+    Kembalikan dict status: menunggu | batal | terbuka | tp2 | tp1+impas | tp1 | cut loss |
+    habis waktu | tp1+habis waktu, plus harga beli/jual dan indeks hari.
+    bagi_dua=False: jual semua di TP1.
+    """
+    o = [b["o"] for b in baris]
+    h = [b["h"] for b in baris]
+    l = [b["l"] for b in baris]
+    c = [b["c"] for b in baris]
+    n = len(baris)
+
+    isi, beli = None, None
+    for d in range(mulai, min(mulai + BERLAKU_ORDER, n)):
+        if o[d] <= cl:
+            return {"status": "batal", "alasan": "dibuka di bawah cut loss"}
+        if o[d] <= atas:
+            isi, beli = d, o[d]
+            break
+        if l[d] <= atas:
+            isi, beli = d, atas
+            break
+    if isi is None:
+        return {"status": "batal", "alasan": "harga tidak turun ke area entry"} if mulai + BERLAKU_ORDER <= n else {"status": "menunggu"}
+
+    sl, sisa, uang, tp1_kena = cl, 1.0, 0.0, False
+    for d in range(isi, min(isi + MAKS_TAHAN, n)):
+        buka = o[d] if d > isi else beli
+        if l[d] <= sl:
+            jual = uang + sisa * min(buka, sl)
+            return {"status": "tp1+impas" if tp1_kena else "cut loss", "isi": isi, "beli": beli, "keluar": d, "jual": jual}
+        if not tp1_kena and h[d] >= tp1:
+            if not bagi_dua:
+                return {"status": "tp1", "isi": isi, "beli": beli, "keluar": d, "jual": tp1}
+            uang, sisa, tp1_kena, sl = 0.5 * tp1, 0.5, True, beli
+        if tp1_kena and h[d] >= tp2:
+            return {"status": "tp2", "isi": isi, "beli": beli, "keluar": d, "jual": uang + sisa * tp2}
+    if isi + MAKS_TAHAN <= n:
+        d = isi + MAKS_TAHAN - 1
+        return {"status": "tp1+habis waktu" if tp1_kena else "habis waktu", "isi": isi, "beli": beli, "keluar": d,
+                "jual": uang + sisa * c[d]}
+    return {"status": "terbuka", "isi": isi, "beli": beli, "tp1_kena": tp1_kena, "sl": sl}
+
+
+BIAYA_BELI, BIAYA_JUAL = 0.0015, 0.0025
+
+
+def hasil_bersih(beli, jual):
+    return jual * (1 - BIAYA_JUAL) / (beli * (1 + BIAYA_BELI)) - 1
+
+
+# ---------------- jurnal & notifikasi ----------------
+def tgl_wib(ts):
+    return datetime.fromtimestamp(ts, WIB).date().isoformat()
+
+
+def perbarui_jurnal(jurnal, sinyal, data_saham, tema_saham):
+    """Catat sinyal baru dan perbarui status catatan lama. Kembalikan daftar pesan notifikasi."""
+    pesan = []
+    catatan = jurnal.setdefault("catatan", [])
+    hari_ini = datetime.now(WIB).date().isoformat()
+
+    # perbarui catatan yang belum selesai
+    for cat in catatan:
+        if cat["status"] not in ("menunggu", "terbuka"):
+            continue
+        baris = data_saham.get(cat["saham"])
+        if not baris:
+            continue
+        idx = [i for i, b in enumerate(baris) if tgl_wib(b["t"]) <= cat["tanggal"]]
+        if not idx:
+            continue
+        r = jalankan_posisi(baris, idx[-1] + 1, cat["entry"][1], cat["cl"], cat["tp1"], cat["tp2"])
+        lama, baru = cat["status"], r["status"]
+        tp1_lama = cat.get("tp1_kena", False)
+        cat["status"] = baru
+        cat["diperbarui"] = hari_ini
+        if "beli" in r:
+            cat["beli"] = round(r["beli"], 1)
+            cat["tgl_beli"] = tgl_wib(baris[r["isi"]]["t"])
+        if "jual" in r:
+            cat["hasil_pct"] = round(hasil_bersih(r["beli"], r["jual"]) * 100, 2)
+            cat["tgl_keluar"] = tgl_wib(baris[r["keluar"]]["t"])
+        if baru == "batal":
+            cat["alasan_batal"] = r.get("alasan")
+        cat["tp1_kena"] = r.get("tp1_kena", baru in ("tp2", "tp1+impas", "tp1+habis waktu"))
+
+        tk = cat["saham"]
+        if lama == "menunggu" and baru != "menunggu":
+            if baru == "batal":
+                pesan.append(f"⚪ {tk}: sinyal batal ({r.get('alasan')}).")
+            else:
+                pesan.append(f"🔵 {tk}: order terisi di {fmt(cat['beli'])}. Cut loss {fmt(cat['cl'])}, TP1 {fmt(cat['tp1'])}, TP2 {fmt(cat['tp2'])}.")
+        if cat["tp1_kena"] and not tp1_lama:
+            pesan.append(f"✅ {tk}: TP1 {fmt(cat['tp1'])} tercapai. Jual separuh, pindahkan cut loss ke harga beli {fmt(cat.get('beli'))}.")
+        if baru in ("tp2", "tp1+impas", "cut loss", "habis waktu", "tp1+habis waktu") and lama != baru:
+            ikon = "🏁" if baru == "tp2" else "🔴" if baru == "cut loss" else "⏱️"
+            pesan.append(f"{ikon} {tk}: posisi selesai ({baru}), hasil bersih {cat['hasil_pct']:+.2f}%.")
+
+    # catat sinyal baru
+    aktif = {c["saham"] for c in catatan if c["status"] in ("menunggu", "terbuka")}
+    for tk, s in sinyal["saham"].items():
+        if s.get("setup") != "pullback" or tk in aktif or s.get("lama"):
+            continue
+        tema = [v["label"] for v in tema_saham.values() if tk in v["saham"]]
+        catatan.append({"id": f"{tk}-{hari_ini}", "saham": tk, "tanggal": hari_ini, "entry": s["entry"], "cl": s["cl"],
+                        "tp1": s["tp1"], "tp2": s["tp2"], "harga_sinyal": s["v"], "tema": tema, "status": "menunggu",
+                        "diperbarui": hari_ini})
+        pesan.append(f"🟢 Kandidat baru: {tk} ({', '.join(tema)})\nEntry {fmt(s['entry'][0])}–{fmt(s['entry'][1])} · Cut loss {fmt(s['cl'])} · TP1 {fmt(s['tp1'])} · TP2 {fmt(s['tp2'])}\nHarga sekarang {fmt(s['v'])}. Order berlaku 5 hari bursa.")
+
+    selesai = [c for c in catatan if "hasil_pct" in c and c["status"] not in ("terbuka",)]
+    if selesai:
+        hs = [c["hasil_pct"] for c in selesai]
+        jurnal["rapor"] = {"selesai": len(hs), "menang": sum(1 for x in hs if x > 0),
+                           "rata_pct": round(sum(hs) / len(hs), 2), "total_pct": round(sum(hs), 2)}
+    jurnal["diperbarui"] = datetime.now(timezone.utc).isoformat()
+    return pesan
+
+
+def fmt(x):
+    return "-" if x is None else f"{x:,.0f}".replace(",", ".")
+
+
+def pesan_agenda(notif):
+    """Pengingat acara berdampak tinggi untuk hari ini dan besok (sekali per acara per hari)."""
+    agenda_file = DATA / "agenda.json"
+    if not agenda_file.exists():
+        return []
+    sekarang = datetime.now(WIB)
+    if sekarang.hour >= 10:  # hanya di pembaruan pagi
+        return []
+    hari_ini = sekarang.date()
+    pesan = []
+    for e in json.loads(agenda_file.read_text(encoding="utf-8")):
+        if e.get("dampak") != "tinggi":
+            continue
+        selisih = (datetime.fromisoformat(e["tanggal"]).date() - hari_ini).days
+        if selisih not in (0, 1):
+            continue
+        kunci = f"agenda:{e['id']}:{selisih}"
+        if kunci in notif["terkirim"]:
+            continue
+        notif["terkirim"].append(kunci)
+        pesan.append(f"📅 {'Hari ini' if selisih == 0 else 'Besok'} {e.get('jam', '')}: {e['judul']}\n{e.get('catatan', '')}")
+    return pesan
+
+
+def kirim_telegram(pesan):
+    token, chat = os.environ.get("TELEGRAM_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+    if not pesan:
+        return
+    if not token or not chat:
+        print("Telegram belum diatur; pesan tidak dikirim:\n  " + "\n  ".join(p.replace("\n", " | ") for p in pesan))
+        return
+    teks = "Meja Pantau\n\n" + "\n\n".join(pesan)
+    for bagian in [teks[i:i + 3900] for i in range(0, len(teks), 3900)]:
+        data = urllib.parse.urlencode({"chat_id": chat, "text": bagian, "disable_web_page_preview": "true"}).encode()
+        try:
+            urllib.request.urlopen(f"https://api.telegram.org/bot{token}/sendMessage", data=data, timeout=20).read()
+        except Exception as e:
+            print(f"  gagal kirim Telegram: {e}")
 
 
 def daftar_saham():
@@ -217,24 +410,49 @@ def main():
                 market["indikator"][kunci] = {**lama_market["indikator"][kunci], "lama": True}
     market["gagal"] = list(gagal)
 
-    # 2) saham + level teknikal
-    sinyal = {"diperbarui": sekarang, "saham": {}}
+    # 2) kondisi pasar (filter) + saham + level teknikal
+    ihsg6 = ambil("^JKSE", "6mo")
+    pasar = konteks_pasar(ihsg6["baris"]) if ihsg6 else lama_sinyal.get("pasar")
+    sinyal = {"diperbarui": sekarang, "pasar": pasar, "saham": {}}
+    data_saham = {}
     for tk in daftar_saham():
         data = ambil(f"{tk}.JK", "6mo")
         if data:
+            data_saham[tk] = data["baris"]
             q = ringkas(data)
             nama = (data["meta"].get("longName") or data["meta"].get("shortName") or tk).replace("PT ", "").replace(" Tbk", "").strip()
-            sinyal["saham"][tk] = {"nama": nama, **q, **setup_teknikal(data["baris"], q["v"])}
+            sinyal["saham"][tk] = {"nama": nama, **q, **setup_teknikal(data["baris"], q["v"], pasar)}
         else:
             gagal.append(f"{tk}.JK")
             if tk in lama_sinyal.get("saham", {}):
                 sinyal["saham"][tk] = {**lama_sinyal["saham"][tk], "lama": True}
     sinyal["gagal"] = [g for g in gagal if g.endswith(".JK")]
 
+    # 3) jurnal sinyal + notifikasi
+    peta = baca(DATA / "peta.json")
+    jurnal = baca(OUT_JURNAL) or {"catatan": []}
+    notif = baca(OUT_NOTIF) or {"terkirim": []}
+    pesan = perbarui_jurnal(jurnal, sinyal, data_saham, peta.get("tema", {}))
+    if pasar and notif.get("ihsg_kuat") is not None and notif["ihsg_kuat"] != pasar["ihsg_kuat"]:
+        tahan = [k for k, v in sinyal["saham"].items() if v.get("setup") == "pullback"]
+        pesan.insert(0, ("🟢 IHSG kembali di atas MA50" if pasar["ihsg_kuat"] else "🟠 IHSG turun ke bawah MA50") +
+                     f" ({fmt(pasar['ihsg'])} vs MA50 {fmt(pasar['ihsg_ma50'])})." +
+                     (f" Kandidat aktif: {', '.join(tahan)}." if pasar["ihsg_kuat"] and tahan else
+                      "" if pasar["ihsg_kuat"] else " Kandidat baru ditahan sampai pasar pulih."))
+    if pasar:
+        notif["ihsg_kuat"] = pasar["ihsg_kuat"]
+    pesan += pesan_agenda(notif)
+    notif["terkirim"] = notif["terkirim"][-300:]
+
     OUT_MARKET.write_text(json.dumps(market, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     OUT_SINYAL.write_text(json.dumps(sinyal, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    OUT_JURNAL.write_text(json.dumps(jurnal, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    OUT_NOTIF.write_text(json.dumps(notif, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    kirim_telegram(pesan)
 
-    siap = [k for k, v in sinyal["saham"].items() if v.get("setup") in ("pullback", "breakout")]
+    siap = [k for k, v in sinyal["saham"].items() if v.get("setup") == "pullback"]
+    tahan = [k for k, v in sinyal["saham"].items() if v.get("siap_jika_pasar_pulih")]
+    print(f"Pasar: {pasar} · Tertahan filter IHSG: {tahan}")
     print(f"Indikator: {len(market['indikator'])}/{len(INDIKATOR)} · Saham: {len(sinyal['saham'])} · Siap entry: {siap} · Gagal: {gagal or '-'}")
 
 

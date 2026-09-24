@@ -1,5 +1,11 @@
 {
- "diperbarui": "2026-09-24T09:33:47.212831+00:00",
+ "diperbarui": "2026-09-24T09:39:00.119714+00:00",
+ "pasar": {
+  "ihsg": 6298.6,
+  "ihsg_ma50": 6386.7,
+  "ihsg_kuat": false,
+  "ihsg_ret60": 0.0821
+ },
  "saham": {
   "AADI": {
    "nama": "Adaro Andalan Indonesia",
@@ -54,7 +60,7 @@
    "atr": 47.1,
    "rsi": 67.2,
    "nilai_tx_mlr": 31.3,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     1435,
     1485
@@ -64,7 +70,8 @@
    "tp2": 1660,
    "rr2": 2.5,
    "risiko_pct": 5.5,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "AMRT": {
    "nama": "Sumber Alfaria Trijaya",
@@ -91,7 +98,7 @@
    "atr": 115.7,
    "rsi": 58.8,
    "nilai_tx_mlr": 365.9,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     3130,
     3240
@@ -101,7 +108,8 @@
    "tp2": 3670,
    "rr2": 2.5,
    "risiko_pct": 6.1,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "ARCI": {
    "nama": "Archi Indonesia",
@@ -114,7 +122,7 @@
    "atr": 51.8,
    "rsi": 44.9,
    "nilai_tx_mlr": 56.7,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     1300,
     1305
@@ -124,7 +132,8 @@
    "tp2": 1475,
    "rr2": 2.8,
    "risiko_pct": 4.8,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "ASII": {
    "nama": "Astra International",
@@ -291,7 +300,7 @@
    "atr": 77.1,
    "rsi": 46.5,
    "nilai_tx_mlr": 9.9,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     1590,
     1600
@@ -301,7 +310,8 @@
    "tp2": 1830,
    "rr2": 2.5,
    "risiko_pct": 6.0,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "ELSA": {
    "nama": "Elnusa",
@@ -426,7 +436,7 @@
    "atr": 157.9,
    "rsi": 49.6,
    "nilai_tx_mlr": 72.9,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     2700,
     2780
@@ -436,7 +446,8 @@
    "tp2": 3310,
    "rr2": 2.5,
    "risiko_pct": 8.4,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "ISAT": {
    "nama": "Indosat",
@@ -449,7 +460,7 @@
    "atr": 95.0,
    "rsi": 51.2,
    "nilai_tx_mlr": 167.1,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     2340,
     2400
@@ -459,7 +470,8 @@
    "tp2": 2850,
    "rr2": 3.4,
    "risiko_pct": 5.9,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "ITMG": {
    "nama": "Indo Tambangraya Megah",
@@ -542,7 +554,7 @@
    "atr": 130.0,
    "rsi": 58.0,
    "nilai_tx_mlr": 119.6,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     2880,
     3010
@@ -552,7 +564,8 @@
    "tp2": 3500,
    "rr2": 2.5,
    "risiko_pct": 7.6,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "MEDC": {
    "nama": "Medco Energi Internasional",
@@ -565,7 +578,7 @@
    "atr": 71.1,
    "rsi": 49.2,
    "nilai_tx_mlr": 100.2,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     1460,
     1490
@@ -575,7 +588,8 @@
    "tp2": 1725,
    "rr2": 2.5,
    "risiko_pct": 6.8,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "MYOR": {
    "nama": "Mayora Indah",
@@ -630,7 +644,7 @@
    "atr": 103.6,
    "rsi": 63.1,
    "nilai_tx_mlr": 155.7,
-   "setup": "pullback",
+   "setup": "tunggu",
    "entry": [
     2900,
     3000
@@ -640,7 +654,8 @@
    "tp2": 3400,
    "rr2": 2.5,
    "risiko_pct": 6.1,
-   "alasan": "Tren naik dan harga kembali dekat MA20: area beli saat koreksi."
+   "alasan": "Pola sudah siap, tapi IHSG di bawah MA50. Secara historis sinyal beli saat pasar lemah lebih sering gagal. Tunggu IHSG kembali ke atas MA50.",
+   "siap_jika_pasar_pulih": true
   },
   "PWON": {
    "nama": "Pakuwon Jati",
