@@ -45,6 +45,7 @@ VOL_BREAKOUT = 1.5       # volume hari ini minimal 1,5x rata-rata 20 hari
 RISIKO_MAKS = 0.09       # jarak cut loss maksimal 9% dari entry
 RR_TP1 = 1.5             # take profit 1 = 1,5x risiko
 RR_TP2 = 2.5             # take profit 2 = 2,5x risiko (atau harga tertinggi 60 hari kalau lebih tinggi)
+LIKUID_MIN = 5e9         # nilai transaksi rata-rata 20 hari minimal Rp5 miliar/hari
 
 
 def ambil(simbol, rentang="5d"):
@@ -136,7 +137,13 @@ def setup_teknikal(baris, harga):
     else:
         tren = "datar"
 
-    info = {"tren": tren, "ma20": bulat(ma20), "ma50": bulat(ma50), "atr": round(atr, 1), "rsi": round(rsi, 1)}
+    nilai_tx = rata([b["c"] * b["vol"] for b in baris[-20:]]) or 0
+    info = {"tren": tren, "ma20": bulat(ma20), "ma50": bulat(ma50), "atr": round(atr, 1), "rsi": round(rsi, 1),
+            "nilai_tx_mlr": round(nilai_tx / 1e9, 1)}
+
+    if nilai_tx < LIKUID_MIN:
+        return {**info, "setup": "tunggu",
+                "alasan": f"Kurang likuid (rata-rata Rp{nilai_tx / 1e9:.1f} miliar/hari). Cut loss bisa sulit dieksekusi."}
 
     def level(e_bawah, e_atas, cl, jenis, alasan):
         e_bawah, e_atas = bulat(e_bawah), bulat(e_atas)
