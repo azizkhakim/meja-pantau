@@ -8,7 +8,9 @@
   "agenda:2026-10-29-fomc:1",
   "agenda:2026-10-29-pdb-as:1",
   "agenda:2026-10-29-pce:1",
-  "agenda:2026-11-05-pdb-id:1"
+  "agenda:2026-11-05-pdb-id:1",
+  "agenda:2026-11-05-pdb-id:0",
+  "agenda:2026-11-06-nfp:1"
  ],
  "ihsg_kuat": false,
  "telegram_ok": true
