@@ -1,5 +1,4 @@
 [
-  {"id": "2026-10-15-ppi", "tanggal": "2026-10-15", "jam": "19.30 WIB", "wilayah": "global", "dampak": "sedang", "judul": "Inflasi produsen AS (PPI) September", "catatan": "Sinyal awal tekanan harga ke konsumen.", "tipe": "ppi", "otomatis": true},
   {"id": "2026-10-21-rdg", "tanggal": "2026-10-21", "jam": "13.30 WIB", "wilayah": "lokal", "dampak": "tinggi", "judul": "Keputusan BI Rate (RDG 20–21 Okt)", "catatan": "Arah bunga menentukan rupiah, bank, dan JSMR.", "tipe": "rdg", "otomatis": true},
   {"id": "2026-10-29-fomc", "tanggal": "2026-10-29", "jam": "01.00 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "Keputusan suku bunga The Fed (FOMC Oktober 2026)", "catatan": "Arah bunga AS menentukan dolar, yield, dan aliran dana asing ke Indonesia.", "tipe": "fomc", "otomatis": true},
   {"id": "2026-10-29-pdb-as", "tanggal": "2026-10-29", "jam": "19.30 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "PDB AS kuartal III 2026 (awal)", "catatan": "Pertumbuhan ekonomi AS memengaruhi yield dan arah bunga The Fed.", "tipe": "pdb-as", "otomatis": true},
@@ -35,5 +34,6 @@
   {"id": "2027-02-17-rdg", "tanggal": "2027-02-17", "jam": "±14.30 WIB", "wilayah": "lokal", "dampak": "tinggi", "judul": "Keputusan BI Rate (RDG)", "catatan": "Arah bunga menentukan rupiah, bank, dan JSMR.", "perkiraan": true, "tipe": "rdg", "otomatis": true},
   {"id": "2027-03-01-inflasi-id", "tanggal": "2027-03-01", "jam": "±11.00 WIB", "wilayah": "lokal", "dampak": "sedang", "judul": "Inflasi Indonesia Februari (BPS)", "catatan": "Inflasi rendah memberi ruang BI menurunkan bunga.", "perkiraan": true, "tipe": "inflasi-id", "otomatis": true},
   {"id": "2027-03-05-nfp", "tanggal": "2027-03-05", "jam": "20.30 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "Data tenaga kerja AS (NFP) Februari", "catatan": "Data kuat membuat The Fed tetap ketat: yield dan dolar naik.", "perkiraan": true, "tipe": "nfp", "otomatis": true},
-  {"id": "2027-03-12-cpi", "tanggal": "2027-03-12", "jam": "20.30 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "Inflasi AS (CPI) Februari", "catatan": "Penentu utama arah bunga The Fed.", "perkiraan": true, "tipe": "cpi", "otomatis": true}
+  {"id": "2027-03-12-cpi", "tanggal": "2027-03-12", "jam": "20.30 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "Inflasi AS (CPI) Februari", "catatan": "Penentu utama arah bunga The Fed.", "perkiraan": true, "tipe": "cpi", "otomatis": true},
+  {"id": "2027-03-15-neraca", "tanggal": "2027-03-15", "jam": "±11.00 WIB", "wilayah": "lokal", "dampak": "sedang", "judul": "Neraca perdagangan Indonesia Februari (BPS)", "catatan": "Surplus besar menopang rupiah.", "perkiraan": true, "tipe": "neraca", "otomatis": true}
 ]
