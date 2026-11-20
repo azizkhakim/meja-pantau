@@ -1,5 +1,4 @@
 [
-  {"id": "2026-10-21-rdg", "tanggal": "2026-10-21", "jam": "13.30 WIB", "wilayah": "lokal", "dampak": "tinggi", "judul": "Keputusan BI Rate (RDG 20–21 Okt)", "catatan": "Arah bunga menentukan rupiah, bank, dan JSMR.", "tipe": "rdg", "otomatis": true},
   {"id": "2026-10-29-fomc", "tanggal": "2026-10-29", "jam": "01.00 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "Keputusan suku bunga The Fed (FOMC Oktober 2026)", "catatan": "Arah bunga AS menentukan dolar, yield, dan aliran dana asing ke Indonesia.", "tipe": "fomc", "otomatis": true},
   {"id": "2026-10-29-pdb-as", "tanggal": "2026-10-29", "jam": "19.30 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "PDB AS kuartal III 2026 (awal)", "catatan": "Pertumbuhan ekonomi AS memengaruhi yield dan arah bunga The Fed.", "tipe": "pdb-as", "otomatis": true},
   {"id": "2026-10-29-pce", "tanggal": "2026-10-29", "jam": "19.30 WIB", "wilayah": "global", "dampak": "tinggi", "judul": "Inflasi PCE AS (September 2026)", "catatan": "PCE adalah acuan inflasi utama The Fed.", "tipe": "pce", "otomatis": true},
