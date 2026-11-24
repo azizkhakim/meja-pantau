@@ -1,10 +1,10 @@
 {
- "diperbarui": "2026-11-24T10:13:59.115079+00:00",
+ "diperbarui": "2026-11-24T23:11:26.487717+00:00",
  "pasar": {
-  "ihsg": 5241.6,
-  "ihsg_ma50": 5616.7,
+  "ihsg": 5215.9,
+  "ihsg_ma50": 5641.0,
   "ihsg_kuat": false,
-  "ihsg_ret60": -0.2058
+  "ihsg_ret60": -0.2007
  },
  "saham": {
   "AADI": {
@@ -351,7 +351,7 @@
    "ma50": 149,
    "atr": 8.4,
    "rsi": 62.3,
-   "nilai_tx_mlr": 331.7,
+   "nilai_tx_mlr": 359.4,
    "setup": "tunggu",
    "alasan": "Tren turun (harga dan MA20 di bawah MA50)."
   },
