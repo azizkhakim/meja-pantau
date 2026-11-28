@@ -1,8 +1,8 @@
 {
- "dibuat": "2026-11-21T07:55:41.621986+00:00",
+ "dibuat": "2026-11-28T08:38:16.980363+00:00",
  "periode": "2 tahun terakhir (60 hari pertama untuk pemanasan indikator)",
  "asumsi": "Order berlaku 5 hari; cut loss diutamakan kalau bersamaan dengan target; maks. 20 hari; biaya beli 0,15% + jual 0,25%.",
- "ihsg_pct": -23.8,
+ "ihsg_pct": -18.1,
  "semua": {
   "A": {
    "n": 275,
